@@ -54,9 +54,11 @@ void MUSE_TASK()
 
 
 //任务0
+// 首先发送数据，然后接收数据
 void KEY0_TASK()
 {
 	u8 key,mode;
+	u8 time ; //计算发送次数
 	u16 t=0;			 
 	u8 tmp_buf[33];	
 	
@@ -67,40 +69,117 @@ void KEY0_TASK()
 	Show_Str(50,50,200,24,"当前任务0 :",24,0);
 
 	NRF24L01_TX_Mode();
-	mode=' ';//从空格键开始
+	mode=' ';//从空格键开始  
 	
-	//
-//	while(1)
-//	{	  		   				 
-		while(NRF24L01_TxPacket(tmp_buf)==TX_OK)
+	//发送命令 key0_pres
+	while(NRF24L01_TxPacket(tmp_buf)==TX_OK && time != 3)
+	{
+		time ++;
+		LCD_ShowString(30,170,239,32,16,"Sended DATA:");	
+		LCD_ShowString(0,190,lcddev.width-1,32,16,tmp_buf); 
+		for(t=0;t<32;t++)
 		{
-			LCD_ShowString(30,170,239,32,16,"Sended DATA:");	
-			LCD_ShowString(0,190,lcddev.width-1,32,16,tmp_buf); 
-			for(t=0;t<32;t++)
-			{
-				
-				tmp_buf[t]=key_buf[t];	
-			}	  
-			tmp_buf[32]=0;//加入结束符		   
-		}
-//		else
-//		{										   	
-//			LCD_Fill(0,170,lcddev.width,170+16*3,WHITE);//清空显示			   
-//			LCD_ShowString(30,170,lcddev.width-1,32,16,"Send Failed "); 
-//		}
-		LED0=!LED0;
-		delay_ms(1500);		
+			
+			tmp_buf[t]=key_buf[t];	
+		}	  
+		tmp_buf[32]=0;//加入结束符		   
 	}
-//}
+	time = 0;
+
+	//LED0=!LED0;
+	//delay_ms(1500);		
+	
+	//然后接收数据 读取一次按键，接收两次信息
+	NRF24L01_RX_Mode();		  
+	while(1)
+	{	 
+		Show_Str(50,70,200,24,"biaozhiwei :",24,0);
+		if(t%2==0)
+		{
+			if(NRF24L01_RxPacket(tmp_buf)==0)//一旦接收到信息,则显示出来.
+			{
+				tmp_buf[32]=0;//加入字符串结束符
+				LCD_ShowString(0,190,lcddev.width-1,32,16,tmp_buf);    
+			}
+			else
+				delay_us(100);	
+		}
+		if(t%4==0)
+		{
+			t=0;
+			key=KEY_Scan(0);
+			if(key==WKUP_PRES)
+			{
+				Show_Str(50,100,200,24,"当前任务 :",24,0);
+				break;
+			}
+		}
+		t++;    
+	}	
+	
+}
+
 
 
 
 //任务1
 void KEY1_TASK()
 {
+	u8 key,mode;
+	u16 t=0;			 
+	u8 tmp_buf[33];	
+	
+	u8 key_buf[33] = "key1_pres";
+	
+	
 	LCD_Clear(WHITE);
-	Show_Str(20,50,200,24,"当前任务2:",24,0);
+	Show_Str(50,50,200,24,"当前任务1 :",24,0);
+
+	NRF24L01_TX_Mode();
+	mode=' ';//从空格键开始  
+	
+	while(NRF24L01_TxPacket(tmp_buf)==TX_OK)
+	{
+		LCD_ShowString(30,170,239,32,16,"Sended DATA:");	
+		LCD_ShowString(0,190,lcddev.width-1,32,16,tmp_buf); 
+		for(t=0;t<32;t++)
+		{
+			
+			tmp_buf[t]=key_buf[t];	
+		}	  
+		tmp_buf[32]=0;//加入结束符		   
+	}
+
+//	LED0=!LED0;
+//	delay_ms(1500);
+	NRF24L01_RX_Mode();		  
+	while(1)
+	{	 
+		if(t%2==0)
+		{
+			if(NRF24L01_RxPacket(tmp_buf)==0)//一旦接收到信息,则显示出来.
+			{
+				tmp_buf[32]=0;//加入字符串结束符
+				LCD_ShowString(0,190,lcddev.width-1,32,16,tmp_buf);    
+			}
+			else
+				delay_us(100);	
+		}
+		else if(t%4==0)
+		{
+			t=0;
+			key=KEY_Scan(0);
+			if(key==WKUP_PRES)
+			{
+				break;
+			}
+		}
+		t++;    
+	}		
 }
+
+
+
 
 
 //任务2
