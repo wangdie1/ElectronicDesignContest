@@ -1,0 +1,59 @@
+*** Creating Trace Output File '..\LISTING\TEST.tra' Ok.
+### Preparing for ADS-LD.
+### Creating ADS-LD Command Line
+### List of Objects: adding '"..\listing\main.o"'
+### List of Objects: adding '"..\listing\compare.o"'
+### List of Objects: adding '"..\listing\delay.o"'
+### List of Objects: adding '"..\listing\pwm.o"'
+### List of Objects: adding '"..\listing\sys.o"'
+### List of Objects: adding '"..\listing\usart.o"'
+### List of Objects: adding '"..\listing\i2c.o"'
+### List of Objects: adding '"..\listing\adc.o"'
+### List of Objects: adding '"..\listing\misc.o"'
+### List of Objects: adding '"..\listing\stm32f10x_adc.o"'
+### List of Objects: adding '"..\listing\stm32f10x_bkp.o"'
+### List of Objects: adding '"..\listing\stm32f10x_can.o"'
+### List of Objects: adding '"..\listing\stm32f10x_cec.o"'
+### List of Objects: adding '"..\listing\stm32f10x_crc.o"'
+### List of Objects: adding '"..\listing\stm32f10x_dac.o"'
+### List of Objects: adding '"..\listing\stm32f10x_dbgmcu.o"'
+### List of Objects: adding '"..\listing\stm32f10x_dma.o"'
+### List of Objects: adding '"..\listing\stm32f10x_exti.o"'
+### List of Objects: adding '"..\listing\stm32f10x_flash.o"'
+### List of Objects: adding '"..\listing\stm32f10x_fsmc.o"'
+### List of Objects: adding '"..\listing\stm32f10x_gpio.o"'
+### List of Objects: adding '"..\listing\stm32f10x_i2c.o"'
+### List of Objects: adding '"..\listing\stm32f10x_iwdg.o"'
+### List of Objects: adding '"..\listing\stm32f10x_pwr.o"'
+### List of Objects: adding '"..\listing\stm32f10x_rcc.o"'
+### List of Objects: adding '"..\listing\stm32f10x_rtc.o"'
+### List of Objects: adding '"..\listing\stm32f10x_sdio.o"'
+### List of Objects: adding '"..\listing\stm32f10x_spi.o"'
+### List of Objects: adding '"..\listing\stm32f10x_tim.o"'
+### List of Objects: adding '"..\listing\stm32f10x_usart.o"'
+### List of Objects: adding '"..\listing\stm32f10x_wwdg.o"'
+### List of Objects: adding '"..\listing\core_cm3.o"'
+### List of Objects: adding '"..\listing\system_stm32f10x.o"'
+### List of Objects: adding '"..\listing\startup_stm32f10x_hd.o"'
+### List of Objects: adding '"..\listing\car.o"'
+### List of Objects: adding '"..\listing\adxl345.o"'
+### List of Objects: adding '"..\listing\bh175.o"'
+### List of Objects: adding '"..\listing\color_det.o"'
+### List of Objects: adding '"..\listing\ultrasonic_sensor.o"'
+### List of Objects: adding '"..\listing\eeprom.o"'
+### ADS-LD Command completed:
+--cpu Cortex-M3 "..\listing\main.o" "..\listing\compare.o" "..\listing\delay.o" "..\listing\pwm.o" "..\listing\sys.o" "..\listing\usart.o" "..\listing\i2c.o" "..\listing\adc.o" "..\listing\misc.o" "..\listing\stm32f10x_adc.o" "..\listing\stm32f10x_bkp.o" "..\listing\stm32f10x_can.o" "..\listing\stm32f10x_cec.o" "..\listing\stm32f10x_crc.o" "..\listing\stm32f10x_dac.o" "..\listing\stm32f10x_dbgmcu.o" "..\listing\stm32f10x_dma.o" "..\listing\stm32f10x_exti.o" "..\listing\stm32f10x_flash.o" "..\listing\stm32f10x_fsmc.o" "..\listing\stm32f10x_gpio.o" "..\listing\stm32f10x_i2c.o" "..\listing\stm32f10x_iwdg.o" "..\listing\stm32f10x_pwr.o" "..\listing\stm32f10x_rcc.o" "..\listing\stm32f10x_rtc.o" "..\listing\stm32f10x_sdio.o" "..\listing\stm32f10x_spi.o" "..\listing\stm32f10x_tim.o" "..\listing\stm32f10x_usart.o" "..\listing\stm32f10x_wwdg.o" "..\listing\core_cm3.o" "..\listing\system_stm32f10x.o" "..\listing\startup_stm32f10x_hd.o" "..\listing\car.o" "..\listing\adxl345.o" "..\listing\bh175.o" "..\listing\color_det.o" "..\listing\ultrasonic_sensor.o" "..\listing\eeprom.o" 
+--library_type=microlib --strict --scatter "..\LISTING\TEST.sct" 
+--summary_stderr --info summarysizes --map --xref --callgraph --symbols 
+--info sizes --info totals --info unused --info veneers 
+ --list "..\LISTING\TEST.map" -o ..\LISTING\TEST.axf### Preparing Environment (PrepEnvAds)
+### ADS-LD Output File: '..\LISTING\TEST.axf'
+### ADS-LD Command File: '..\LISTING\TEST.lnp'
+### Checking for dirty Components...
+### Creating CmdFile '..\LISTING\TEST.lnp', Handle=0x00000390
+### Writing '.lnp' file
+### ADS-LD Command file '..\LISTING\TEST.lnp' is ready.
+### ADS-LD: About to start ADS-LD Thread.
+### ADS-LD: executed with 0 errors
+### Updating obj list
+### LDADS_file() completed.

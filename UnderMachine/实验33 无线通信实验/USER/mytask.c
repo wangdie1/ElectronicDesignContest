@@ -26,7 +26,7 @@
 
 
 //主菜单
-void MUSE_TASK()
+int MUSE_TASK(void)
 {
 	u8 t=0;
 	LCD_Clear(WHITE);
@@ -42,7 +42,6 @@ void MUSE_TASK()
 	
 	t++;
 	if(t==100)
-		//LCD_ShowString(10,150,230,16,16,"KEY0:RX_Mode  KEY1:TX_Mode"); //闪烁显示提示信息
 		Show_Str(10,150,230,24,"按任意键选择",24,0);
 	if(t==200)
 	{	
@@ -50,26 +49,27 @@ void MUSE_TASK()
 		t=0; 
 	}
 	delay_ms(5);
+	return 0;
 }
 
 
 //任务0
 // 首先发送数据，然后接收数据
-void KEY0_TASK()
+int KEY0_TASK()
 {
-	u8 key,mode;
+	u8 key;
 	u8 time ; //计算发送次数
 	u16 t=0;			 
 	u8 tmp_buf[33];	
 	
-	u8 key_buf[33] = "key0_pres";
+	u8 key_buf[33] = "key0_pres"; //要发送的命令
 	
 	
 	LCD_Clear(WHITE);
 	Show_Str(50,50,200,24,"当前任务0 :",24,0);
 
 	NRF24L01_TX_Mode();
-	mode=' ';//从空格键开始  
+
 	
 	//发送命令 key0_pres
 	while(NRF24L01_TxPacket(tmp_buf)==TX_OK && time != 3)
@@ -82,18 +82,19 @@ void KEY0_TASK()
 			
 			tmp_buf[t]=key_buf[t];	
 		}	  
-		tmp_buf[32]=0;//加入结束符		   
+		tmp_buf[32]=0;//加入结束符	
+
+		if(KEY_Scan(0)==WKUP_PRES)
+		{
+			break;
+		}
 	}
 	time = 0;
-
-	//LED0=!LED0;
-	//delay_ms(1500);		
 	
 	//然后接收数据 读取一次按键，接收两次信息
 	NRF24L01_RX_Mode();		  
 	while(1)
 	{	 
-		Show_Str(50,70,200,24,"biaozhiwei :",24,0);
 		if(t%2==0)
 		{
 			if(NRF24L01_RxPacket(tmp_buf)==0)//一旦接收到信息,则显示出来.
@@ -110,12 +111,14 @@ void KEY0_TASK()
 			key=KEY_Scan(0);
 			if(key==WKUP_PRES)
 			{
-				Show_Str(50,100,200,24,"当前任务 :",24,0);
+				Show_Str(50,100,200,24,"当前任务0 :",24,0);
 				break;
 			}
 		}
 		t++;    
-	}	
+	}
+
+	return 0;
 	
 }
 
@@ -123,23 +126,27 @@ void KEY0_TASK()
 
 
 //任务1
-void KEY1_TASK()
+int  KEY1_TASK()
 {
-	u8 key,mode;
+	
+	
+	u8 key;
+	u8 time ; //计算发送次数
 	u16 t=0;			 
 	u8 tmp_buf[33];	
-	
-	u8 key_buf[33] = "key1_pres";
+	u8 key_buf[33] = "key1_pres"; //要发送的命令
 	
 	
 	LCD_Clear(WHITE);
-	Show_Str(50,50,200,24,"当前任务1 :",24,0);
+	Show_Str(20,50,200,24,"当前任务1",24,0);
 
 	NRF24L01_TX_Mode();
-	mode=' ';//从空格键开始  
 	
-	while(NRF24L01_TxPacket(tmp_buf)==TX_OK)
+	
+	//发送命令 key0_pres
+	while(NRF24L01_TxPacket(tmp_buf)==TX_OK && time != 3)
 	{
+		time ++;
 		LCD_ShowString(30,170,239,32,16,"Sended DATA:");	
 		LCD_ShowString(0,190,lcddev.width-1,32,16,tmp_buf); 
 		for(t=0;t<32;t++)
@@ -147,11 +154,15 @@ void KEY1_TASK()
 			
 			tmp_buf[t]=key_buf[t];	
 		}	  
-		tmp_buf[32]=0;//加入结束符		   
-	}
+		tmp_buf[32]=0;//加入结束符	
 
-//	LED0=!LED0;
-//	delay_ms(1500);
+		if(KEY_Scan(0)==WKUP_PRES)
+		{
+			break;
+		}
+	}
+	time = 0;
+	//然后接收数据 读取一次按键，接收两次信息
 	NRF24L01_RX_Mode();		  
 	while(1)
 	{	 
@@ -165,68 +176,240 @@ void KEY1_TASK()
 			else
 				delay_us(100);	
 		}
-		else if(t%4==0)
+		if(t%4==0)
 		{
 			t=0;
 			key=KEY_Scan(0);
 			if(key==WKUP_PRES)
 			{
+				Show_Str(50,100,200,24,"当前任务1 :",24,0);
 				break;
 			}
 		}
 		t++;    
-	}		
+	}	
+	return 0;
 }
-
 
 
 
 
 //任务2
-void KEY2_TASK()
+int  KEY2_TASK()
 {
+	
+	
+	u8 key;
+	u8 time ; //计算发送次数
+	u16 t=0;			 
+	u8 tmp_buf[33];	
+	u8 key_buf[33] = "key2_pres"; //要发送的命令
+	
+	
 	LCD_Clear(WHITE);
 	Show_Str(20,50,200,24,"当前任务2",24,0);
+
+	NRF24L01_TX_Mode();
+	
+	
+	//发送命令 key0_pres
+	while(NRF24L01_TxPacket(tmp_buf)==TX_OK && time != 3)
+	{
+		time ++;
+		LCD_ShowString(30,170,239,32,16,"Sended DATA:");	
+		LCD_ShowString(0,190,lcddev.width-1,32,16,tmp_buf); 
+		for(t=0;t<32;t++)
+		{
+			
+			tmp_buf[t]=key_buf[t];	
+		}	  
+		tmp_buf[32]=0;//加入结束符	
+
+		if(KEY_Scan(0)==WKUP_PRES)
+		{
+			break;
+		}
+	}
+	time = 0;
+	
+	//然后接收数据 读取一次按键，接收两次信息
+	NRF24L01_RX_Mode();		  
+	while(1)
+	{	 
+		if(t%2==0)
+		{
+			if(NRF24L01_RxPacket(tmp_buf)==0)//一旦接收到信息,则显示出来.
+			{
+				tmp_buf[32]=0;//加入字符串结束符
+				LCD_ShowString(0,190,lcddev.width-1,32,16,tmp_buf);    
+			}
+			else
+				delay_us(100);	
+		}
+		if(t%4==0)
+		{
+			t=0;
+			key=KEY_Scan(0);
+			if(key==WKUP_PRES)
+			{
+				Show_Str(50,100,200,24,"当前任务2 :",24,0);
+				break;
+			}
+		}
+		t++;    
+	}	
+	return 0;
 }
 
 //任务3
-void KEY3_TASK()
+int KEY3_TASK()
 {
+	int key;
 	LCD_Clear(WHITE);
 	Show_Str(20,50,200,24,"当前任务3:",24,0);
+	
+	while(1)
+	{
+		
+		
+		
+		
+		//返回上一级菜单
+		key=KEY_Scan(0);
+		if(key==WKUP_PRES)
+		{
+			break;
+		}
+		
+	}
+	return 0;
 }
 
 //任务4
-void KEY4_TASK()
+int KEY4_TASK()
 {
+	int key;
 	LCD_Clear(WHITE);
 	Show_Str(20,50,200,24,"当前任务4:",24,0);
+	
+	while(1)
+	{
+		
+		
+		
+		
+		//返回上一级菜单
+		key=KEY_Scan(0);
+		if(key==WKUP_PRES)
+		{
+			break;
+		}
+		
+	}
+	return 0;
 }
 
 //任务5
-void KEY5_TASK()
+int  KEY5_TASK()
 {
+	int key;
 	LCD_Clear(WHITE);
 	Show_Str(20,50,200,24,"当前任务5:",24,0);
+	
+	while(1)
+	{
+		
+		
+		
+		
+		//返回上一级菜单
+		key=KEY_Scan(0);
+		if(key==WKUP_PRES)
+		{
+			break;
+		}
+		
+	}
+	return 0;
 }
 
 //任务6
-void KEY6_TASK()
+int KEY6_TASK()
 {
+	int key;
 	LCD_Clear(WHITE);
 	Show_Str(20,50,200,24,"当前任务6:",24,0);
+	
+	while(1)
+	{
+		
+		
+		
+		
+		//返回上一级菜单
+		key=KEY_Scan(0);
+		if(key==WKUP_PRES)
+		{
+			break;
+		}
+		
+	}
+	return 0;
 }
 
 //任务7
-void KEY7_TASK()
+int  KEY7_TASK()
 {
+	int key;
 	LCD_Clear(WHITE);
 	Show_Str(20,50,200,24,"当前任务7:",24,0);
+	
+	while(1)
+	{
+		
+		
+		
+		
+		//返回上一级菜单
+		key=KEY_Scan(0);
+		if(key==WKUP_PRES)
+		{
+			break;
+		}
+		
+	}
+	return 0;
 }
 
+
+/*
+*  任务 
+*   
+*
+*
+*
+*/
 //任务8
-void KEY8_TASK()
-{
-	LCD_Clear(WHITE);
-	Show_Str(20,50,200,24,"当前任务8",24,0);
-}
+//int  KEY8_TASK()
+//{
+//	int key;
+//	LCD_Clear(WHITE);
+//	Show_Str(20,50,200,24,"当前任务3:",24,0);
+//	
+//	while(1)
+//	{
+//		
+//		
+//		
+//		
+//		//返回上一级菜单
+//		key=KEY_Scan(0);
+//		if(key==WKUP_PRES)
+//		{
+//			break;
+//		}
+//		
+//	}
+//	return 0;
+//}
+

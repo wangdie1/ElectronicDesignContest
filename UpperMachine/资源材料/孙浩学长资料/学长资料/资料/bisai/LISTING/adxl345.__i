@@ -1,0 +1,5 @@
+-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I..\CMSIS -I..\FWlib\inc -I..\FWlib\src -I..\SYS -I..\USER -I..\HARDWARE 
+-I "D:\Program Files\keil\ARM\RV31\INC" 
+-I "D:\Program Files\keil\ARM\CMSIS\Include" 
+-I "D:\Program Files\keil\ARM\Inc\ST\STM32F10x" 
+-DUSE_STDPERIPH_DRIVER -DSTM32F10X_HD -o "..\LISTING\adxl345.o" --omf_browse "..\LISTING\adxl345.crf" --depend "..\LISTING\adxl345.d" "..\HARDWARE\ADXL345.c"

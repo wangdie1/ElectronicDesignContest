@@ -1,0 +1,34 @@
+..\LISTING\adxl345.o: ..\HARDWARE\ADXL345.c
+..\LISTING\adxl345.o: ..\HARDWARE\ADXL345.h
+..\LISTING\adxl345.o: ..\SYS\i2c.h
+..\LISTING\adxl345.o: ..\CMSIS\stm32f10x.h
+..\LISTING\adxl345.o: ..\CMSIS\core_cm3.h
+..\LISTING\adxl345.o: D:\Program Files\keil\ARM\ARMCC\bin\..\include\stdint.h
+..\LISTING\adxl345.o: ..\CMSIS\system_stm32f10x.h
+..\LISTING\adxl345.o: ..\SYS\stm32f10x_conf.h
+..\LISTING\adxl345.o: ..\FWlib\inc\stm32f10x_adc.h
+..\LISTING\adxl345.o: ..\CMSIS\stm32f10x.h
+..\LISTING\adxl345.o: ..\FWlib\inc\stm32f10x_bkp.h
+..\LISTING\adxl345.o: ..\FWlib\inc\stm32f10x_can.h
+..\LISTING\adxl345.o: ..\FWlib\inc\stm32f10x_cec.h
+..\LISTING\adxl345.o: ..\FWlib\inc\stm32f10x_crc.h
+..\LISTING\adxl345.o: ..\FWlib\inc\stm32f10x_dac.h
+..\LISTING\adxl345.o: ..\FWlib\inc\stm32f10x_dbgmcu.h
+..\LISTING\adxl345.o: ..\FWlib\inc\stm32f10x_dma.h
+..\LISTING\adxl345.o: ..\FWlib\inc\stm32f10x_exti.h
+..\LISTING\adxl345.o: ..\FWlib\inc\stm32f10x_flash.h
+..\LISTING\adxl345.o: ..\FWlib\inc\stm32f10x_fsmc.h
+..\LISTING\adxl345.o: ..\FWlib\inc\stm32f10x_gpio.h
+..\LISTING\adxl345.o: ..\FWlib\inc\stm32f10x_i2c.h
+..\LISTING\adxl345.o: ..\FWlib\inc\stm32f10x_iwdg.h
+..\LISTING\adxl345.o: ..\FWlib\inc\stm32f10x_pwr.h
+..\LISTING\adxl345.o: ..\FWlib\inc\stm32f10x_rcc.h
+..\LISTING\adxl345.o: ..\FWlib\inc\stm32f10x_rtc.h
+..\LISTING\adxl345.o: ..\FWlib\inc\stm32f10x_sdio.h
+..\LISTING\adxl345.o: ..\FWlib\inc\stm32f10x_spi.h
+..\LISTING\adxl345.o: ..\FWlib\inc\stm32f10x_tim.h
+..\LISTING\adxl345.o: ..\FWlib\inc\stm32f10x_usart.h
+..\LISTING\adxl345.o: ..\FWlib\inc\stm32f10x_wwdg.h
+..\LISTING\adxl345.o: ..\FWlib\inc\misc.h
+..\LISTING\adxl345.o: ..\SYS\delay.h
+..\LISTING\adxl345.o: D:\Program Files\keil\ARM\ARMCC\bin\..\include\math.h

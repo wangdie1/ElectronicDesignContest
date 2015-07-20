@@ -1,0 +1,5 @@
+-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I..\HARDWARE\LCD -I..\HARDWARE\TimeBase -I..\SYSTEM -I..\HARDWARE\SPI -I..\HARDWARE\remote -I..\HARDWARE\LED -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\USER -I..\STM32F10x_FWLib\inc -I..\CORE -I..\HARDWARE\I2C -I..\HARDWARE\ZLG7290 -I..\HARDWARE\Servo -I..\HARDWARE\GPIO 
+-I "C:\Program Files (x86)\Keil\ARM\RV31\INC" 
+-I "C:\Program Files (x86)\Keil\ARM\CMSIS\Include" 
+-I "C:\Program Files (x86)\Keil\ARM\Inc\ST\STM32F10x" 
+-DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -o "gpio.o" --omf_browse "gpio.crf" --depend "gpio.d" "..\HARDWARE\GPIO\GPIO.C"

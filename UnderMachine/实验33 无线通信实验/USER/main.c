@@ -32,10 +32,8 @@
  int main(void)
  {	 
 	//定义全局变量
-	u8 key,mode;
+	u8 key;
 	u16 t=0;			 
-	u8 tmp_buf[33];	
-
 	 
 	//函数初始化
 	delay_init();	    	 //延时函数初始化	  
@@ -96,26 +94,37 @@
 	Show_Str(20,20,200,24,"第十一届全国电子",24,0);
 	Show_Str(80,50,200,24,"设计大赛",24,0);	
 	
+	POINT_COLOR = BLUE;
+	Show_Str(60,80,200,24,"武昌首义学院",24,0);				    	 				    	 
+	Show_Str(30,130,200,24,"参赛题目课题:",24,0);
+	Show_Str(45,160,200,24,"旋转倒立摆",24,0);
+	
+	Show_Str(30,210,200,24,"参赛者:李观称",24,0);
+	Show_Str(45,240,200,24,"赖丽清,张建",24,0);
+	
  	while(1)
 	{	
+		
+		key=1;
 		//按键扫描
 		key=KEY_Scan(0);
 		
 		if(key!=0)
 		{
-				LCD_Clear(WHITE);
-				Show_Str(20,30,200,24,"主菜单:",24,0);
-				Show_Str(20,60,200,24,"任务1:",24,0);
-				Show_Str(20,90,200,24,"任务2:",24,0);
-				Show_Str(20,120,200,24,"任务3:",24,0);
-				Show_Str(20,150,200,24,"任务4:",24,0);
-				Show_Str(20,180,200,24,"任务5:",24,0);
-				Show_Str(20,210,200,24,"任务6:",24,0);
-				Show_Str(20,240,200,24,"任务7:",24,0);
-				Show_Str(20,270,200,24,"任务8:",24,0);
+			LCD_Clear(WHITE);
+			Show_Str(20,30,200,24,"主菜单:",24,0);
+			Show_Str(20,60,200,24,"任务1:",24,0);
+			Show_Str(20,90,200,24,"任务2:",24,0);
+			Show_Str(20,120,200,24,"任务3:",24,0);
+			Show_Str(20,150,200,24,"任务4:",24,0);
+			Show_Str(20,180,200,24,"任务5:",24,0);
+			Show_Str(20,210,200,24,"任务6:",24,0);
+			Show_Str(20,240,200,24,"任务7:",24,0);
+			Show_Str(20,270,200,24,"任务8:",24,0);
 			
 			while(1)
 			{
+				key=0;
 				key=KEY_Scan(0);
 				//WKUP_PRES  功能:返回主界面
 				if(key==WKUP_PRES)
@@ -128,65 +137,57 @@
 				{
 					KEY0_TASK();
 				}
-//				//KEY1_PRES 功能:执行任务1
-//				else if(key==KEY1_PRES)
-//				{
-//					mode=1;
-//					break;
-//				}
-//				//KEY2_PRES 功能:执行任务2
-//				else if(key==KEY2_PRES)
-//				{
-//					mode=1;
-//					break;
-//				}
-//				//KEY3_PRES 功能:执行任务3
-//				else if(key==KEY3_PRES)
-//				{
-//					mode=1;
-//					break;
-//				}
-//				//KEY4_PRES 功能:执行任务4
-//				else if(key==KEY4_PRES)
-//				{
-//					mode=1;
-//					break;
-//				}
-//				//KEY5_PRES 功能:执行任务5
-//				else if(key==KEY5_PRES)
-//				{
-//					mode=1;
-//					break;
-//				}
-//				//KEY6_PRES 功能:执行任务6
-//				else if(key==KEY6_PRES)
-//				{
-//					mode=1;
-//					break;
-//				}
-//				//KEY7_PRES 功能:执行任务7
-//				else if(key==KEY7_PRES)
-//				{
-//					mode=1;
-//					break;
-//				}
-//				//KEY8_PRES 功能:执行任务8
+				//KEY1_PRES 功能:执行任务1
+				else if(key==KEY1_PRES)
+				{
+					KEY1_TASK();
+				}
+				//KEY2_PRES 功能:执行任务2
+				else if(key==KEY2_PRES)
+				{
+					KEY2_TASK();
+				}
+				//KEY3_PRES 功能:执行任务3
+				else if(key==KEY3_PRES)
+				{
+					KEY3_TASK();
+				}
+				//KEY4_PRES 功能:执行任务4
+				else if(key==KEY4_PRES)
+				{
+					KEY4_TASK();
+				}
+				//KEY5_PRES 功能:执行任务5
+				else if(key==KEY5_PRES)
+				{
+					KEY5_TASK();
+				}
+				//KEY6_PRES 功能:执行任务6
+				else if(key==KEY6_PRES)
+				{
+					KEY6_TASK();
+				}
+				//KEY7_PRES 功能:执行任务7
+				else if(key==KEY7_PRES)
+				{
+					KEY7_TASK();
+				}
+				//KEY8_PRES 功能:执行任务8
 //				else if(key==KEY8_PRES)
 //				{
-//					mode=1;
-//					break;
+//					KEY8_TASK();
 //				}
-//				
+				
 			}
 		}
+
 		
 		t++;
 		if(t==100)
-			//LCD_ShowString(10,150,230,16,16,"KEY0:RX_Mode  KEY1:TX_Mode"); //闪烁显示提示信息
-			Show_Str(10,150,230,24,"按任意键进入主菜单",24,0);
+			Show_Str(10,270,230,24,"按任意键进入主菜单",24,0);
  		if(t==200)
 		{	
-			LCD_Fill(10,150,240,150+50,WHITE);
+			LCD_Fill(10,270,230,300,WHITE);
 			t=0; 
 		}
 		delay_ms(5);

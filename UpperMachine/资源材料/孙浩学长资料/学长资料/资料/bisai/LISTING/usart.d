@@ -1,0 +1,32 @@
+..\LISTING\usart.o: ..\SYS\usart.c
+..\LISTING\usart.o: ..\CMSIS\stm32f10x.h
+..\LISTING\usart.o: ..\CMSIS\core_cm3.h
+..\LISTING\usart.o: D:\Program Files\keil\ARM\ARMCC\bin\..\include\stdint.h
+..\LISTING\usart.o: ..\CMSIS\system_stm32f10x.h
+..\LISTING\usart.o: ..\SYS\stm32f10x_conf.h
+..\LISTING\usart.o: ..\FWlib\inc\stm32f10x_adc.h
+..\LISTING\usart.o: ..\CMSIS\stm32f10x.h
+..\LISTING\usart.o: ..\FWlib\inc\stm32f10x_bkp.h
+..\LISTING\usart.o: ..\FWlib\inc\stm32f10x_can.h
+..\LISTING\usart.o: ..\FWlib\inc\stm32f10x_cec.h
+..\LISTING\usart.o: ..\FWlib\inc\stm32f10x_crc.h
+..\LISTING\usart.o: ..\FWlib\inc\stm32f10x_dac.h
+..\LISTING\usart.o: ..\FWlib\inc\stm32f10x_dbgmcu.h
+..\LISTING\usart.o: ..\FWlib\inc\stm32f10x_dma.h
+..\LISTING\usart.o: ..\FWlib\inc\stm32f10x_exti.h
+..\LISTING\usart.o: ..\FWlib\inc\stm32f10x_flash.h
+..\LISTING\usart.o: ..\FWlib\inc\stm32f10x_fsmc.h
+..\LISTING\usart.o: ..\FWlib\inc\stm32f10x_gpio.h
+..\LISTING\usart.o: ..\FWlib\inc\stm32f10x_i2c.h
+..\LISTING\usart.o: ..\FWlib\inc\stm32f10x_iwdg.h
+..\LISTING\usart.o: ..\FWlib\inc\stm32f10x_pwr.h
+..\LISTING\usart.o: ..\FWlib\inc\stm32f10x_rcc.h
+..\LISTING\usart.o: ..\FWlib\inc\stm32f10x_rtc.h
+..\LISTING\usart.o: ..\FWlib\inc\stm32f10x_sdio.h
+..\LISTING\usart.o: ..\FWlib\inc\stm32f10x_spi.h
+..\LISTING\usart.o: ..\FWlib\inc\stm32f10x_tim.h
+..\LISTING\usart.o: ..\FWlib\inc\stm32f10x_usart.h
+..\LISTING\usart.o: ..\FWlib\inc\stm32f10x_wwdg.h
+..\LISTING\usart.o: ..\FWlib\inc\misc.h
+..\LISTING\usart.o: ..\SYS\usart.h
+..\LISTING\usart.o: D:\Program Files\keil\ARM\ARMCC\bin\..\include\stdio.h
