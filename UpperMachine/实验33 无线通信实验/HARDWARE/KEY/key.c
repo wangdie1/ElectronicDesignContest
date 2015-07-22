@@ -27,7 +27,7 @@ void KEY_Init(void) //IO初始化
  	GPIO_Init(GPIOE, &GPIO_InitStructure);//初始化GPIOE2,3,4
 
 	//初始化 WK_UP-->GPIOA.0	  下拉输入
-	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_0;
+	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_4;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD; //PA0设置成输入，默认下拉	  
 	GPIO_Init(GPIOA, &GPIO_InitStructure);//初始化GPIOA.0
 

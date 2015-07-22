@@ -364,7 +364,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_HD,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\HARDWARE\LED;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\USER;..\STM32F10x_FWLib\inc;..\CORE;..\HARDWARE\KEY;..\HARDWARE\LCD;..\HARDWARE\RTC;..\HARDWARE\RTC;..\HARDWARE\WKUP;..\HARDWARE\ADC;..\HARDWARE\DAC;..\HARDWARE\DMA;..\HARDWARE\IIC;..\HARDWARE\24CXX;..\HARDWARE\SPI;..\HARDWARE\FLASH;..\HARDWARE\TOUCH;..\HARDWARE\REMOTE;..\HARDWARE\ADXL345;..\HARDWARE\DS18B20;..\HARDWARE\NRF24L01;..\HARDWARE\Motor;..\HARDWARE\Motor;..\HARDWARE\TimeBase;..\HARDWARE\TimeBase;..\SYSTEM;..\HARDWARE\MyGlobals;..\HARDWARE\GLOBALS;..\SYSTEM\APP</IncludePath>
+              <IncludePath>..\HARDWARE\LED;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\USER;..\STM32F10x_FWLib\inc;..\CORE;..\HARDWARE\KEY;..\HARDWARE\LCD;..\HARDWARE\RTC;..\HARDWARE\RTC;..\HARDWARE\WKUP;..\HARDWARE\ADC;..\HARDWARE\DAC;..\HARDWARE\DMA;..\HARDWARE\IIC;..\HARDWARE\24CXX;..\HARDWARE\SPI;..\HARDWARE\FLASH;..\HARDWARE\TOUCH;..\HARDWARE\REMOTE;..\HARDWARE\ADXL345;..\HARDWARE\DS18B20;..\HARDWARE\NRF24L01;..\HARDWARE\Motor;..\HARDWARE\Motor;..\HARDWARE\TimeBase;..\HARDWARE\TimeBase;..\SYSTEM;..\HARDWARE\MyGlobals;..\HARDWARE\GLOBALS;..\SYSTEM\APP;..\HARDWARE\UltrasonicWave</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -476,6 +476,31 @@
               <FileName>globals.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\GLOBALS\globals.c</FilePath>
+            </File>
+            <File>
+              <FileName>tb6560.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\TB6560\tb6560.c</FilePath>
+            </File>
+            <File>
+              <FileName>timer4_cap.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\UltrasonicWave\timer4_cap.c</FilePath>
+            </File>
+            <File>
+              <FileName>UltrasonicWave.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\UltrasonicWave\UltrasonicWave.c</FilePath>
+            </File>
+            <File>
+              <FileName>Servo.C</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\Servo\Servo.C</FilePath>
+            </File>
+            <File>
+              <FileName>Encoder.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\ENCODER\Encoder.c</FilePath>
             </File>
           </Files>
         </Group>

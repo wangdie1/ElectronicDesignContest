@@ -62,7 +62,7 @@ void ENC_Init(void)
 	TIM_ClearFlag(ENC_TIMER,TIM_FLAG_Update);
 	TIM_ITConfig(ENC_TIMER,TIM_IT_Update,ENABLE);
 
-	TIM2->CNT = COUNTER_RESET;//!!此处注意修改
+	ENC_TIMER->CNT = COUNTER_RESET;//!!此处注意修改
 
 	//局部初始化
 	ENC_Clear_Speed_Buffer();
@@ -87,14 +87,24 @@ void ENC_Init(void)
 *                                          S16_MIN-> -180 degrees                  
 *******************************************************************************/
 
+ //计算马达转子的位置电角度
+//TIM_GetCounter(ENC_TIMER)  ->  TIMx->CNT
 double ENC_Get_Electrical_Angle(void)
 {
   double temp;
   
-  temp = (double)(TIM_GetCounter(ENC_TIMER))  *  (double)(U32_MAX / (4*ENCODER_PPR)); //#define ENCODER_PPR (u16)   MAXON_RE25_CPR		//码盘线数
+  temp = (double)(TIM_GetCounter(ENC_TIMER))*(double)(U32_MAX / (4*ENCODER_PPR)); //#define ENCODER_PPR (u16)   MAXON_RE25_CPR		//码盘线数
   
-  return ((double)(temp/65536)); // s16 result
+  return ((double)(temp/65536)); // s16 result  
 }
+
+
+//double ENC_Get_Angle(void)
+//{
+//	double temp;
+//	temp = ENC_Get_Electrical_Angle();
+//	return ((double)(temp/65536)*180);
+//}
 
 
 /*******************************************************************************
@@ -125,12 +135,13 @@ void ENC_Clear_Speed_Buffer(void)
 * Return         : Return rotor speed in 0.1 Hz resolution. This routine 
                    will return the average mechanical speed of the motor.
 *******************************************************************************/
+//计算马达转动的平均电频率
 double ENC_Calc_Average_Speed(void)
 {   
   double wtemp;
   u32 i;
   
-  wtemp = ENC_Calc_Rot_Speed();
+  wtemp = ENC_Calc_Rot_Speed(); //计算马达转动的电频率
         
 /* Compute the average of the read speeds */  
   hSpeed_Buffer[bSpeed_Buffer_Index] = (double)wtemp;
@@ -213,7 +224,7 @@ double ENC_Calc_Rot_Speed(void)
     }
     
     // speed computation as delta angle * 1/(speed sempling time)
-    temp = (double)(wDelta_angle * SPEED_SAMPLING_FREQ);
+    temp = (double)(wDelta_angle * SPEED_SAMPLING_FREQ);   //注意移植？？
     temp *= ENC_SPEED_UNIT;  // RPM
     temp /= (4*ENCODER_PPR);
  		temp /=REDUCTION_RATIO;//除以减速波
@@ -245,6 +256,9 @@ double ENC_Calc_Rot_Speed(void)
 // 	}
   return((double) temp);
 }
+
+
+
 /**********线位移******/
 double ENC_Calc_Position(void)
 {
@@ -252,7 +266,7 @@ double ENC_Calc_Position(void)
 		float ftemp;
 		ftemp=(float)(TIM_GetCounter(ENC_TIMER))/(4*ENCODER_PPR );
 		//temp = (double)(TIM_GetCounter(ENCODER_TIMER ))+ 
-		temp= hEncoder_Revolutions_Num*LENGTH/REDUCTION_RATIO  + ftemp*LENGTH/REDUCTION_RATIO ;
+		temp= hEncoder_Revolutions_Num * LENGTH/REDUCTION_RATIO  + ftemp * LENGTH/REDUCTION_RATIO ;
 	//	temp=(hEncoder_Revolutions_Num*(4*ENCODER_PPR )+(double)(TIM_GetCounter(ENCODER_TIMER)))/(REDUCTION_RATIO *4*ENCODER_PPR);
 		return  temp;
 }
@@ -267,19 +281,19 @@ double ENC_Calc_Position(void)
 /******************角位移******/
 double ENC_Get_AnglularPosition(void)
 {
-		double temp;
-		temp = hEncoder_Revolutions_Num*4*ENCODER_PPR+TIM_GetCounter(ENC_TIMER);
-		return (temp*ENC_ANGULAR_UNIT/(REDUCTION_RATIO*ENCODER_PPR));//单位0.1度
+	double temp;
+	temp = hEncoder_Revolutions_Num * 4 * ENCODER_PPR+TIM_GetCounter(ENC_TIMER);
+	return (temp * ENC_ANGULAR_UNIT/(REDUCTION_RATIO*ENCODER_PPR));//单位0.1度
 // 	return  temp;
 }
 
-
+//SPEED_SAMPLING_FREQ 用到了TIMEBACE
 double ENC_Get_Speed(void)
 {
 	double temp;
 	NowPosition=ENC_Get_AnglularPosition();
 	temp=NowPosition-PrePosition;
-	temp = (double)(temp * SPEED_SAMPLING_FREQ);
+	temp = (double)(temp * SPEED_SAMPLING_FREQ);  //注意移植
 	temp *= 60;  // RPM
 //   temp /= (4*ENCODER_PPR);
 	temp /=REDUCTION_RATIO;//除以减速波

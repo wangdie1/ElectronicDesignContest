@@ -67,7 +67,7 @@ s32  SpeedPI_Regulator(s32 SpeedError,PID_Typedef *PID)//只需要PI
 
 
 
-/***************************位置环0*****************************/
+/***************************位置环*****************************/
 s32 PositionPID_Regulator(s32 PositionError,PID_Typedef *PID)
 {
 	s32 output;

@@ -1,4 +1,20 @@
+/******************** (C) 1209 Lab **************************
+ * ÎÄ¼þÃû  : timer4_cap.c
+ * ÃèÊö    £º¶¨Ê±Æ÷³õÊ¼»¯³ÌÐò£¬TIM4_Cap_Init£¨£©º¯Êý
+             ¶¨Ê±Æ÷ÖÕ¶Ë·þÎñ³ÌÐò£TIM4_IRQHandler£¨£©º¯Êý
+			 
+ * ÊµÑéÆ½Ì¨£º
+ * Ó²¼þÁ¬½Ó£º------------------
+ *          | PB6  - TRIG      |
+ *          | PC7  - ECHO      |
+ *           ------------------
+ * ¿â°æ±¾  £ºST3.5.0
+ *
+ * ×÷Õß    £ºLee 
+*********************************************************************************/
+
 #include "timer4_cap.h"
+#include "usart.h"	
 #include "stm32f10x_tim.h"
 
 u8 TIM4CH1_CAPTURE_STA = 0;	//Í¨µÀ1ÊäÈë²¶»ñ±êÖ¾£¬¸ßÁ½Î»×ö²¶»ñ±êÖ¾£¬µÍ6Î»×öÒç³ö±êÖ¾		
@@ -13,7 +29,7 @@ u8 TIM4CH3_CAPTURE_STA = 0;	//Í¨µÀ3ÊäÈë²¶»ñ±êÖ¾£¬¸ßÁ½Î»×ö²¶»ñ±êÖ¾£¬µÍ6Î»×öÒç³ö±ê
 u16 TIM4CH3_CAPTURE_UPVAL;
 u16 TIM4CH3_CAPTURE_DOWNVAL;
 
-u8 TIM4CH4_CAPTURE_STA = 0;	//Í¨µÀ1ÊäÈë²¶»ñ±êÖ¾£¬¸ßÁ½Î»×ö²¶»ñ±êÖ¾£¬µÍ6Î»×öÒç³ö±êÖ¾		
+u8 TIM4CH4_CAPTURE_STA = 0;	//Í¨µÀ4ÊäÈë²¶»ñ±êÖ¾£¬¸ßÁ½Î»×ö²¶»ñ±êÖ¾£¬µÍ6Î»×öÒç³ö±êÖ¾		
 u16 TIM4CH4_CAPTURE_UPVAL;
 u16 TIM4CH4_CAPTURE_DOWNVAL;
 
@@ -21,14 +37,13 @@ u32 tempup1 = 0;	//²¶»ñ×Ü¸ßµçÆ½µÄÊ±¼ä
 u32 tempup2 = 0;	//²¶»ñ×Ü¸ßµçÆ½µÄÊ±¼ä
 u32 tempup3 = 0;	//²¶»ñ×Ü¸ßµçÆ½µÄÊ±¼ä
 u32 tempup4 = 0;	//²¶»ñ×Ü¸ßµçÆ½µÄÊ±¼ä
+
 u32 tim4_T1;
 u32 tim4_T2;
 u32 tim4_T3;
 u32 tim4_T4;
 
 int pwmout1, pwmout2, pwmout3, pwmout4; 				//Êä³öÕ¼¿Õ±È
-
-//¶¨Ê±Æ÷4Í¨µÀ1ÊäÈë²¶»ñÅäÖÃ
 
 TIM_ICInitTypeDef TIM4_ICInitStructure;
 
@@ -42,13 +57,7 @@ void TIM4_Cap_Init(u16 arr, u16 psc)
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);  //Ê¹ÄÜGPIOBÊ±ÖÓ
 
 	
-//	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12 ;
-//	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD; //PD12 ÏÂÀ­ÊäÈë 
-//	GPIO_Init(GPIOD, &GPIO_InitStructure);
-//	GPIO_ResetBits(GPIOD, GPIO_Pin_12);
-	
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7| GPIO_Pin_8
-			| GPIO_Pin_9;  //PB6,8,9 Çå³ýÖ®Ç°ÉèÖÃ  
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7| GPIO_Pin_8| GPIO_Pin_9;  //PB6,8,9 Çå³ýÖ®Ç°ÉèÖÃ  
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD; //PB6,7,8,9 ÊäÈë 
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 	GPIO_ResetBits(GPIOB, GPIO_Pin_6 | GPIO_Pin_7| GPIO_Pin_8 | GPIO_Pin_9);//PB6,8,9  ÏÂÀ­
@@ -100,9 +109,7 @@ void TIM4_Cap_Init(u16 arr, u16 psc)
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; //IRQÍ¨µÀ±»Ê¹ÄÜ
 	NVIC_Init(&NVIC_InitStructure);   //¸ù¾ÝNVIC_InitStructÖÐÖ¸¶¨µÄ²ÎÊý³õÊ¼»¯ÍâÉèNVIC¼Ä´æÆ÷ 
 
-	TIM_ITConfig(TIM4, TIM_IT_CC1 | TIM_IT_CC2 | TIM_IT_CC3 | TIM_IT_CC4,
-			ENABLE);   //²»ÔÊÐí¸üÐÂÖÐ¶Ï£¬ÔÊÐíCC1IE,CC2IE,CC3IE,CC4IE²¶»ñÖÐ¶Ï	
-
+	TIM_ITConfig(TIM4, TIM_IT_CC1 | TIM_IT_CC2 | TIM_IT_CC3 | TIM_IT_CC4,ENABLE);   //²»ÔÊÐí¸üÐÂÖÐ¶Ï£¬ÔÊÐíCC1IE,CC2IE,CC3IE,CC4IE²¶»ñÖÐ¶Ï	
 	TIM_Cmd(TIM4, ENABLE); 		//Ê¹ÄÜ¶¨Ê±Æ÷4
 
 }
@@ -117,21 +124,21 @@ void TIM4_IRQHandler(void)
 			TIM_ClearITPendingBit(TIM4, TIM_IT_CC1); 		//Çå³ýÖÐ¶Ï±êÖ¾Î»
 			if (TIM4CH1_CAPTURE_STA & 0X40)		//²¶»ñµ½Ò»¸öÏÂ½µÑØ
 			{
-				TIM4CH1_CAPTURE_DOWNVAL = TIM_GetCapture1(TIM4);//¼ÇÂ¼ÏÂ´ËÊ±µÄ¶¨Ê±Æ÷¼ÆÊýÖµ
+				TIM4CH1_CAPTURE_DOWNVAL = TIM_GetCapture1(TIM4);//¼ÇÂ¼ÏÂ´ËÊ±µÄ¶¨Ê±Æ÷¼ÆÊýÖ
+				printf("Channel 1 : %d cm\r\n",TIM4CH1_CAPTURE_DOWNVAL);
 				if (TIM4CH1_CAPTURE_DOWNVAL < TIM4CH1_CAPTURE_UPVAL)
 				{/* Èç¹û¼ÆÊýÆ÷³õÊ¼Öµ´óÓÚÄ©Î²Öµ£¬ËµÃ÷¼ÆÊýÆ÷ÓÐÒç³ö */
 					tim4_T1 = 65535;
 				}
 				else
-				tim4_T1 = 0;  
-				tempup1 = TIM4CH1_CAPTURE_DOWNVAL - TIM4CH1_CAPTURE_UPVAL
-						+ tim4_T1;		//µÃµ½×ÜµÄ¸ßµçÆ½µÄÊ±¼ä
+				{
+					tim4_T1 = 0;  
+				}
+				tempup1 = TIM4CH1_CAPTURE_DOWNVAL - TIM4CH1_CAPTURE_UPVAL + tim4_T1;		//µÃµ½×ÜµÄ¸ßµçÆ½µÄÊ±¼ä
 				//pwmout1 = tempup1;		//×ÜµÄ¸ßµçÆ½µÄÊ±¼ä
-				tempup1 =tempup1 *17/1000;//¼ÆËã¾àÀë&&UltrasonicWave_Distance<85
-			
+				tempup1 =tempup1 *17/1000;//¼ÆËã¾àÀë&&UltrasonicWave_Distance<85    t *  10e-6 * 170*100 = t * 17 *e-3
 				
-				
-				TIM4CH1_CAPTURE_STA = 0;		//²¶»ñ±êÖ¾Î»ÇåÁã£¬ÕâÒ»²½ºÜÖØÒª£¡
+				TIM4CH1_CAPTURE_STA = 0; 		//²¶»ñ±êÖ¾Î»ÇåÁã£¬ÕâÒ»²½ºÜÖØÒª£¡
 				TIM_OC1PolarityConfig(TIM4, TIM_ICPolarity_Rising); //ÉèÖÃÎªÉÏÉýÑØ²¶»ñ		  
 			}
 			else //·¢Éú²¶»ñÊ±¼äµ«²»ÊÇÏÂ½µÑØ£¬µÚÒ»´Î²¶»ñµ½ÉÏÉýÑØ£¬¼ÇÂ¼´ËÊ±µÄ¶¨Ê±Æ÷¼ÆÊýÖµ

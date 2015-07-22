@@ -229,3 +229,34 @@ double FF_Controller(double rin,FForward_Typedef *FF )
 	return output;
 }
 
+/*****************************************电机速度环伺服***********************************************/
+s32 spdTag, spdNow, control;//定义一个目标速度，采样速度，控制量
+
+//PID_AbsoluteType PID_Control;//定义PID算法的结构体
+
+void User_PidSpeedControl(u16 SpeedTag)
+{
+	
+	 //实际速度
+//   spdNow = V2;
+	//目标速度
+   spdTag = SpeedTag;
+
+//	//误差值
+//   PID_Control.errNow = spdTag - spdNow; //计算并写入速度误差
+//   	
+//   PID_Control.kp      = 15;             //写入比例系数为15
+//   PID_Control.ki      = 5;              //写入积分系数为5
+//   PID_Control.kd      = 5;              //写入微分系数为5
+//   PID_Control.errILim = 1000;           //写入误差积分上限为1000 下限为-1000
+
+	//把结构体传人
+//   PID_AbsoluteMode(&PID_Control);       //执行绝对式PID算法
+	
+   //读取PID返回值
+//   control = PID_Control.ctrOut;         //读取控制值
+
+	//把PID得到的速度放入PWM中
+//   UserMotorSpeedSetOne(control);        //放入PWM，用于收敛速度的控制中
+}
+

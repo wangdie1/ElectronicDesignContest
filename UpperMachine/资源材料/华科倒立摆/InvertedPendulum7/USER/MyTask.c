@@ -6,99 +6,99 @@ void INIT_Task()
 {
 	short temp;
 	if(TB_DisplayDelay_IsElapsed()==TRUE)
+	{
+		TB_SetDisplayDelay_Time(LCD_DISPLAY_DELAY);
+		clear_screen();
+		display_GB2312_string(1,1,"旋转倒立摆系统");  
+		display_GB2312_string(3,1,"请回到原点..."); 
+		display_GB2312_string(5,1,"");    
+		display_GB2312_string(7,1,"Play键进入菜单"); 
+	}
+	if(Remote_Rdy)
+	{
+		Remote_Rdy=0;
+		ir_key=Remote_Process();
+		switch(ir_key)
 		{
-				TB_SetDisplayDelay_Time(LCD_DISPLAY_DELAY);
-				clear_screen();
-				display_GB2312_string(1,1,"旋转倒立摆系统");  
-				display_GB2312_string(3,1,"请回到原点..."); 
-				display_GB2312_string(5,1,"");    
-				display_GB2312_string(7,1,"Play键进入菜单"); 
+			case IR_PLAY://初始化完成
+			Controller_Init(); //PID变量初始化
+			ENC_Init();					//编码器初始化
+			ENC1_Init();        //
+			State=MENU;//进入菜单状态
+			break;
 		}
-		if(Remote_Rdy)
-				{
-						Remote_Rdy=0;
-						ir_key=Remote_Process();
-						switch(ir_key)
-						{
-							case IR_PLAY://初始化完成
-								Controller_Init(); //PID变量初始化
-								ENC_Init();					//编码器初始化
-								ENC1_Init();        //
-								State=MENU;//进入菜单状态
-								break;
-							}
-				}
+	}
 }
 void MENU_Task()
 {
-		if(TB_DisplayDelay_IsElapsed()==TRUE)
-			{
-						TB_SetDisplayDelay_Time(LCD_DISPLAY_DELAY);
-						clear_screen();
+	if(TB_DisplayDelay_IsElapsed()==TRUE)
+		{
+			TB_SetDisplayDelay_Time(LCD_DISPLAY_DELAY);
+			clear_screen();
             display_GB2312_string(1,1,"1,往复运动"); 
             display_GB2312_string(3,1,"2固定位置启动");    
             display_GB2312_string(5,1,"3,下垂启动"); 
-						display_GB2312_string(7,1,"4倒立运动5其他");  
-				}
-					if(Remote_Rdy)
-				{
-						Remote_Rdy=0;
-						ir_key=Remote_Process();
-						switch(ir_key)
-						{
-							case IR_KEY1://1往复运动输入
-								State = RECIPROCATE_INPUT;
-								break;
-							case IR_KEY2://松手起振
-								clear_screen();
-								display_GB2312_string(1,1,"2固定位置启动");    
-								display_GB2312_string(1,1,"请转动到165度"); 
-								display_GB2312_string(5,1,"3,然后松手"); 
-								display_GB2312_string(7,1,"请注意安全");  
-								State = FREE_LQR;
-								break;
-							case IR_KEY3:
-								clear_screen();	
-								display_GB2312_string(1,1,"3,下垂启动");  
-								display_GB2312_string(3,1,""); 
-								display_GB2312_string(5,1,"");    
-								display_GB2312_string(7,1,""); 
-// // 								MotorA_Backward(1000);
-// // 								delay_ms(10);
-								MotorA_Forward(200);//促使扰动，触发起振
-								delay_ms(4);
-								MotorA_Backward(1000);
-								delay_ms(4);
-// 								MotorA_Brk();
-								State = LQR_CONTROL;//
-								break;
-							case IR_KEY4:
-								clear_screen();	
-								display_GB2312_string(1,1,"4,倒立运动");  
-								display_GB2312_string(3,1,""); 
-								display_GB2312_string(5,1,"");    
-								display_GB2312_string(7,1,""); 
-// 								MotorA_Backward(500);
-// 								delay_ms(20);
-// 								MotorA_Forward(500);//促使扰动，触发起振
-// 								delay_ms(5);
-// 								MotorA_Brk();
-								State = LQR_CIRCULAR_INPUT;//
-								break;
-							case IR_KEY5:
-								State = OTHER;
-								break;
-							case IR_KEY6:
-								State =LQR_TEST;
-							break;
-							case IR_PREV://回到初始化状态
-								State=INIT;
-							break;
-							case IR_KEY7:
-								State =TEST_MOTOR;
-							break;
-							default:
-								break;
+			display_GB2312_string(7,1,"4倒立运动5其他");  
+		}
+		if(Remote_Rdy)
+		{
+			Remote_Rdy=0;
+			ir_key=Remote_Process();
+			switch(ir_key)
+			{
+				case IR_KEY1://1往复运动输入
+					State = RECIPROCATE_INPUT;
+					break;
+				case IR_KEY2://松手起振
+					clear_screen();
+					display_GB2312_string(1,1,"2固定位置启动");    
+					display_GB2312_string(1,1,"请转动到165度"); 
+					display_GB2312_string(5,1,"3,然后松手"); 
+					display_GB2312_string(7,1,"请注意安全");  
+					State = FREE_LQR;
+					break;
+				case IR_KEY3:
+					clear_screen();	
+					display_GB2312_string(1,1,"3,下垂启动");  
+					display_GB2312_string(3,1,""); 
+					display_GB2312_string(5,1,"");    
+					display_GB2312_string(7,1,""); 
+// // 				MotorA_Backward(1000);
+// // 				delay_ms(10);
+					MotorA_Forward(200);//促使扰动，触发起振
+					delay_ms(4);
+					MotorA_Backward(1000);
+					delay_ms(4);
+// 					MotorA_Brk();
+					State = LQR_CONTROL;//
+					break;
+				case IR_KEY4:
+					clear_screen();	
+					display_GB2312_string(1,1,"4,倒立运动");  
+					display_GB2312_string(3,1,""); 
+					display_GB2312_string(5,1,"");    
+					display_GB2312_string(7,1,""); 
+// 					MotorA_Backward(500);
+// 					delay_ms(20);
+// 					MotorA_Forward(500);//促使扰动，触发起振
+// 					delay_ms(5);
+// 					MotorA_Brk();
+					State = LQR_CIRCULAR_INPUT;//
+					break;
+				case IR_KEY5:
+					State = OTHER;
+					break;
+				case IR_KEY6:
+					State =LQR_TEST;
+				break;
+				case IR_PREV://回到初始化状态
+					State=INIT;
+				break;
+				case IR_KEY7:
+					State =TEST_MOTOR;
+				break;
+				default:
+					break;
 						}
 				}
 }
@@ -119,52 +119,52 @@ void RECIPROCATE_INPUT_Task(void)
 						display_GB2312_string(7,1,"PLAY键确认");  
 		}
 		if(Remote_Rdy)
-				{
-						Remote_Rdy=0;
-						ir_key=Remote_Process();
-						switch(ir_key)
-						{
-							case IR_VOL_UP:
-								AimAngle += 10;
-// 								if(AimAngle > 100)
-// 								{
-// 									AimAngle =10;
-// 								}
-// 								else if(AimAngle < 10)
-// 								{
-// 									AimAngle = 90;
-// 								}
-								break;
-							case IR_VOL_DOWN:
-								AimAngle -=10;
-// 								if(AimAngle > 100)
-// 								{
-// 									AimAngle =10;
-// 								}
-// 								else if(AimAngle < 10)
-// 								{
-// 									AimAngle = 90;
-// 								}
-								break;
-							case IR_PREV:
-								State = MENU;//prev键返回到菜单
-								break;
-							case IR_PLAY://PLAY键确认，进入执行状态
-								clear_screen();	
-								display_GB2312_string(1,1,"1,往复运动"); 
-								display_GB2312_string(3,1,"请输入角度");   
-								sprintf(str,"目标：%d",AimAngle);
-								display_GB2312_string(5,1,str); 
-								display_GB2312_string(7,1,"执行中");  
-								MotorA_Forward(200);//促使扰动，触发起振
-								delay_ms(6);
-								MotorA_Backward(200);
-								delay_ms(6);
-								MotorA_Brk();
-								State = RECIPROCATE;
-							break;
-						}
-				}
+		{
+			Remote_Rdy=0;
+			ir_key=Remote_Process();
+			switch(ir_key)
+			{
+				case IR_VOL_UP:
+					AimAngle += 10;
+//				if(AimAngle > 100)
+//				{
+//					AimAngle =10;
+//				}
+//				else if(AimAngle < 10)
+//				{
+//					AimAngle = 90;
+//				}
+					break;
+				case IR_VOL_DOWN:
+					AimAngle -=10;
+//				if(AimAngle > 100)
+//				{
+//					AimAngle =10;
+//				}
+//				else if(AimAngle < 10)
+//				{
+//					AimAngle = 90;
+//				}
+					break;
+				case IR_PREV:
+					State = MENU;//prev键返回到菜单
+					break;
+				case IR_PLAY://PLAY键确认，进入执行状态
+					clear_screen();	
+					display_GB2312_string(1,1,"1,往复运动"); 
+					display_GB2312_string(3,1,"请输入角度");   
+					sprintf(str,"目标：%d",AimAngle);
+					display_GB2312_string(5,1,str); 
+					display_GB2312_string(7,1,"执行中");  
+					MotorA_Forward(200);//促使扰动，触发起振
+					delay_ms(6);
+					MotorA_Backward(200);
+					delay_ms(6);
+					MotorA_Brk();
+					State = RECIPROCATE;
+				break;
+			}
+	}
 }
 /****
 往复运动状态，上一次往复运动的输入角度

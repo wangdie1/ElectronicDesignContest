@@ -15,6 +15,7 @@
 #define	ENC_TIMER 							TIM3
 #define ENC_TIMER_IRQn					    TIM3_IRQn
 #define ENC_TIMER_CLK						RCC_APB1Periph_TIM3
+
 #define ENC_GPIO_PORT						GPIOC
 #define ENC_GPIO_CLK						RCC_APB2Periph_GPIOC 
 #define ENC_GPIO_PIN_A					    GPIO_Pin_6

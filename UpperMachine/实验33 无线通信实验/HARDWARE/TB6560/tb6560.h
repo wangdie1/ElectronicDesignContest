@@ -23,7 +23,7 @@
 
 
 void Step_Init(void); 
-void Step_Run(float deg,u8 lr); 
+void Step_Run(float deg,u8 lr,int delay); 
 void Step_Run_18(u16 dx,u8 lr); 
 void Step_Run_Left(u16 dx);
 void Step_Run_Right(u16 dx);

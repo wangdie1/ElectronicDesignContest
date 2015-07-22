@@ -6,6 +6,9 @@
 #include "usart.h"	 
 #include "24l01.h"
 #include "mytask.h"
+#include "UltrasonicWave.h"
+#include "timer4_cap.h"
+#include "Motor.h"
  
  
 /************************************************
@@ -22,24 +25,31 @@
  int main(void)
  {	 
 	//全局变量
-	u8 key;
-//	u8 mode;
-//	u16 t=0;			 
-//	u8 tmp_buf[33];		    
+	u8 key,x;
+	u16 time = 350;
+	u8 mode;
+	u16 t=0;			 
+	u8 tmp_buf[33];		    
 	delay_init();	    	 //延时函数初始化	  
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);//设置中断优先级分组为组2：2位抢占优先级，2位响应优先级
-	uart_init(115200);	 	//串口初始化为115200
+	uart_init(115200);	 	//串口初始化为115200   
  	LED_Init();		  			//初始化与LED连接的硬件接口
-	KEY_Init();					//初始化按键
-//	LCD_Init();			   		//初始化LCD  
-// 	NRF24L01_Init();    		//初始化NRF24L01 
-// 	POINT_COLOR=RED;			//设置字体为红色 
+	KEY_Init();					//初始化按
+	
+	TIM_PWM_Init();
+	 MotorInit();
+	 
+//	UltrasonicWave_Configuration();
+//	TIM4_Cap_Init(65535,72-1); //以1Mhz的频率计数  1/1M = 1/1,000,000   f 72M/72 = 1M  ,T  1us  计数到65536
+	LCD_Init();			   		//初始化LCD  
+ 	NRF24L01_Init();    		//初始化NRF24L01 
+ 	POINT_COLOR=RED;			//设置字体为红色 
 	 
 	LCD_ShowString(30,50,200,16,16,"WarShip STM32");	
 	LCD_ShowString(30,70,200,16,16,"NRF24L01 TEST");	
 	LCD_ShowString(30,90,200,16,16,"ATOM@ALIENTEK");
 	LCD_ShowString(30,110,200,16,16,"2015/1/17"); 
-	 
+
 	
 	//无线通信模块的检查
 //	while(NRF24L01_Check())
@@ -54,20 +64,56 @@
 	
 	while(1)
 	{
-		key = KEY_Scan(0);
+//		 MotorA_Backward(4000);
+//		 MotorB_Backward(4000);
+//		 MotorA_Forward(4000);
+//		 MotorB_Forward(4000);
+//		MotorB_Backward(4000);
+//		MotorA_Backward(4000);
+//		 MotorA_Brk();
+//		 MotorB_Brk();
+//		delay_ms(1000);
 		
-		if(key == KEY0_PRES)
-		{
-			QJ_TASK();
-		}
-		else if(key == KEY1_PRES)
-		{
-			HT_TASK();
-		}
-		else if(key == KEY2_PRES)
-		{
-			ZZ_TASK();
-		}
+//		UltrasonicWave_StartMeasure(); 
+		//LED2_TOGGLE;
+//		LCD_ShowxNum(60,190,tempup1,5,16,0X80);	//显示数据
+		//printf("Channel 1 : %d cm\r\n",tempup1);
+//		 x++;
+//		if(x==12)
+//		{
+//			x=0;
+//			LED1=!LED1;
+//		}
+		
+		//delay_ms(1000);
+//		key = KEY_Scan(0);
+//		
+//		if(key!= 0 )
+//			time ++;
+//		LCD_ShowxNum(60,190,time,5,16,0X80);	//显示数据
+//		if(time >= 4)
+//			time = 0;
+//		
+//		if(time == 0)
+//		{
+//			MotorB_Forward(1000);
+//			MotorA_Forward(1000);
+//		}
+//		else if(time == 1)
+//		{
+//			MotorB_Backward(4000);
+//			MotorA_Backward(4000);
+//		}
+//		else if(time == 2)
+//		{
+//    		 MotorB_Brk();
+//			 MotorA_Brk();
+//		}
+
+		MotorA_Backward(time);
+		time++;
+		LCD_ShowxNum(60,190,time,5,16,0X80);	//显示数据
+		delay_ms(100);
 		
 	}	
 }
