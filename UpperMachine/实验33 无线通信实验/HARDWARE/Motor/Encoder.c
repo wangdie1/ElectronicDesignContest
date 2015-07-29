@@ -14,70 +14,124 @@ static volatile double SpeedNormal=0;
 
 
 
-void ENC_Init(void)
+//void ENC_Init(void)
+//{
+//	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
+//	TIM_ICInitTypeDef TIM_ICInitStructure;
+//	
+//	//Encoder uint connected to TIM2
+//	GPIO_InitTypeDef GPIO_InitStructure;
+//	NVIC_InitTypeDef NVIC_InitStructure;
+
+//	//RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2,ENABLE);
+//	RCC_APB1PeriphClockCmd(ENC_TIMER_CLK,ENABLE);
+//	RCC_APB2PeriphClockCmd(ENC_GPIO_CLK ,ENABLE);
+//	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
+//	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable , ENABLE); 
+//	GPIO_PinRemapConfig(GPIO_FullRemap_TIM3,ENABLE);
+//	
+//	GPIO_StructInit(&GPIO_InitStructure);
+//	//GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1;
+//	GPIO_InitStructure.GPIO_Pin = ENC_GPIO_PIN_A  | ENC_GPIO_PIN_B ;
+//	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+//	GPIO_Init(ENC_GPIO_PORT ,&GPIO_InitStructure);
+
+//	NVIC_InitStructure.NVIC_IRQChannel = ENC_TIMER_IRQn ;
+//	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = TIMx_PRE_EMPTION_PRIORITY;
+//	NVIC_InitStructure.NVIC_IRQChannelSubPriority = TIMx_SUB_PRIORITY;
+//	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+//	NVIC_Init(&NVIC_InitStructure);
+
+//	TIM_DeInit(ENC_TIMER);
+//	//TIM_TimeBaseInit(&TIM_TimeBaseStructure);
+
+//	TIM_TimeBaseStructure.TIM_Prescaler = 0x0;
+//	TIM_TimeBaseStructure.TIM_Period = (4*ENCODER_PPR)-1;
+//	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+//	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+//	TIM_TimeBaseInit(ENC_TIMER,&TIM_TimeBaseStructure);
+
+//	TIM_EncoderInterfaceConfig(ENC_TIMER,TIM_EncoderMode_TI12,
+//	TIM_ICPolarity_Rising,TIM_ICPolarity_Rising);
+//	TIM_ICStructInit(&TIM_ICInitStructure);
+//	TIM_ICInitStructure.TIM_ICFilter = ICx_FILTER;
+//	TIM_ICInit(ENC_TIMER,&TIM_ICInitStructure);
+// 
+//	TIM_ICInitStructure.TIM_Channel = TIM_Channel_2;//注意通道
+//	TIM_ICInit(ENC_TIMER, &TIM_ICInitStructure);
+
+//	TIM_ClearFlag(ENC_TIMER,TIM_FLAG_Update);
+//	TIM_ITConfig(ENC_TIMER,TIM_IT_Update,ENABLE);
+
+//	TIM2->CNT = COUNTER_RESET;//!!此处注意修改
+
+	//局部初始化
+//	ENC_Clear_Speed_Buffer();
+//	hPrevious_angle=0;
+//  hRot_Speed=0;;
+//  bSpeed_Buffer_Index = 0;
+//  hEncoder_Timer_Overflow=0;
+//  bIs_First_Measurement = true;
+//  hEncoder_Revolutions_Num=0; 
+//   
+//  TIM_Cmd(ENC_TIMER,ENABLE);
+//}
+
+
+//寄存器版本  编码器初始化
+void Encoder_Init(void)
 {
-	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
-	TIM_ICInitTypeDef TIM_ICInitStructure;
+	/* TIM3 clock source enable */ 
+	RCC->APB1ENR|=1<<1;       //TIM3时钟使能
+	/* Enable GPIOA, clock */
+	RCC->APB2ENR|=1<<2;    //使能PORTA时钟
+
+	/* Configure PA.06,07 as encoder input */
+	GPIOA->CRL&=0XF0FFFFFF;//PA6
+	GPIOA->CRL|=0X04000000;//浮空输入
+	GPIOA->CRL&=0X0FFFFFFF;//PA7
+	GPIOA->CRL|=0X40000000;//浮空输入
+
+	/* Enable the TIM3 Update Interrupt */
+	//这两个东东要同时设置才可以使用中断
+	ENC_TIMER->DIER|=1<<0;   //允许更新中断				
+	ENC_TIMER->DIER|=1<<6;   //允许触发中断
+
+	/* Timer configuration in Encoder mode */ 
+	ENC_TIMER->PSC = 0x0;//预分频器
+	ENC_TIMER->ARR = ENCODER_TIM_PERIOD-1;//设定计数器自动重装值 
+	ENC_TIMER->CR1 &=~(3<<8);// 选择时钟分频：不分频
+	ENC_TIMER->CR1 &=~(3<<5);// 选择计数模式:边沿对齐模式
+		
+	ENC_TIMER->CCMR1 |= 1<<0; //CC1S='01' IC1FP1映射到TI1
+	ENC_TIMER->CCMR1 |= 1<<8; //CC2S='01' IC2FP2映射到TI2
+	ENC_TIMER->CCER &= ~(1<<1);	 //CC1P='0'	 IC1FP1不反相，IC1FP1=TI1
+	ENC_TIMER->CCER &= ~(1<<5);	 //CC2P='0'	 IC2FP2不反相，IC2FP2=TI2
+	ENC_TIMER->CCMR1 |= 3<<4; //	IC1F='1000' 输入捕获1滤波器
+	ENC_TIMER->SMCR |= 3<<0;	 //SMS='011' 所有的输入均在上升沿和下降沿有效
+	ENC_TIMER->CNT = COUNTER_RESET;
 	
-	//Encoder uint connected to TIM2
-	GPIO_InitTypeDef GPIO_InitStructure;
-	NVIC_InitTypeDef NVIC_InitStructure;
-
-	//RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2,ENABLE);
-	RCC_APB1PeriphClockCmd(ENC_TIMER_CLK,ENABLE);
-	RCC_APB2PeriphClockCmd(ENC_GPIO_CLK ,ENABLE);
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
-	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable , ENABLE); 
-	GPIO_PinRemapConfig(GPIO_FullRemap_TIM3,ENABLE);
-	
-	GPIO_StructInit(&GPIO_InitStructure);
-	//GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1;
-	GPIO_InitStructure.GPIO_Pin = ENC_GPIO_PIN_A  | ENC_GPIO_PIN_B ;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-	GPIO_Init(ENC_GPIO_PORT ,&GPIO_InitStructure);
-
-	NVIC_InitStructure.NVIC_IRQChannel = ENC_TIMER_IRQn ;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = TIMx_PRE_EMPTION_PRIORITY;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = TIMx_SUB_PRIORITY;
-	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_Init(&NVIC_InitStructure);
-
-	TIM_DeInit(ENC_TIMER);
-	//TIM_TimeBaseInit(&TIM_TimeBaseStructure);
-
-	TIM_TimeBaseStructure.TIM_Prescaler = 0x0;
-	TIM_TimeBaseStructure.TIM_Period = (4*ENCODER_PPR)-1;
-	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
-	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
-	TIM_TimeBaseInit(ENC_TIMER,&TIM_TimeBaseStructure);
-
-	TIM_EncoderInterfaceConfig(ENC_TIMER,TIM_EncoderMode_TI12,
-	TIM_ICPolarity_Rising,TIM_ICPolarity_Rising);
-	TIM_ICStructInit(&TIM_ICInitStructure);
-	TIM_ICInitStructure.TIM_ICFilter = ICx_FILTER;
-	TIM_ICInit(ENC_TIMER,&TIM_ICInitStructure);
- 
-	TIM_ICInitStructure.TIM_Channel = TIM_Channel_2;//注意通道
-	TIM_ICInit(ENC_TIMER, &TIM_ICInitStructure);
-
-	TIM_ClearFlag(ENC_TIMER,TIM_FLAG_Update);
-	TIM_ITConfig(ENC_TIMER,TIM_IT_Update,ENABLE);
-
-	TIM2->CNT = COUNTER_RESET;//!!此处注意修改
-
 	//局部初始化
 	ENC_Clear_Speed_Buffer();
 	hPrevious_angle=0;
-  hRot_Speed=0;;
-  bSpeed_Buffer_Index = 0;
-  hEncoder_Timer_Overflow=0;
-  bIs_First_Measurement = true;
-  hEncoder_Revolutions_Num=0; 
-   
-  TIM_Cmd(ENC_TIMER,ENABLE);
+	hRot_Speed=0;;
+	bSpeed_Buffer_Index = 0;
+	hEncoder_Timer_Overflow=0;
+	bIs_First_Measurement = true;
+	hEncoder_Revolutions_Num=0;
+	
+	ENC_TIMER->CR1 |= 0x01;    //CEN=1，使能定时器
 }
 
 
+
+//获取编码器的计数
+
+u16 Encoder_Get_Counter(void)
+{
+	//return ENC_TIMER->CNT;
+	return TIM_GetCounter(ENC_TIMER);
+}
 
 /*******************************************************************************
 * Function Name  : ENC_Get_Electrical_Angle
@@ -88,14 +142,15 @@ void ENC_Init(void)
 *                                          S16_MAX-> 180 degrees, 
 *                                          S16_MIN-> -180 degrees                  
 *******************************************************************************/
+//计算马达转子的位置电角度
 double ENC_Get_Electrical_Angle(void)
 {
   double temp;
-  
   temp = (double)(TIM_GetCounter(ENC_TIMER)) * (double)(U32_MAX / (4*ENCODER_PPR)); 
-  return((double)(temp/65536)); // s16 result
+  temp = ((double)(temp/U16_MAX)); // s16 result
+  temp = temp*360;
+  return((double)(temp/U16_MAX)); // s16 result
 }
-
 
 /*******************************************************************************
 * Function Name  : ENC_Clear_Speed_Buffer
@@ -104,6 +159,7 @@ double ENC_Get_Electrical_Angle(void)
 * Output         : None
 * Return         : None
 *******************************************************************************/
+//初始化马达速度缓存
 void ENC_Clear_Speed_Buffer(void)
 {   
   u32 i;
@@ -115,9 +171,6 @@ void ENC_Clear_Speed_Buffer(void)
   bIs_First_Measurement = true;
 }
 
-
-
-
 /*******************************************************************************
 * Function Name  : ENC_Calc_Average_Speed
 * Description    : Compute smoothed motor speed based on last SPEED_BUFFER_SIZE
@@ -127,6 +180,7 @@ void ENC_Clear_Speed_Buffer(void)
 * Return         : Return rotor speed in 0.1 Hz resolution. This routine 
                    will return the average mechanical speed of the motor.
 *******************************************************************************/
+//计算马达转动的平均电频率
 double ENC_Calc_Average_Speed(void)
 {   
   double wtemp;
@@ -164,6 +218,7 @@ double ENC_Calc_Average_Speed(void)
 * Output         : double
 * Return         : Return the speed in 0.1 Hz resolution.                    
 *******************************************************************************/
+//计算马达转动的电频率
 double ENC_Calc_Rot_Speed(void)
 {   
   double wDelta_angle;
@@ -272,14 +327,16 @@ double ENC_Get_AnglularPosition(void)
 		double temp;
 		temp = hEncoder_Revolutions_Num*4*ENCODER_PPR+TIM_GetCounter(ENC_TIMER);
 		return (temp*ENC_ANGULAR_UNIT/(REDUCTION_RATIO*ENCODER_PPR));//单位0.1度
-// 	return  temp;
+//    	return  temp;
 }
 
+
+//编码器的速度
 double ENC_Get_Speed(void)
 {
 	double temp;
-	NowPosition=ENC_Get_AnglularPosition();
-	temp=NowPosition-PrePosition;
+	NowPosition=ENC_Get_AnglularPosition(); //获得当前的位置
+	temp=NowPosition-PrePosition;  //获得当前的位移
 	temp = (double)(temp * SPEED_SAMPLING_FREQ);
   temp *= 60;  // RPM
 //   temp /= (4*ENCODER_PPR);
@@ -304,6 +361,8 @@ double ENC_Get_TimerCounter(void)
 * Output         : None
 * Return         : None
 *******************************************************************************/
+//定时器的中断服务程序
+
 void TIM3_IRQHandler(void)
 {  
   /* Clear the interrupt pending flag */

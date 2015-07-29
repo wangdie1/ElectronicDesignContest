@@ -13,10 +13,7 @@
 */
 
 
-//步进电机运转多少角度 
-//stepx:步进电机编号,0/1; 
-//deg:角度 
-//lr :左转或者右转 
+
 #define DRVDEV    8   //驱动器的细分数 
 #define STEPDEG   1.8 //步进电机的步角 
 
@@ -34,6 +31,10 @@ void Step_Init(void)
 	GPIO_Init(GPIOG, &GPIO_InitStructure);//	
 }
 
+//步进电机运转多少角度 
+//stepx:步进电机编号,0/1; 
+//deg:角度 
+//lr :左转或者右转 
 void Step_Run(float deg,u8 lr,int delay) 
 {    
 	float clkf; 
@@ -51,6 +52,7 @@ void Step_Run(float deg,u8 lr,int delay)
 	else if(delay == 2)
 		delay = 400;
  
+	//方法一 ：改变脉冲时，使用延时程序
 	while(nclk--) 
 	{ 
 //		STEP_CLK=0; //产生一个脉冲,频率5Khz 
@@ -64,8 +66,36 @@ void Step_Run(float deg,u8 lr,int delay)
 		STEP_CLK=1; 
 		delay_us(delay);	
 	} 
+}
+//	//方法二：使用定时器，改变脉冲的,中断一次，改变脉冲信号
+//	
+//	
+//	//状态
+//	
+//	nclk = 2*nclk;
+//	//开启定时器中断
+//	
+//	if(nclk > 0)
+//	{
+//		//判断STEP_CLK的当前状态
+//		if(STEP_CLK == 1)
+//		{
+//			STEP_CLK=0;
+//		}
+//		else
+//		{
+//			STEP_CLK=1;
+//		}
+//		nclk--;
+//	}
+//	else
+//	{
+//		//关闭定时器中断
+//		
+//	}
+//	
 
-} 
+//} 
 //步进电机运转多少个1.8度 
 
 //dx:1.8度的个数  --多少个1.8度

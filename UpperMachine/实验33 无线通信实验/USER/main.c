@@ -1,5 +1,9 @@
 #include "led.h"
+#include "rtc.h"
+#include "Encoder.h"
+#include "Control.h"
 #include "delay.h"
+#include "Motor.h"
 #include "key.h"
 #include "sys.h"
 #include "lcd.h"
@@ -8,7 +12,8 @@
 #include "mytask.h"
 #include "UltrasonicWave.h"
 #include "timer4_cap.h"
-#include "Motor.h"
+#include "TimeBase.h"
+#include "usmart.h"
  
  
 /************************************************
@@ -20,14 +25,26 @@
  广州市星翼电子科技有限公司  
  作者：正点原子 @ALIENTEK
 ************************************************/
+void led_set(u8 sta)
+{
+	LED1 = sta;
+	LED0 = sta;
+}
 
+void test_fun(void(*ledset)(u8),u8 sta)
+{
+	ledset(sta);
+} 
 
  int main(void)
  {	 
 	//全局变量
+	double mm,ff;
 	u8 key,x;
+	 u8 i=0;
 	u16 time = 350;
 	u8 mode;
+	 u8 state;
 	u16 t=0;			 
 	u8 tmp_buf[33];		    
 	delay_init();	    	 //延时函数初始化	  
@@ -35,22 +52,23 @@
 	uart_init(115200);	 	//串口初始化为115200   
  	LED_Init();		  			//初始化与LED连接的硬件接口
 	KEY_Init();					//初始化按
-	
-	TIM_PWM_Init();
+	RTC_Init();
+//	usmart_dev.init(72);		//初始化USMART
+//	TIM_PWM_Init();
 	 MotorInit();
-	 
+	//ENC_Init();
+	 Encoder_Init();
 //	UltrasonicWave_Configuration();
 //	TIM4_Cap_Init(65535,72-1); //以1Mhz的频率计数  1/1M = 1/1,000,000   f 72M/72 = 1M  ,T  1us  计数到65536
 	LCD_Init();			   		//初始化LCD  
  	NRF24L01_Init();    		//初始化NRF24L01 
  	POINT_COLOR=RED;			//设置字体为红色 
-	 
+	TB_Init(10-1,719);
 	LCD_ShowString(30,50,200,16,16,"WarShip STM32");	
 	LCD_ShowString(30,70,200,16,16,"NRF24L01 TEST");	
 	LCD_ShowString(30,90,200,16,16,"ATOM@ALIENTEK");
 	LCD_ShowString(30,110,200,16,16,"2015/1/17"); 
 
-	
 	//无线通信模块的检查
 //	while(NRF24L01_Check())
 //	{
@@ -60,64 +78,58 @@
 // 		delay_ms(200);
 //	}
 //	LCD_ShowString(30,130,200,16,16,"NRF24L01 OK");
-
 	
-	while(1)
-	{
-//		 MotorA_Backward(4000);
-//		 MotorB_Backward(4000);
-//		 MotorA_Forward(4000);
-//		 MotorB_Forward(4000);
-//		MotorB_Backward(4000);
-//		MotorA_Backward(4000);
-//		 MotorA_Brk();
-//		 MotorB_Brk();
-//		delay_ms(1000);
-		
-//		UltrasonicWave_StartMeasure(); 
-		//LED2_TOGGLE;
-//		LCD_ShowxNum(60,190,tempup1,5,16,0X80);	//显示数据
-		//printf("Channel 1 : %d cm\r\n",tempup1);
-//		 x++;
-//		if(x==12)
-//		{
-//			x=0;
-//			LED1=!LED1;
-//		}
-		
-		//delay_ms(1000);
-//		key = KEY_Scan(0);
-//		
-//		if(key!= 0 )
-//			time ++;
-//		LCD_ShowxNum(60,190,time,5,16,0X80);	//显示数据
-//		if(time >= 4)
-//			time = 0;
-//		
-//		if(time == 0)
-//		{
-//			MotorB_Forward(1000);
-//			MotorA_Forward(1000);
-//		}
-//		else if(time == 1)
-//		{
-//			MotorB_Backward(4000);
-//			MotorA_Backward(4000);
-//		}
-//		else if(time == 2)
-//		{
-//    		 MotorB_Brk();
-//			 MotorA_Brk();
-//		}
 
-		MotorA_Backward(time);
-		time++;
-		LCD_ShowxNum(60,190,time,5,16,0X80);	//显示数据
-		delay_ms(100);
+	while(1) //主任务
+	{
+		if(TB_SetLed_IsElapsed() == true)
+		{
+//			LED1 = ~LED1;
+//			LED0 = ~LED0;
+			if(LED1 == 0)
+			{
+				LED1 = 1;
+				LED0 = 0;
+			}
+			else 
+			{
+				LED1 = 0;
+				LED0 = 1;
+			}
+			TB_SetLed_Time(LED_DELAY);
+		}
 		
+//		LED0 = ~LED0;
+//		LED1 = ~LED1;
+//		delay_ms(1000);
 	}	
 }
-	//主控制
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+//	主控制
 // 	while(1)
 //	{	
 //		key=KEY_Scan(0);
@@ -193,6 +205,3 @@
 //			delay_ms(1500);				    
 //		};
 //	} 
-
-
-

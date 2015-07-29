@@ -2,6 +2,7 @@
 #include "delay.h"
 #include "key.h"
 #include "sys.h"
+#include "Motor.h"
 //#include "usmart.h" 
 #include "lcd.h"
 #include "usart.h"
@@ -146,3 +147,40 @@ int YZ_TASK(void)
 	
 	return 0;
 }
+
+
+//倒立摆任务集
+
+void Dlb_TASK_1(void)
+{
+	 while(1)
+	 {
+		 MotorB_Backward(450);
+		delay_ms(80);
+		 MotorB_Brk();
+		delay_ms(340);
+		
+		MotorB_Forward(450);
+		delay_ms(80);
+		MotorB_Brk();
+		delay_ms(340);
+	 }
+}
+
+//圆周运动
+void Dlb_TASK_2(void)
+{
+	 while(1)
+	 {
+		MotorB_Backward(800);
+		delay_ms(80);
+		 MotorB_Brk();
+		delay_ms(340);
+		
+		MotorB_Forward(800);
+		delay_ms(80);
+		MotorB_Brk();
+		delay_ms(340);
+	 }
+}
+

@@ -108,10 +108,12 @@ void MENU_Task()
 ****/
 void RECIPROCATE_INPUT_Task(void)
 {
+	//判断是否为0
 	if(TB_DisplayDelay_IsElapsed()==TRUE)
 		{
-						TB_SetDisplayDelay_Time(LCD_DISPLAY_DELAY);
-						clear_screen();	
+			//设置LCD的显示延时时间
+			TB_SetDisplayDelay_Time(LCD_DISPLAY_DELAY);
+			clear_screen();	
             display_GB2312_string(1,1,"1,往复运动"); 
             display_GB2312_string(3,1,"请输入角度");   
 						sprintf(str,"目标：%d",AimAngle);
@@ -175,7 +177,7 @@ void RECIPROCATE_Task(void)
 		
 	if(TB_SpeedPIDDelay_IsElapsed() == TRUE)//调节周期1ms
 		{
-					TB_SetSpeedPIDDelay_Time(SPEED_PID_DELAY);
+				TB_SetSpeedPIDDelay_Time(SPEED_PID_DELAY);
 					alpha = ENC1_Get_AnglularPosition()+180;
 				/****角度限定在-180，180范围之内*/
 					while(abs(alpha)>180)
@@ -247,7 +249,7 @@ void FREE_LQR_Task(void)
 		{
 					TB_SetSpeedPIDDelay_Time(SPEED_PID_DELAY);
 					alpha = ENC1_Get_AnglularPosition()+180;
-			    if(alpha>180)
+					if(alpha>180)
 							{
 								  alpha=alpha-360;
 							}

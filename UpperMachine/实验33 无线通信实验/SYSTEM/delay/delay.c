@@ -125,6 +125,7 @@ void SysTick_Handler(void)
 //当使用OS的时候,此函数会初始化OS的时钟节拍
 //SYSTICK的时钟固定为HCLK时钟的1/8
 //SYSCLK:系统时钟
+
 void delay_init()
 {
 #if SYSTEM_SUPPORT_OS  							//如果需要支持OS.
@@ -132,6 +133,8 @@ void delay_init()
 #endif
 	SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK_Div8);	//选择外部时钟  HCLK/8
 	fac_us=SystemCoreClock/8000000;				//为系统时钟的1/8  
+
+	
 #if SYSTEM_SUPPORT_OS  							//如果需要支持OS.
 	reload=SystemCoreClock/8000000;				//每秒钟的计数次数 单位为K	   
 	reload*=1000000/delay_ostickspersec;		//根据delay_ostickspersec设定溢出时间
@@ -170,7 +173,11 @@ void delay_us(u32 nus)
 			if(tcnt>=ticks)break;				//时间超过/等于要延迟的时间,则退出.
 		}  
 	};
-	delay_osschedunlock();						//恢复OS调度									    
+	delay_osschedunlock();						//恢复OS调度	
+
+
+
+	
 }
 //延时nms
 //nms:要延时的ms数

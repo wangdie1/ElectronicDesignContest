@@ -1,9 +1,13 @@
+#ifndef __ConTrol_H
+#define __ConTrol_H
+
 #include "stm32f10x.h"
 #include "TimeBase.h"
  #include "mytype.h"
 #include "control_param.h"
 #include "globals.h"
 #include "app.h"
+#include "Motor.h"
 
 
 
@@ -58,4 +62,5 @@ double PD_Controller(float Error,PID_Typedef *PID);
 double PID_Controller(float Error,PID_Typedef *PID);
 double FF_Controller(double rin,FForward_Typedef *FF );
 
+#endif
 

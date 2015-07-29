@@ -162,6 +162,8 @@ void MotorA_Brk(void)
 void MotorA_Forward(uint16_t CCR2_Value)
 {
     /* Set the Capture Compare Register value */
+	if(CCR2_Value >  PWM_ARR)
+		CCR2_Value  =  PWM_ARR - 1; // CCR的值必须小于或等于ARR的值
   	PWM_TIMER->CCR1 = 0 ;
  	PWM_TIMER->CCR2 = CCR2_Value;
 }
@@ -169,6 +171,8 @@ void MotorA_Forward(uint16_t CCR2_Value)
 /********************电机A后退**********************/
 void MotorA_Backward(uint16_t CCR1_Value)
 {	
+	if(CCR1_Value >  PWM_ARR)
+		CCR1_Value  =  PWM_ARR - 1; // CCR的值必须小于或等于ARR的值
 	PWM_TIMER->CCR1 = CCR1_Value;
 	PWM_TIMER->CCR2 =  0;
 }
@@ -209,6 +213,8 @@ void MotorA_Backward_PWM_Update(uint16_t CCR1_Value)
 }
 
 
+
+
 /**********************电机B*************************/
 
 /****
@@ -224,6 +230,8 @@ void MotorB_Brk(void)
 void MotorB_Forward(uint16_t CCR4_Value)
 {
 		 /* Set the Capture Compare Register value */
+	if(CCR4_Value >  PWM_ARR)
+		CCR4_Value  =  PWM_ARR - 1; // CCR的值必须小于或等于ARR的值
   	PWM_TIMER->CCR3 = 0 ;
  	PWM_TIMER->CCR4 = CCR4_Value;
 }
@@ -231,6 +239,8 @@ void MotorB_Forward(uint16_t CCR4_Value)
 /********************电机B后退**********************/
 void MotorB_Backward(uint16_t CCR3_Value)
 {	
+	if(CCR3_Value >  PWM_ARR)
+		CCR3_Value  =  PWM_ARR - 1; // CCR的值必须小于或等于ARR的值
 	PWM_TIMER->CCR3 = CCR3_Value;
 	PWM_TIMER->CCR4 =  0;
 }
@@ -253,6 +263,8 @@ void MotorB_Forward_PWM_Update(uint16_t CCR4_Value )
   	PWM_TIMER->CCR3 =0;
 	PWM_TIMER->CCR4 =  CCR4_Value;
 }
+
+
 /******************电机B后退PWM更新**************************/
 void MotorB_Backward_PWM_Update(uint16_t CCR3_Value)
 {

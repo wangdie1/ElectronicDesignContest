@@ -51,6 +51,7 @@ typedef enum
 }
 SysStatus_t;
 
+
 /**电机参式***/
 typedef struct 
 {
@@ -63,6 +64,7 @@ typedef struct
 //	s32 	PWM;
 }Motor_TypeDef;
 
+
 typedef struct
 {
 	float x;//单位0.1mm
@@ -73,6 +75,8 @@ typedef struct
 }Point_t;
 // typedef enum {FALSE = 0, TRUE = !FALSE} bool;
 
+
+/* 一般的PID Controller  */
 typedef struct
 {
 	float  Kp;				//比例系数
@@ -81,6 +85,7 @@ typedef struct
 	float  ErrorBond;	//误差界限
 	float  KiBond;		//积分作用误差
 	float  KpBond;		//比例作用误差范围
+	 float errNow;//当前的误差
 	double ErrorSum;	//累计误差
 	double ErrorSumMax;//累计误差最大值
 	double ErrorSumMin;//累计误差最小值
@@ -89,18 +94,61 @@ typedef struct
 	double OutputMin;	//输出最小
 }PID_Typedef;
 
+
 typedef struct 
 {
-	float Kv; 				//一阶微分增益系数
+	float Kv; 					//一阶微分增益系数
 	float Ka;					//二阶微分增益系数
-	double rinV;			//输入一阶微分
-	double rinA;			//输入二阶微分
-	double rinPre;		//上一次的输入
-	double rinPrePre;	//上上次的输入
-	double rinV_Pre;	//上次的输入微分
+	
+	double rinV;				//输入一阶微分
+	double rinA;				//输入二阶微分
+	double rinPre;				//上一次的输入
+	double rinPrePre;			//上上次的输入
+	double rinV_Pre;			//上次的输入微分
 	double FFmax;
 	double FFmin;
 }FForward_Typedef;
-	
+
+
+/*绝对式PID算法，接口参数结构类型*/
+
+typedef struct 
+{
+ /*PID算法接口变量，用于给用户获取或修改PID算法的特性*/
+ float kp;     //比例系数
+ float ki;     //积分系数
+ float kd;     //微分系数
+ float errILim;//误差积分上限
+ 
+ float errNow;//当前的误差
+ float ctrOut;//控制量输出
+ 
+ /*PID算法内部变量，其值不能修改*/
+ float errOld;
+ float errP;
+ float errI;
+ float errD;
+ 
+}PID_AbsoluteType;
+
+
+/*增量式PID算法，接口参数结构类型*/
+
+typedef struct 
+{
+ /*PID算法接口变量，用于给用户获取或修改PID算法的特性*/
+ float kp;     //比例系数
+ float ki;     //积分系数
+ float kd;     //微分系数
+ 
+ float errNow; //当前的误差
+ float dCtrOut;//控制增量输出
+ float  ctrOut;//控制输出
+ 
+ /*PID算法内部变量，其值不能修改*/
+ float errOld1;
+ float errOld2;
+ 
+}PID_IncrementType;	
 
 #endif

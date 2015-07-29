@@ -1,0 +1,27 @@
+
+T22D8 000:564 SEGGER J-Link V4.80g Log File (0000ms, 0314ms total)
+T22D8 000:564 DLL Compiled: Feb 13 2014 20:50:02 (0000ms, 0314ms total)
+T22D8 000:564 Logging started @ 2015-07-23 17:52 (0000ms, 0314ms total)
+T22D8 000:565 JLINK_SetWarnOutHandler(...) (0000ms, 0315ms total)
+T22D8 000:565 JLINK_OpenEx(...)
+Firmware: J-Link ARM V8 compiled Nov 25 2013 19:20:08
+Hardware: V8.00
+S/N: 99999994
+Feature(s): RDI,FlashDL,FlashBP,JFlash,GDBFULL  returns O.K. (0267ms, 0582ms total)
+T22D8 000:832 JLINK_SetErrorOutHandler(...) (0000ms, 0582ms total)
+T22D8 000:832 JLINK_ExecCommand("ProjectFile = "E:\github\ElectronicDesignContest\UpperMachine\资源材料\华科倒立摆\InvertedPendulum7\USER\JLinkSettings.ini"", ...)  returns 0x00 (0009ms, 0591ms total)
+T22D8 000:857 JLINK_ExecCommand("Device = STM32F103ZE", ...)Device "STM32F103ZE" selected (512 KB flash, 64 KB RAM).  returns 0x00 (0020ms, 0612ms total)
+T22D8 000:877 JLINK_ExecCommand("DisableConnectionTimeout", ...)  returns 0x01 (0000ms, 0612ms total)
+T22D8 000:877 JLINK_GetHardwareVersion()  returns 0x13880 (0000ms, 0612ms total)
+T22D8 000:877 JLINK_GetDLLVersion()  returns 48007 (0000ms, 0612ms total)
+T22D8 000:877 JLINK_GetFirmwareString(...) (0000ms, 0612ms total)
+T22D8 000:894 JLINK_GetDLLVersion()  returns 48007 (0000ms, 0612ms total)
+T22D8 000:894 JLINK_GetCompileDateTime() (0000ms, 0612ms total)
+T22D8 000:896 JLINK_GetFirmwareString(...) (0000ms, 0612ms total)
+T22D8 000:898 JLINK_GetHardwareVersion()  returns 0x13880 (0000ms, 0612ms total)
+T22D8 000:908 JLINK_TIF_Select(JLINKARM_TIF_SWD)  returns 0x00 (0001ms, 0613ms total)
+T22D8 000:909 JLINK_SetSpeed(2000) (0000ms, 0613ms total)
+T22D8 000:909 JLINK_GetId() >0x108 TIF>RESET (pin 15) high, but should be low. Please check target hardware. >0x108 TIF>STM32F1xxx: Can not attach to CPU. Trying connect under reset.RESET (pin 15) high, but should be low. Please check target hardware. >0x108 TIF>RESET (pin 15) high, but should be low. Please check target hardware. >0x108 TIF>  returns 0x00000000 (1160ms, 1773ms total)
+T22D8 004:781 JLINK_Close() (0000ms, 1773ms total)
+T22D8 004:781  (0000ms, 1773ms total)
+T22D8 004:781 Closed (0000ms, 1773ms total)

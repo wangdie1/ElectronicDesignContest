@@ -41,8 +41,9 @@ void ErrorClear(PID_Typedef *PID )
 	PID->ErrorSum=0;
 	
 }
+/*******************************************************************************************************/
 
-/*********************速度环*0*****************/
+/*********************速度环******************/
 s32  SpeedPI_Regulator(s32 SpeedError,PID_Typedef *PID)//只需要PI
 {
 	s32 output;
@@ -67,8 +68,9 @@ s32  SpeedPI_Regulator(s32 SpeedError,PID_Typedef *PID)//只需要PI
 }
 
 
+/*******************************************************************************************************/
 
-/***************************位置环0*****************************/
+/***************************位置环*****************************/
 s32 PositionPID_Regulator(s32 PositionError,PID_Typedef *PID)
 {
 	s32 output;
@@ -92,6 +94,8 @@ s32 PositionPID_Regulator(s32 PositionError,PID_Typedef *PID)
 	return output;
 }
 
+/*******************************************************************************************************/
+
 /*P控制器*/
 double P_Controller(float Error,PID_Typedef *PID)
 {
@@ -110,6 +114,8 @@ double P_Controller(float Error,PID_Typedef *PID)
 	
 	return output;
 }
+
+/*******************************************************************************************************/
 
 /*PD 控制器*/
 double PD_Controller(float Error,PID_Typedef *PID)
@@ -134,6 +140,9 @@ double PD_Controller(float Error,PID_Typedef *PID)
 	
 	return output;
 }
+
+
+/*******************************************************************************************************/
 
 /*PI 控制器*/
 double PI_Controller(float Error,PID_Typedef *PID)
@@ -167,6 +176,7 @@ double PI_Controller(float Error,PID_Typedef *PID)
 	
 	return output;
 }
+/*******************************************************************************************************/
 
 /* 一般的PID Controller  */
 double PID_Controller(float Error,PID_Typedef *PID)
@@ -208,6 +218,8 @@ double PID_Controller(float Error,PID_Typedef *PID)
 	return output ;
 }
 
+/*******************************************************************************************************/
+
 double FF_Controller(double rin,FForward_Typedef *FF )
 {
 	double output;
@@ -229,34 +241,135 @@ double FF_Controller(double rin,FForward_Typedef *FF )
 	return output;
 }
 
+/*******************************************************************************************************/
+
+//绝对式PID算法
+void PID_AbsoluteMode(PID_AbsoluteType* PID)
+{
+	if(PID->kp      < 0)
+		PID->kp      = -PID->kp;
+	if(PID->ki      < 0)
+		PID->ki      = -PID->ki;
+	if(PID->kd      < 0)
+		PID->kd      = -PID->kd;
+	if(PID->errILim < 0)
+		PID->errILim = -PID->errILim;
+
+	PID->errP = PID->errNow;  //读取现在的误差，用于kp控制
+
+	PID->errI += PID->errNow; //误差积分，用于ki控制
+
+	if(PID->errILim != 0)	   //微分上限和下限
+	{
+	if(     PID->errI >  PID->errILim)    PID->errI =  PID->errILim;
+	else if(PID->errI < -PID->errILim)    PID->errI = -PID->errILim;
+	}
+
+	PID->errD = PID->errNow - PID->errOld;//误差微分，用于kd控制
+
+	PID->errOld = PID->errNow;	//保存现在的误差
+
+	PID->ctrOut = PID->kp * PID->errP + PID->ki * PID->errI + PID->kd * PID->errD;//计算绝对式PID输出
+
+}
+
+/*******************************************************************************************************/
+
+//增量式PID算法
+void PID_IncrementMode(PID_IncrementType* PID)
+	{
+	float dErrP, dErrI, dErrD;
+
+	if(PID->kp < 0) 
+		PID->kp = -PID->kp;
+	if(PID->ki < 0)
+		PID->ki = -PID->ki;
+	if(PID->kd < 0)    PID->kd = -PID->kd;
+
+	dErrP = PID->errNow - PID->errOld1;
+
+	dErrI = PID->errNow;
+
+	dErrD = PID->errNow - 2 * PID->errOld1 + PID->errOld2;
+
+	PID->errOld2 = PID->errOld1; //二阶误差微分
+	PID->errOld1 = PID->errNow;  //一阶误差微分
+
+	/*增量式PID计算*/
+	PID->dCtrOut = PID->kp * dErrP + PID->ki * dErrI + PID->kd * dErrD;
+
+	if(PID->kp == 0 && PID->ki == 0 && PID->kd == 0)   PID->ctrOut = 0;
+
+	else PID->ctrOut += PID->dCtrOut;
+}
+
+
+
+
+
 /*****************************************电机速度环伺服***********************************************/
 s32 spdTag, spdNow, control;//定义一个目标速度，采样速度，控制量
 
-//PID_AbsoluteType PID_Control;//定义PID算法的结构体
+PID_IncrementType PID_Control;//定义PID算法的结构体    绝对式PID算法
 
 void User_PidSpeedControl(u16 SpeedTag)
 {
 	
-	 //实际速度
-//   spdNow = V2;
+	//实际速度
+  // spdNow = V2;
 	//目标速度
-   spdTag = SpeedTag;
+   spdTag = 180;
 
-//	//误差值
-//   PID_Control.errNow = spdTag - spdNow; //计算并写入速度误差
-//   	
-//   PID_Control.kp      = 15;             //写入比例系数为15
-//   PID_Control.ki      = 5;              //写入积分系数为5
-//   PID_Control.kd      = 5;              //写入微分系数为5
-//   PID_Control.errILim = 1000;           //写入误差积分上限为1000 下限为-1000
+	//误差值
+   PID_Control.errNow = spdTag - spdNow; //计算并写入速度误差
+   	
+   //PID_Control.kp      = 182.04444145;             //写入比例系数为15  60 ~ 70 %
+	PID_Control.kp = 118;
+   PID_Control.ki      = 17;              //写入积分系数为5
+   PID_Control.kd      = 0;              //写入微分系数为5
+   //PID_Control.errILim = 1000;           //写入误差积分上限为1000 下限为-1000
 
 	//把结构体传人
-//   PID_AbsoluteMode(&PID_Control);       //执行绝对式PID算法
+   PID_IncrementMode(&PID_Control);       //执行绝对式PID算法
 	
    //读取PID返回值
-//   control = PID_Control.ctrOut;         //读取控制值
+   control = PID_Control.ctrOut;         //读取控制值
 
-	//把PID得到的速度放入PWM中
-//   UserMotorSpeedSetOne(control);        //放入PWM，用于收敛速度的控制中
+	//把PID得到的速度电机A的PWM中
+//   MotorA_PWM_Update(control);        //放入PWM，用于收敛速度的控制中
+//	//把PID得到的速度电机B的PWM中
+	MotorB_PWM_Update(control);        //放入PWM，用于收敛速度的控制中
 }
 
+
+s32 wzTag, wzNow, wzcontrol;//定义一个目标速度，采样速度，控制量
+float errNow;
+PID_Typedef PID_WZControl;//定义PID算法的结构体    绝对式PID算法
+
+//void User_wzControl(u16 wzNow)
+//{
+//	
+//	//实际速度
+//  // spdNow = V2;
+//	//目标位置
+//   wzTag = 180;
+
+//	//误差值
+//   errNow = wzTag - wzNow; //计算并写入速度误差
+//   	
+//   PID_WZControl.Kp      = 2;             //写入比例系数为15
+//   PID_WZControl.Ki      = 3;              //写入积分系数为5
+//   PID_WZControl.Kd      = 0;              //写入微分系数为5
+//   PID_WZControl.ErrorBond = 1000;           //写入误差积分上限为1000 下限为-1000
+
+//	//把结构体传人
+// control =  PositionPID_Regulator(errNow,&PID_WZControl);       //执行绝对式PID算法
+//	
+//   //读取PID返回值
+////   control = PID_WZControl.ctrOut;         //读取控制值
+
+//	//把PID得到的速度电机A的PWM中
+//   MotorB_PWM_Update(control);        //放入PWM，用于收敛速度的控制中
+////	//把PID得到的速度电机B的PWM中
+////	MotorB_PWM_Update(control);        //放入PWM，用于收敛速度的控制中
+//}

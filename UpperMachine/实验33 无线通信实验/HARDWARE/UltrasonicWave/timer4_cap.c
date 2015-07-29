@@ -115,125 +115,125 @@ void TIM4_Cap_Init(u16 arr, u16 psc)
 }
 
 //¶¨Ê±Æ÷4ÖÐ¶Ï·þÎñ³ÌÐò,ÓÃCH1×÷Îª³¬Éù²¨×ª»»µÄÍ¨µÀ ¼´PB6¶Ë¿Ú
-void TIM4_IRQHandler(void)
-{
-	if ((TIM4CH1_CAPTURE_STA & 0X80) == 0) 		//»¹Î´³É¹¦²¶»ñ	
-	{
-		if (TIM_GetITStatus(TIM4, TIM_IT_CC1) != RESET) 		//²¶»ñ1·¢Éú²¶»ñÊÂ¼þ
-		{
-			TIM_ClearITPendingBit(TIM4, TIM_IT_CC1); 		//Çå³ýÖÐ¶Ï±êÖ¾Î»
-			if (TIM4CH1_CAPTURE_STA & 0X40)		//²¶»ñµ½Ò»¸öÏÂ½µÑØ
-			{
-				TIM4CH1_CAPTURE_DOWNVAL = TIM_GetCapture1(TIM4);//¼ÇÂ¼ÏÂ´ËÊ±µÄ¶¨Ê±Æ÷¼ÆÊýÖ
-				printf("Channel 1 : %d cm\r\n",TIM4CH1_CAPTURE_DOWNVAL);
-				if (TIM4CH1_CAPTURE_DOWNVAL < TIM4CH1_CAPTURE_UPVAL)
-				{/* Èç¹û¼ÆÊýÆ÷³õÊ¼Öµ´óÓÚÄ©Î²Öµ£¬ËµÃ÷¼ÆÊýÆ÷ÓÐÒç³ö */
-					tim4_T1 = 65535;
-				}
-				else
-				{
-					tim4_T1 = 0;  
-				}
-				tempup1 = TIM4CH1_CAPTURE_DOWNVAL - TIM4CH1_CAPTURE_UPVAL + tim4_T1;		//µÃµ½×ÜµÄ¸ßµçÆ½µÄÊ±¼ä
-				//pwmout1 = tempup1;		//×ÜµÄ¸ßµçÆ½µÄÊ±¼ä
-				tempup1 =tempup1 *17/1000;//¼ÆËã¾àÀë&&UltrasonicWave_Distance<85    t *  10e-6 * 170*100 = t * 17 *e-3
-				
-				TIM4CH1_CAPTURE_STA = 0; 		//²¶»ñ±êÖ¾Î»ÇåÁã£¬ÕâÒ»²½ºÜÖØÒª£¡
-				TIM_OC1PolarityConfig(TIM4, TIM_ICPolarity_Rising); //ÉèÖÃÎªÉÏÉýÑØ²¶»ñ		  
-			}
-			else //·¢Éú²¶»ñÊ±¼äµ«²»ÊÇÏÂ½µÑØ£¬µÚÒ»´Î²¶»ñµ½ÉÏÉýÑØ£¬¼ÇÂ¼´ËÊ±µÄ¶¨Ê±Æ÷¼ÆÊýÖµ
-			{
-				TIM4CH1_CAPTURE_UPVAL = TIM_GetCapture1(TIM4);		//»ñÈ¡ÉÏÉýÑØÊý¾Ý
-				TIM4CH1_CAPTURE_STA |= 0X40;		//±ê¼ÇÒÑ²¶»ñµ½ÉÏÉýÑØ
-				TIM_OC1PolarityConfig(TIM4, TIM_ICPolarity_Falling);//ÉèÖÃÎªÏÂ½µÑØ²¶»ñ
-			}
-		}
-	}
+//void TIM4_IRQHandler(void)
+//{
+//	if ((TIM4CH1_CAPTURE_STA & 0X80) == 0) 		//»¹Î´³É¹¦²¶»ñ	
+//	{
+//		if (TIM_GetITStatus(TIM4, TIM_IT_CC1) != RESET) 		//²¶»ñ1·¢Éú²¶»ñÊÂ¼þ
+//		{
+//			TIM_ClearITPendingBit(TIM4, TIM_IT_CC1); 		//Çå³ýÖÐ¶Ï±êÖ¾Î»
+//			if (TIM4CH1_CAPTURE_STA & 0X40)		//²¶»ñµ½Ò»¸öÏÂ½µÑØ
+//			{
+//				TIM4CH1_CAPTURE_DOWNVAL = TIM_GetCapture1(TIM4);//¼ÇÂ¼ÏÂ´ËÊ±µÄ¶¨Ê±Æ÷¼ÆÊýÖ
+//				printf("Channel 1 : %d cm\r\n",TIM4CH1_CAPTURE_DOWNVAL);
+//				if (TIM4CH1_CAPTURE_DOWNVAL < TIM4CH1_CAPTURE_UPVAL)
+//				{/* Èç¹û¼ÆÊýÆ÷³õÊ¼Öµ´óÓÚÄ©Î²Öµ£¬ËµÃ÷¼ÆÊýÆ÷ÓÐÒç³ö */
+//					tim4_T1 = 65535;
+//				}
+//				else
+//				{
+//					tim4_T1 = 0;  
+//				}
+//				tempup1 = TIM4CH1_CAPTURE_DOWNVAL - TIM4CH1_CAPTURE_UPVAL + tim4_T1;		//µÃµ½×ÜµÄ¸ßµçÆ½µÄÊ±¼ä
+//				//pwmout1 = tempup1;		//×ÜµÄ¸ßµçÆ½µÄÊ±¼ä
+//				tempup1 =tempup1 *17/1000;//¼ÆËã¾àÀë&&UltrasonicWave_Distance<85    t *  10e-6 * 170*100 = t * 17 *e-3
+//				
+//				TIM4CH1_CAPTURE_STA = 0; 		//²¶»ñ±êÖ¾Î»ÇåÁã£¬ÕâÒ»²½ºÜÖØÒª£¡
+//				TIM_OC1PolarityConfig(TIM4, TIM_ICPolarity_Rising); //ÉèÖÃÎªÉÏÉýÑØ²¶»ñ		  
+//			}
+//			else //·¢Éú²¶»ñÊ±¼äµ«²»ÊÇÏÂ½µÑØ£¬µÚÒ»´Î²¶»ñµ½ÉÏÉýÑØ£¬¼ÇÂ¼´ËÊ±µÄ¶¨Ê±Æ÷¼ÆÊýÖµ
+//			{
+//				TIM4CH1_CAPTURE_UPVAL = TIM_GetCapture1(TIM4);		//»ñÈ¡ÉÏÉýÑØÊý¾Ý
+//				TIM4CH1_CAPTURE_STA |= 0X40;		//±ê¼ÇÒÑ²¶»ñµ½ÉÏÉýÑØ
+//				TIM_OC1PolarityConfig(TIM4, TIM_ICPolarity_Falling);//ÉèÖÃÎªÏÂ½µÑØ²¶»ñ
+//			}
+//		}
+//	}
 
-	if ((TIM4CH2_CAPTURE_STA & 0X80) == 0)		//»¹Î´³É¹¦²¶»ñ	
-	{
-		if (TIM_GetITStatus(TIM4, TIM_IT_CC2) != RESET)		//²¶»ñ2·¢Éú²¶»ñÊÂ¼þ
-		{
-			TIM_ClearITPendingBit(TIM4, TIM_IT_CC2);		//Çå³ýÖÐ¶Ï±êÖ¾Î»
-			if (TIM4CH2_CAPTURE_STA & 0X40)		//²¶»ñµ½Ò»¸öÏÂ½µÑØ
-			{
-				TIM4CH2_CAPTURE_DOWNVAL = TIM_GetCapture2(TIM4);//¼ÇÂ¼ÏÂ´ËÊ±µÄ¶¨Ê±Æ÷¼ÆÊýÖµ
-				if (TIM4CH2_CAPTURE_DOWNVAL < TIM4CH2_CAPTURE_UPVAL)
-				{
-					tim4_T2 = 65535;
-				}
-				else
-					tim4_T2 = 0;
-				tempup2 = TIM4CH2_CAPTURE_DOWNVAL - TIM4CH2_CAPTURE_UPVAL
-						+ tim4_T2;		//µÃµ½×ÜµÄ¸ßµçÆ½µÄÊ±¼ä
-				pwmout2 = tempup2;		//×ÜµÄ¸ßµçÆ½µÄÊ±¼ä
-				TIM4CH2_CAPTURE_STA = 0;		//²¶»ñ±êÖ¾Î»ÇåÁã
-				TIM_OC2PolarityConfig(TIM4, TIM_ICPolarity_Rising); //ÉèÖÃÎªÉÏÉýÑØ²¶»ñ		  
-			}
-			else //·¢Éú²¶»ñÊ±¼äµ«²»ÊÇÏÂ½µÑØ£¬µÚÒ»´Î²¶»ñµ½ÉÏÉýÑØ£¬¼ÇÂ¼´ËÊ±µÄ¶¨Ê±Æ÷¼ÆÊýÖµ
-			{
-				TIM4CH2_CAPTURE_UPVAL = TIM_GetCapture2(TIM4);		//»ñÈ¡ÉÏÉýÑØÊý¾Ý
-				TIM4CH2_CAPTURE_STA |= 0X40;		//±ê¼ÇÒÑ²¶»ñµ½ÉÏÉýÑØ
-				TIM_OC2PolarityConfig(TIM4, TIM_ICPolarity_Falling);//ÉèÖÃÎªÏÂ½µÑØ²¶»ñ
-			}
-		}
-	}
+//	if ((TIM4CH2_CAPTURE_STA & 0X80) == 0)		//»¹Î´³É¹¦²¶»ñ	
+//	{
+//		if (TIM_GetITStatus(TIM4, TIM_IT_CC2) != RESET)		//²¶»ñ2·¢Éú²¶»ñÊÂ¼þ
+//		{
+//			TIM_ClearITPendingBit(TIM4, TIM_IT_CC2);		//Çå³ýÖÐ¶Ï±êÖ¾Î»
+//			if (TIM4CH2_CAPTURE_STA & 0X40)		//²¶»ñµ½Ò»¸öÏÂ½µÑØ
+//			{
+//				TIM4CH2_CAPTURE_DOWNVAL = TIM_GetCapture2(TIM4);//¼ÇÂ¼ÏÂ´ËÊ±µÄ¶¨Ê±Æ÷¼ÆÊýÖµ
+//				if (TIM4CH2_CAPTURE_DOWNVAL < TIM4CH2_CAPTURE_UPVAL)
+//				{
+//					tim4_T2 = 65535;
+//				}
+//				else
+//					tim4_T2 = 0;
+//				tempup2 = TIM4CH2_CAPTURE_DOWNVAL - TIM4CH2_CAPTURE_UPVAL
+//						+ tim4_T2;		//µÃµ½×ÜµÄ¸ßµçÆ½µÄÊ±¼ä
+//				pwmout2 = tempup2;		//×ÜµÄ¸ßµçÆ½µÄÊ±¼ä
+//				TIM4CH2_CAPTURE_STA = 0;		//²¶»ñ±êÖ¾Î»ÇåÁã
+//				TIM_OC2PolarityConfig(TIM4, TIM_ICPolarity_Rising); //ÉèÖÃÎªÉÏÉýÑØ²¶»ñ		  
+//			}
+//			else //·¢Éú²¶»ñÊ±¼äµ«²»ÊÇÏÂ½µÑØ£¬µÚÒ»´Î²¶»ñµ½ÉÏÉýÑØ£¬¼ÇÂ¼´ËÊ±µÄ¶¨Ê±Æ÷¼ÆÊýÖµ
+//			{
+//				TIM4CH2_CAPTURE_UPVAL = TIM_GetCapture2(TIM4);		//»ñÈ¡ÉÏÉýÑØÊý¾Ý
+//				TIM4CH2_CAPTURE_STA |= 0X40;		//±ê¼ÇÒÑ²¶»ñµ½ÉÏÉýÑØ
+//				TIM_OC2PolarityConfig(TIM4, TIM_ICPolarity_Falling);//ÉèÖÃÎªÏÂ½µÑØ²¶»ñ
+//			}
+//		}
+//	}
 
-	if ((TIM4CH3_CAPTURE_STA & 0X80) == 0)		//»¹Î´³É¹¦²¶»ñ	
-	{
-		if (TIM_GetITStatus(TIM4, TIM_IT_CC3) != RESET)		//²¶»ñ3·¢Éú²¶»ñÊÂ¼þ
-		{
-			TIM_ClearITPendingBit(TIM4, TIM_IT_CC3);		//Çå³ýÖÐ¶Ï±êÖ¾Î»
-			if (TIM4CH3_CAPTURE_STA & 0X40)		//²¶»ñµ½Ò»¸öÏÂ½µÑØ
-			{
-				TIM4CH3_CAPTURE_DOWNVAL = TIM_GetCapture3(TIM4);//¼ÇÂ¼ÏÂ´ËÊ±µÄ¶¨Ê±Æ÷¼ÆÊýÖµ
-				if (TIM4CH3_CAPTURE_DOWNVAL < TIM4CH3_CAPTURE_UPVAL)
-				{
-					tim4_T3 = 65535;
-				}
-				else
-					tim4_T3 = 0;
-				tempup3 = TIM4CH3_CAPTURE_DOWNVAL - TIM4CH3_CAPTURE_UPVAL
-						+ tim4_T3;		//µÃµ½×ÜµÄ¸ßµçÆ½µÄÊ±¼ä
-				pwmout3 = tempup3;		//×ÜµÄ¸ßµçÆ½µÄÊ±¼ä
-				TIM4CH3_CAPTURE_STA = 0;		//²¶»ñ±êÖ¾Î»ÇåÁã
-				TIM_OC3PolarityConfig(TIM4, TIM_ICPolarity_Rising); //ÉèÖÃÎªÉÏÉýÑØ²¶»ñ		  
-			}
-			else //·¢Éú²¶»ñÊ±¼äµ«²»ÊÇÏÂ½µÑØ£¬µÚÒ»´Î²¶»ñµ½ÉÏÉýÑØ£¬¼ÇÂ¼´ËÊ±µÄ¶¨Ê±Æ÷¼ÆÊýÖµ
-			{
-				TIM4CH3_CAPTURE_UPVAL = TIM_GetCapture3(TIM4);		//»ñÈ¡ÉÏÉýÑØÊý¾Ý
-				TIM4CH3_CAPTURE_STA |= 0X40;		//±ê¼ÇÒÑ²¶»ñµ½ÉÏÉýÑØ
-				TIM_OC3PolarityConfig(TIM4, TIM_ICPolarity_Falling);//ÉèÖÃÎªÏÂ½µÑØ²¶»ñ
-			}
-		}
-	}
+//	if ((TIM4CH3_CAPTURE_STA & 0X80) == 0)		//»¹Î´³É¹¦²¶»ñ	
+//	{
+//		if (TIM_GetITStatus(TIM4, TIM_IT_CC3) != RESET)		//²¶»ñ3·¢Éú²¶»ñÊÂ¼þ
+//		{
+//			TIM_ClearITPendingBit(TIM4, TIM_IT_CC3);		//Çå³ýÖÐ¶Ï±êÖ¾Î»
+//			if (TIM4CH3_CAPTURE_STA & 0X40)		//²¶»ñµ½Ò»¸öÏÂ½µÑØ
+//			{
+//				TIM4CH3_CAPTURE_DOWNVAL = TIM_GetCapture3(TIM4);//¼ÇÂ¼ÏÂ´ËÊ±µÄ¶¨Ê±Æ÷¼ÆÊýÖµ
+//				if (TIM4CH3_CAPTURE_DOWNVAL < TIM4CH3_CAPTURE_UPVAL)
+//				{
+//					tim4_T3 = 65535;
+//				}
+//				else
+//					tim4_T3 = 0;
+//				tempup3 = TIM4CH3_CAPTURE_DOWNVAL - TIM4CH3_CAPTURE_UPVAL
+//						+ tim4_T3;		//µÃµ½×ÜµÄ¸ßµçÆ½µÄÊ±¼ä
+//				pwmout3 = tempup3;		//×ÜµÄ¸ßµçÆ½µÄÊ±¼ä
+//				TIM4CH3_CAPTURE_STA = 0;		//²¶»ñ±êÖ¾Î»ÇåÁã
+//				TIM_OC3PolarityConfig(TIM4, TIM_ICPolarity_Rising); //ÉèÖÃÎªÉÏÉýÑØ²¶»ñ		  
+//			}
+//			else //·¢Éú²¶»ñÊ±¼äµ«²»ÊÇÏÂ½µÑØ£¬µÚÒ»´Î²¶»ñµ½ÉÏÉýÑØ£¬¼ÇÂ¼´ËÊ±µÄ¶¨Ê±Æ÷¼ÆÊýÖµ
+//			{
+//				TIM4CH3_CAPTURE_UPVAL = TIM_GetCapture3(TIM4);		//»ñÈ¡ÉÏÉýÑØÊý¾Ý
+//				TIM4CH3_CAPTURE_STA |= 0X40;		//±ê¼ÇÒÑ²¶»ñµ½ÉÏÉýÑØ
+//				TIM_OC3PolarityConfig(TIM4, TIM_ICPolarity_Falling);//ÉèÖÃÎªÏÂ½µÑØ²¶»ñ
+//			}
+//		}
+//	}
 
-	if ((TIM4CH4_CAPTURE_STA & 0X80) == 0)		//»¹Î´³É¹¦²¶»ñ	
-	{
-		if (TIM_GetITStatus(TIM4, TIM_IT_CC4) != RESET)		//²¶»ñ4·¢Éú²¶»ñÊÂ¼þ
-		{
-			TIM_ClearITPendingBit(TIM4, TIM_IT_CC4);		//Çå³ýÖÐ¶Ï±êÖ¾Î»
-			if (TIM4CH4_CAPTURE_STA & 0X40)		//²¶»ñµ½Ò»¸öÏÂ½µÑØ
-			{
-				TIM4CH4_CAPTURE_DOWNVAL = TIM_GetCapture4(TIM4);//¼ÇÂ¼ÏÂ´ËÊ±µÄ¶¨Ê±Æ÷¼ÆÊýÖµ
-				if (TIM4CH4_CAPTURE_DOWNVAL < TIM4CH4_CAPTURE_UPVAL)
-				{
-					tim4_T4 = 65535;
-				}
-				else
-					tim4_T4 = 0;
-				tempup4 = TIM4CH4_CAPTURE_DOWNVAL - TIM4CH4_CAPTURE_UPVAL
-						+ tim4_T4;		//µÃµ½×ÜµÄ¸ßµçÆ½µÄÊ±¼ä
-				pwmout4 = tempup4;		//×ÜµÄ¸ßµçÆ½µÄÊ±¼ä
-				TIM4CH4_CAPTURE_STA = 0;		//²¶»ñ±êÖ¾Î»ÇåÁã
-				TIM_OC4PolarityConfig(TIM4, TIM_ICPolarity_Rising); //ÉèÖÃÎªÉÏÉýÑØ²¶»ñ		  
-			}
-			else //·¢Éú²¶»ñÊ±¼äµ«²»ÊÇÏÂ½µÑØ£¬µÚÒ»´Î²¶»ñµ½ÉÏÉýÑØ£¬¼ÇÂ¼´ËÊ±µÄ¶¨Ê±Æ÷¼ÆÊýÖµ
-			{
-				TIM4CH4_CAPTURE_UPVAL = TIM_GetCapture4(TIM4);		//»ñÈ¡ÉÏÉýÑØÊý¾Ý
-				TIM4CH4_CAPTURE_STA |= 0X40;		//±ê¼ÇÒÑ²¶»ñµ½ÉÏÉýÑØ
-				TIM_OC4PolarityConfig(TIM4, TIM_ICPolarity_Falling);//ÉèÖÃÎªÏÂ½µÑØ²¶»ñ
-			}
-		}
-	}
-}
+//	if ((TIM4CH4_CAPTURE_STA & 0X80) == 0)		//»¹Î´³É¹¦²¶»ñ	
+//	{
+//		if (TIM_GetITStatus(TIM4, TIM_IT_CC4) != RESET)		//²¶»ñ4·¢Éú²¶»ñÊÂ¼þ
+//		{
+//			TIM_ClearITPendingBit(TIM4, TIM_IT_CC4);		//Çå³ýÖÐ¶Ï±êÖ¾Î»
+//			if (TIM4CH4_CAPTURE_STA & 0X40)		//²¶»ñµ½Ò»¸öÏÂ½µÑØ
+//			{
+//				TIM4CH4_CAPTURE_DOWNVAL = TIM_GetCapture4(TIM4);//¼ÇÂ¼ÏÂ´ËÊ±µÄ¶¨Ê±Æ÷¼ÆÊýÖµ
+//				if (TIM4CH4_CAPTURE_DOWNVAL < TIM4CH4_CAPTURE_UPVAL)
+//				{
+//					tim4_T4 = 65535;
+//				}
+//				else
+//					tim4_T4 = 0;
+//				tempup4 = TIM4CH4_CAPTURE_DOWNVAL - TIM4CH4_CAPTURE_UPVAL
+//						+ tim4_T4;		//µÃµ½×ÜµÄ¸ßµçÆ½µÄÊ±¼ä
+//				pwmout4 = tempup4;		//×ÜµÄ¸ßµçÆ½µÄÊ±¼ä
+//				TIM4CH4_CAPTURE_STA = 0;		//²¶»ñ±êÖ¾Î»ÇåÁã
+//				TIM_OC4PolarityConfig(TIM4, TIM_ICPolarity_Rising); //ÉèÖÃÎªÉÏÉýÑØ²¶»ñ		  
+//			}
+//			else //·¢Éú²¶»ñÊ±¼äµ«²»ÊÇÏÂ½µÑØ£¬µÚÒ»´Î²¶»ñµ½ÉÏÉýÑØ£¬¼ÇÂ¼´ËÊ±µÄ¶¨Ê±Æ÷¼ÆÊýÖµ
+//			{
+//				TIM4CH4_CAPTURE_UPVAL = TIM_GetCapture4(TIM4);		//»ñÈ¡ÉÏÉýÑØÊý¾Ý
+//				TIM4CH4_CAPTURE_STA |= 0X40;		//±ê¼ÇÒÑ²¶»ñµ½ÉÏÉýÑØ
+//				TIM_OC4PolarityConfig(TIM4, TIM_ICPolarity_Falling);//ÉèÖÃÎªÏÂ½µÑØ²¶»ñ
+//			}
+//		}
+//	}
+//}
