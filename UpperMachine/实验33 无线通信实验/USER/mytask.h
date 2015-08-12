@@ -14,11 +14,23 @@
 //int KEY8_TASK(void);
 
 
-int QJ_TASK(void); //前进
-int HT_TASK(void); //后退
-int ZZ_TASK(void); //左转
-int YZ_TASK(void); //右转
+//int QJ_TASK(void); //前进
+//int HT_TASK(void); //后退
+//int ZZ_TASK(void); //左转
+//int YZ_TASK(void); //右转
+
+
+//倒立任务3
+//void DLB_TASK_3(void);
+//void DLB_TASK_4(void);
+//void DLB_TASK_5(void);
+
+
+//风力摆控制系统
+void Perform_BaseTask1(void);
+void Perform_BaseTask2(void);
+void Perform_BaseTask3(void);
+void Perform_BaseTask4(void);
+void Perform_ExertTask1(void);
 
 #endif
-
-

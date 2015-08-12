@@ -6,7 +6,8 @@
 #include "lcd.h"
 #include "usart.h"
 #include "mytask.h"
-
+//#include "voice.h"
+#include "timer.h"
 #include "24l01.h" 	 
 
 #include "malloc.h"
@@ -28,23 +29,25 @@
  作者：正点原子 @ALIENTEK
 ************************************************/
 
-
+	char tmp_buf[32];
  int main(void)
  {	 
 	//定义全局变量
 	u8 key;
-	u16 t=0;			 
-	 
+	u16 t=0;	
+	u8 i=1;
+
 	//函数初始化
+//	Voice_Init();
 	delay_init();	    	 //延时函数初始化	  
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);//设置中断优先级分组为组2：2位抢占优先级，2位响应优先级
 	uart_init(115200);	 	//串口初始化为115200
  	usmart_dev.init(72);		//初始化USMART	
 	LED_Init();		  			//初始化与LED连接的硬件接口
 	KEY_Init();					//初始化按键
-	
+	TIM7_Int_Init(200,7199);	//100us*200 = 20ms
 	NRF24L01_Init();    		//初始化NRF24L01 
-	 
+	
 	W25QXX_Init();				//初始化W25Q128
 	my_mem_init(SRAMIN);		//初始化内部内存池
 	LCD_Init();			   		//初始化LCD 
@@ -103,94 +106,115 @@
 	Show_Str(45,240,200,24,"赖丽清,张建",24,0);
 	
  	while(1)
-	{	
-		
-		key=1;
-		//按键扫描
-		key=KEY_Scan(0);
-		
-		if(key!=0)
-		{
-			LCD_Clear(WHITE);
-			Show_Str(20,30,200,24,"主菜单:",24,0);
-			Show_Str(20,60,200,24,"任务1:",24,0);
-			Show_Str(20,90,200,24,"任务2:",24,0);
-			Show_Str(20,120,200,24,"任务3:",24,0);
-			Show_Str(20,150,200,24,"任务4:",24,0);
-			Show_Str(20,180,200,24,"任务5:",24,0);
-			Show_Str(20,210,200,24,"任务6:",24,0);
-			Show_Str(20,240,200,24,"任务7:",24,0);
-			Show_Str(20,270,200,24,"任务8:",24,0);
-			
-			while(1)
-			{
-				key=0;
-				key=KEY_Scan(0);
-				//WKUP_PRES  功能:返回主界面
-				if(key==WKUP_PRES)
-				{
-					MUSE_TASK();
-				}
-				
-				//KEY1_PRES 功能:执行任务1
-				else if(key==KEY0_PRES)
-				{
-					KEY0_TASK();
-				}
-				//KEY1_PRES 功能:执行任务1
-				else if(key==KEY1_PRES)
-				{
-					KEY1_TASK();
-				}
-				//KEY2_PRES 功能:执行任务2
-				else if(key==KEY2_PRES)
-				{
-					KEY2_TASK();
-				}
-				//KEY3_PRES 功能:执行任务3
-				else if(key==KEY3_PRES)
-				{
-					KEY3_TASK();
-				}
-				//KEY4_PRES 功能:执行任务4
-				else if(key==KEY4_PRES)
-				{
-					KEY4_TASK();
-				}
-				//KEY5_PRES 功能:执行任务5
-				else if(key==KEY5_PRES)
-				{
-					KEY5_TASK();
-				}
-				//KEY6_PRES 功能:执行任务6
-				else if(key==KEY6_PRES)
-				{
-					KEY6_TASK();
-				}
-				//KEY7_PRES 功能:执行任务7
-				else if(key==KEY7_PRES)
-				{
-					KEY7_TASK();
-				}
-				//KEY8_PRES 功能:执行任务8
-//				else if(key==KEY8_PRES)
-//				{
-//					KEY8_TASK();
-//				}
-				
-			}
-		}
+	{
 
+			
 		
-		t++;
-		if(t==100)
-			Show_Str(10,270,230,24,"按任意键进入主菜单",24,0);
- 		if(t==200)
-		{	
-			LCD_Fill(10,270,230,300,WHITE);
-			t=0; 
-		}
-		delay_ms(5);
+//		key=KEY_Scan(0);
+//		if(key!=0)
+//		{
+//			set_Voice_by_one(i++);
+//		}
+//		printf("%d",i);
+//		delay_ms(100);
+		
+//		delay_ms(10000);
+//		set_Voice(3);
+//		delay_ms(10000);
+//		key=1;
+//		//按键扫描
+//		key=KEY_Scan(0);
+//		
+//		if(key!=0)
+//		{
+//			set_Voice(i++);
+//		}
+//		
+//		if(key!=0)
+//		{
+//			LCD_Clear(WHITE);
+//			Show_Str(20,30,200,24,"主菜单:",24,0);
+//			Show_Str(20,60,200,24,"任务1:",24,0);
+//			Show_Str(20,90,200,24,"任务2:",24,0);
+//			Show_Str(20,120,200,24,"任务3:",24,0);
+//			Show_Str(20,150,200,24,"任务4:",24,0);
+//			Show_Str(20,180,200,24,"任务5:",24,0);
+//			Show_Str(20,210,200,24,"任务6:",24,0);
+//			Show_Str(20,240,200,24,"任务7:",24,0);
+//			Show_Str(20,270,200,24,"任务8:",24,0);
+//			
+//			while(1)
+//			{
+//				u8 a = 10;
+//				
+//				key=0;
+//				key=KEY_Scan(0);
+//				//WKUP_PRES  功能:返回主界面
+//				if(key==WKUP_PRES)
+//				{
+////					MUSE_TASK();
+					
+//				}
+//				
+//				//KEY1_PRES 功能:执行任务1
+//				else if(key==KEY0_PRES)
+//				{
+//					KEY0_TASK();
+//				}
+//				//KEY1_PRES 功能:执行任务1
+//				else if(key==KEY1_PRES)
+//				{
+//					KEY1_TASK();
+//				}
+//				//KEY2_PRES 功能:执行任务2
+//				else if(key==KEY2_PRES)
+//				{
+//					KEY2_TASK();
+//				}
+//				//KEY3_PRES 功能:执行任务3
+//				else if(key==KEY3_PRES)
+//				{
+//					KEY3_TASK();
+//				}
+//				//KEY4_PRES 功能:执行任务4
+//				else if(key==KEY4_PRES)
+//				{
+//					KEY4_TASK();
+//				}
+//				//KEY5_PRES 功能:执行任务5
+//				else if(key==KEY5_PRES)
+//				{
+//					KEY5_TASK();
+//				}
+//				//KEY6_PRES 功能:执行任务6
+//				else if(key==KEY6_PRES)
+//				{
+//					KEY6_TASK();
+//				}
+//				//KEY7_PRES 功能:执行任务7
+//				else if(key==KEY7_PRES)
+//				{
+//					KEY7_TASK();
+//				}
+//				//KEY8_PRES 功能:执行任务8
+////				else if(key==KEY8_PRES)
+////				{
+////					KEY8_TASK();
+////				}
+				
+//			}
+//		}
+
+//		
+//		t++;
+//		if(t==100)
+//			Show_Str(10,270,230,24,"按任意键进入主菜单",24,0);
+// 		if(t==200)
+//		{	
+//			LCD_Fill(10,270,230,300,WHITE);
+//			t=0; 
+//		}
+//		delay_ms(5);
 	} 
 }	
    	

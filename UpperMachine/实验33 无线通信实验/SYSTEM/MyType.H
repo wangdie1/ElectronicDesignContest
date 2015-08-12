@@ -1,6 +1,8 @@
 #ifndef _MyType_H
 #define _MyType_H
 
+#include "stm32f10x.h"
+
 #define FALSE 	0
 #define TRUE  	1
 
@@ -76,23 +78,90 @@ typedef struct
 // typedef enum {FALSE = 0, TRUE = !FALSE} bool;
 
 
-/* 一般的PID Controller  */
+
+/**********一般的pid算法**************/
 typedef struct
 {
 	float  Kp;				//比例系数
 	float  Ki;				//积分系数
 	float  Kd;				//微分系数
-	float  ErrorBond;	//误差界限
-	float  KiBond;		//积分作用误差
-	float  KpBond;		//比例作用误差范围
-	 float errNow;//当前的误差
-	double ErrorSum;	//累计误差
-	double ErrorSumMax;//累计误差最大值
-	double ErrorSumMin;//累计误差最小值
-	double ErrorPre;	//上次误差
-	double OutputMax;	//输出最大
-	double OutputMin;	//输出最小
+	
+	float  ErrorBond;		//误差界限
+	float  KiBond;			//积分作用误差
+	float  KpBond;			//比例作用误差范围
+	
+	float  errNow;			//当前的误差
+	float 	ErrorPre;
+	
+	double ErrorSum;		//累计误差
+	double ErrorSumMax;		//累计误差最大值
+	double ErrorSumMin;		//累计误差最小值
+	
+	double OutputMax;		//输出最大
+	double OutputMin;		//输出最小
+	
+	float dCtrOut;//控制增量输出
+	float ctrOut;//控制输出
+	
+	s32 spdTag,spdNow;		//定义一个目标速度,采样速度，控制量	
+	int control;
 }PID_Typedef;
+
+
+/*一般的位置式PID算法*/
+typedef struct
+{
+	float  Kp;				//比例系数
+	float  Ki;				//积分系数
+	float  Kd;				//微分系数
+	
+	float  ErrorBond;		//误差界限
+	float  KiBond;			//积分作用误差
+	float  KpBond;			//比例作用误差范围
+	
+	float  errNow;			//当前的误差
+	double ErrorPre;		//上次误差
+	
+	double ErrorSum;		//累计误差
+	double ErrorSumMax;		//累计误差最大值
+	double ErrorSumMin;		//累计误差最小值
+	
+	double OutputMax;		//输出最大
+	double OutputMin;		//输出最小
+	
+	s32 spdTag,spdNow;		//定义一个目标速度,采样速度，控制量
+	int control;
+}PID_Pos_Typedef;
+
+
+//增量式pid的结构体
+typedef struct
+{
+	float  Kp;				//比例系数
+	float  Ki;				//积分系数
+	float  Kd;				//微分系数
+	
+	float  ErrorBond;		//误差界限
+	float  KiBond;			//积分作用误差
+	float  KpBond;			//比例作用误差范围
+	
+	float  errNow;			//当前的误差
+	double errOld1;     	//前一次的误差
+	double errOld2;			//前两次的误差
+	
+	double ErrorSum;		//累计误差
+	double ErrorSumMax;		//累计误差最大值
+	double ErrorSumMin;		//累计误差最小值
+	
+	double OutputMax;		//输出最大
+	double OutputMin;		//输出最小
+	
+	float dCtrOut;//控制增量输出
+	float ctrOut;//控制输出
+	
+	s32 spdTag,spdNow;		//定义一个目标速度,采样速度，控制量	
+	int control;	
+}PID_Inc_Typedef;
 
 
 typedef struct 
@@ -110,45 +179,55 @@ typedef struct
 }FForward_Typedef;
 
 
+
+
 /*绝对式PID算法，接口参数结构类型*/
 
-typedef struct 
-{
- /*PID算法接口变量，用于给用户获取或修改PID算法的特性*/
- float kp;     //比例系数
- float ki;     //积分系数
- float kd;     //微分系数
- float errILim;//误差积分上限
- 
- float errNow;//当前的误差
- float ctrOut;//控制量输出
- 
- /*PID算法内部变量，其值不能修改*/
- float errOld;
- float errP;
- float errI;
- float errD;
- 
-}PID_AbsoluteType;
+//typedef struct 
+//{
+// /*PID算法接口变量，用于给用户获取或修改PID算法的特性*/
+// float kp;     //比例系数
+// float ki;     //积分系数
+// float kd;     //微分系数
+// float errILim;//误差积分上限
+// 
+// float errNow;//当前的误差
+// float ctrOut;//控制量输出
+// 
+// /*PID算法内部变量，其值不能修改*/
+// float errOld;
+// float errP;
+// float errI;
+// float errD;
+//	
+// s32 spdTag,spdNow;
+// int control;//定义一个目标速度,采样速度，控制量
+// 
+//}PID_AbsoluteType;
 
 
-/*增量式PID算法，接口参数结构类型*/
 
-typedef struct 
-{
- /*PID算法接口变量，用于给用户获取或修改PID算法的特性*/
- float kp;     //比例系数
- float ki;     //积分系数
- float kd;     //微分系数
- 
- float errNow; //当前的误差
- float dCtrOut;//控制增量输出
- float  ctrOut;//控制输出
- 
- /*PID算法内部变量，其值不能修改*/
- float errOld1;
- float errOld2;
- 
-}PID_IncrementType;	
+
+///*增量式PID算法，接口参数结构类型*/
+
+//typedef struct 
+//{
+// /*PID算法接口变量，用于给用户获取或修改PID算法的特性*/
+// float kp;     //比例系数
+// float ki;     //积分系数
+// float kd;     //微分系数
+// 
+// float errNow; //当前的误差
+// float dCtrOut;//控制增量输出
+// float ctrOut;//控制输出
+// 
+// /*PID算法内部变量，其值不能修改*/
+// float errOld1;
+// float errOld2;
+//	
+// s32 spdTag,spdNow;	//定义一个目标速度,采样速度，控制量
+// int control;
+//	
+//}PID_IncrementType;	
 
 #endif

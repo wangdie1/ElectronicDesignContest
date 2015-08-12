@@ -223,41 +223,41 @@ u32 usmart_get_runtime(void)
 }  
 //下面这两个函数,非USMART函数,放到这里,仅仅方便移植. 
 //定时器4中断服务程序	 
-void TIM4_IRQHandler(void)
-{ 		    		  			    
-	if(TIM_GetITStatus(TIM4,TIM_IT_Update)==SET)//溢出中断
-	{
-		usmart_dev.scan();	//执行usmart扫描	
-		TIM_SetCounter(TIM4,0);		//清空定时器的CNT
-		TIM_SetAutoreload(TIM4,100);//恢复原来的设置		    				   				     	    	
-	}				   
-	TIM_ClearITPendingBit(TIM4,TIM_IT_Update);  //清除中断标志位    
-}
+//void TIM4_IRQHandler(void)
+//{ 		    		  			    
+//	if(TIM_GetITStatus(TIM4,TIM_IT_Update)==SET)//溢出中断
+//	{
+//		usmart_dev.scan();	//执行usmart扫描	
+//		TIM_SetCounter(TIM4,0);		//清空定时器的CNT
+//		TIM_SetAutoreload(TIM4,100);//恢复原来的设置		    				   				     	    	
+//	}				   
+//	TIM_ClearITPendingBit(TIM4,TIM_IT_Update);  //清除中断标志位    
+//}
 //使能定时器4,使能中断.
-void Timer4_Init(u16 arr,u16 psc)
-{
-	NVIC_InitTypeDef   NVIC_InitStructure;
-	TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStructure;
+//void Timer4_Init(u16 arr,u16 psc)
+//{
+//	NVIC_InitTypeDef   NVIC_InitStructure;
+//	TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStructure;
 
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4,ENABLE);  ///使能TIM4时钟
+//	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4,ENABLE);  ///使能TIM4时钟
 
-	TIM_TimeBaseInitStructure.TIM_Prescaler=psc;  //定时器分频
-	TIM_TimeBaseInitStructure.TIM_CounterMode=TIM_CounterMode_Up; //向上计数模式
-	TIM_TimeBaseInitStructure.TIM_Period=arr;   //自动重装载值
-	TIM_TimeBaseInitStructure.TIM_ClockDivision=TIM_CKD_DIV1; 
-	
-	TIM_TimeBaseInit(TIM4,&TIM_TimeBaseInitStructure);//初始化定时器4
-	
-	TIM_ITConfig(TIM4,TIM_IT_Update,ENABLE); //允许定时器4更新中断
-	TIM_Cmd(TIM4,ENABLE); //使能定时器4
- 
-	NVIC_InitStructure.NVIC_IRQChannel = TIM4_IRQn;//外部中断4
-  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x03;//抢占优先级3
-  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x03;//子优先级3
-  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;//使能外部中断通道
-  NVIC_Init(&NVIC_InitStructure);//配置NVIC
-	 							 
-}
+//	TIM_TimeBaseInitStructure.TIM_Prescaler=psc;  //定时器分频
+//	TIM_TimeBaseInitStructure.TIM_CounterMode=TIM_CounterMode_Up; //向上计数模式
+//	TIM_TimeBaseInitStructure.TIM_Period=arr;   //自动重装载值
+//	TIM_TimeBaseInitStructure.TIM_ClockDivision=TIM_CKD_DIV1; 
+//	
+//	TIM_TimeBaseInit(TIM4,&TIM_TimeBaseInitStructure);//初始化定时器4
+//	
+//	TIM_ITConfig(TIM4,TIM_IT_Update,ENABLE); //允许定时器4更新中断
+//	TIM_Cmd(TIM4,ENABLE); //使能定时器4
+// 
+//	NVIC_InitStructure.NVIC_IRQChannel = TIM4_IRQn;//外部中断4
+//  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x03;//抢占优先级3
+//  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x03;//子优先级3
+//  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;//使能外部中断通道
+//  NVIC_Init(&NVIC_InitStructure);//配置NVIC
+//	 							 
+//}
 #endif
 ////////////////////////////////////////////////////////////////////////////////////////
 //初始化串口控制器
@@ -265,7 +265,8 @@ void Timer4_Init(u16 arr,u16 psc)
 void usmart_init(u8 sysclk)
 {
 #if USMART_ENTIMX_SCAN==1
-	Timer4_Init(1000,(u32)sysclk*100-1);//分频,时钟为10K ,100ms中断一次,注意,计数频率必须为10Khz,以和runtime单位(0.1ms)同步.
+	;
+//	Timer4_Init(1000,(u32)sysclk*100-1);//分频,时钟为10K ,100ms中断一次,注意,计数频率必须为10Khz,以和runtime单位(0.1ms)同步.
 #endif
 	usmart_dev.sptype=1;	//十六进制显示参数
 }		

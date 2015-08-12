@@ -364,7 +364,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_HD,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\HARDWARE\LED;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\USER;..\STM32F10x_FWLib\inc;..\CORE;..\HARDWARE\KEY;..\HARDWARE\LCD;..\HARDWARE\RTC;..\HARDWARE\RTC;..\HARDWARE\WKUP;..\HARDWARE\ADC;..\HARDWARE\DAC;..\HARDWARE\DMA;..\HARDWARE\IIC;..\HARDWARE\24CXX;..\HARDWARE\SPI;..\HARDWARE\FLASH;..\HARDWARE\TOUCH;..\HARDWARE\REMOTE;..\HARDWARE\ADXL345;..\HARDWARE\DS18B20;..\HARDWARE\NRF24L01;..\HARDWARE\SDIO;..\HARDWARE\W25QXX;..\USMART;..\FATFS\exfuns;..\MALLOC;..\FATFS\src;..\TEXT;..\FATFS\doc;..\MALLOC</IncludePath>
+              <IncludePath>..\HARDWARE\LED;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\USER;..\STM32F10x_FWLib\inc;..\CORE;..\HARDWARE\KEY;..\HARDWARE\LCD;..\HARDWARE\RTC;..\HARDWARE\RTC;..\HARDWARE\WKUP;..\HARDWARE\ADC;..\HARDWARE\DAC;..\HARDWARE\DMA;..\HARDWARE\IIC;..\HARDWARE\24CXX;..\HARDWARE\SPI;..\HARDWARE\FLASH;..\HARDWARE\TOUCH;..\HARDWARE\REMOTE;..\HARDWARE\ADXL345;..\HARDWARE\DS18B20;..\HARDWARE\NRF24L01;..\HARDWARE\SDIO;..\HARDWARE\W25QXX;..\USMART;..\FATFS\exfuns;..\MALLOC;..\FATFS\src;..\TEXT;..\FATFS\doc;..\MALLOC;..\HARDWARE\TIMER</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -466,6 +466,16 @@
               <FileName>w25qxx.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\W25QXX\w25qxx.c</FilePath>
+            </File>
+            <File>
+              <FileName>voice.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\VOICE\voice.c</FilePath>
+            </File>
+            <File>
+              <FileName>timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\TIMER\timer.c</FilePath>
             </File>
           </Files>
         </Group>

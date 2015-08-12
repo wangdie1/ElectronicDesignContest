@@ -15,32 +15,36 @@
 //////////////////////////////////////////////////////////////////////////////////   	 
 
 
-//#define KEY0 PEin(4)   	//PE4
-//#define KEY1 PEin(3)	//PE3 
-//#define KEY2 PEin(2)	//PE2
-//#define WK_UP PAin(0)	//PA0  WK_UP
-
-//#define KEY0  GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_4)//读取按键0
-//#define KEY1  GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_3)//读取按键1
-//#define KEY2  GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_2)//读取按键2 
-//#define WK_UP   GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_4)//读取按键3(WK_UP) 
-
-// 
-
-//#define KEY0_PRES 	1	//KEY0按下
-//#define KEY1_PRES	2	//KEY1按下
-//#define KEY2_PRES	3	//KEY2按下
-//#define WKUP_PRES   4	//KEY_UP按下(即WK_UP/KEY_UP)
 
 
+#define KEYA GPIO_ReadInputDataBit(GPIOG,GPIO_Pin_3)// 按键A
+#define KEYB GPIO_ReadInputDataBit(GPIOG,GPIO_Pin_5)// 按键B
+#define KEYC GPIO_ReadInputDataBit(GPIOG,GPIO_Pin_2)// 按键C
+#define KEYD GPIO_ReadInputDataBit(GPIOG,GPIO_Pin_4)// 按键D
+#define KEYE GPIO_ReadInputDataBit(GPIOC,GPIO_Pin_13)// 按键E
 
+#define KEYADD GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_8)// 添加按键
+#define KEYDCS GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_10)// 减少按键
 
-#define KEY1  GPIO_ReadInputDataBit(GPIOC,GPIO_Pin_13)//读取按键0
-#define KEY2  GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_0)//读取按键1
+#define KEYCF GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_9)// 确认按键
+#define KEYCC GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_11)// 取消按键
 
-#define KEY1_PRES	1	//KEY1按下
-#define KEY2_PRES	2	//KEY2按下
+#define WK_UP  GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_0)//wk
 
+//功能选项按键
+#define KEYA_PRES	1	//  按键A按下
+#define KEYB_PRES	2	//  按键B按下
+#define KEYC_PRES	3	//  按键C按下
+#define KEYD_PRES	4	//  按键D按下
+#define KEYE_PRES	5	//  按键E按下
+//确认取消按键
+#define KEYCF_PRES	6	//  确认键按下
+#define KEYCC_PRES	7	//  取消/返回键按下
+//加减按键
+#define KEYADD_PRES 8  //  按键加按下
+#define KEYDCS_PRES 9  //  按键减按下
+
+#define WKUP_PRES   10  //返回上一层菜单键 
 
 void KEY_Init(void);//IO初始化
 u8 KEY_Scan(u8);  	//按键扫描函数					    

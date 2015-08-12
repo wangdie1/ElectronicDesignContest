@@ -671,11 +671,6 @@
               <FilePath>..\HARDWARE\LCD\LCD.c</FilePath>
             </File>
             <File>
-              <FileName>remote.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\HARDWARE\remote\remote.c</FilePath>
-            </File>
-            <File>
               <FileName>ds18B20.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\DS18B20\ds18B20.c</FilePath>

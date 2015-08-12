@@ -1,4 +1,5 @@
 ..\obj\tb6560.o: ..\HARDWARE\TB6560\tb6560.c
+..\obj\tb6560.o: ..\HARDWARE\init\init.h
 ..\obj\tb6560.o: ..\SYSTEM\sys\sys.h
 ..\obj\tb6560.o: ..\USER\stm32f10x.h
 ..\obj\tb6560.o: ..\CORE\core_cm3.h
@@ -29,7 +30,20 @@
 ..\obj\tb6560.o: ..\STM32F10x_FWLib\inc\stm32f10x_usart.h
 ..\obj\tb6560.o: ..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h
 ..\obj\tb6560.o: ..\STM32F10x_FWLib\inc\misc.h
+..\obj\tb6560.o: ..\HARDWARE\LED\led.h
+..\obj\tb6560.o: ..\HARDWARE\RTC\rtc.h
+..\obj\tb6560.o: ..\HARDWARE\KEY\key.h
+..\obj\tb6560.o: ..\SYSTEM\delay\delay.h
+..\obj\tb6560.o: ..\USER\mytask.h
+..\obj\tb6560.o: ..\HARDWARE\LCD\lcd.h
+..\obj\tb6560.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdlib.h
+..\obj\tb6560.o: ..\HARDWARE\TimeBase\TimeBase.h
+..\obj\tb6560.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdbool.h
+..\obj\tb6560.o: ..\HARDWARE\NIMING\niming.h
 ..\obj\tb6560.o: ..\SYSTEM\usart\usart.h
 ..\obj\tb6560.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdio.h
-..\obj\tb6560.o: ..\SYSTEM\delay\delay.h
+..\obj\tb6560.o: ..\SYSTEM\mytype.h
+..\obj\tb6560.o: ..\HARDWARE\Motor\control_param.h
+..\obj\tb6560.o: ..\HARDWARE\GLOBALS\globals.h
+..\obj\tb6560.o: ..\HARDWARE\Motor\Motor.h
 ..\obj\tb6560.o: ..\HARDWARE\TB6560\tb6560.h

@@ -25,7 +25,7 @@
 #define LENGTH  1980 //µ¥Î»mm
 
 
-#define LED0_PWM_VAL TIM3->CCR2 
+//#define LED0_PWM_VAL TIM3->CCR2 
 
 #define ENCODER_TIM_PERIOD (u16)(65000)   // number of pulses per revolution
 
@@ -67,12 +67,12 @@
 
 
 /*----------------Exported functions -------------------------------------*/
-void 	ENC_Init(void);
+//void 	ENC_Init(void);
 void Encoder_Init(void);
 
 u16 Encoder_Get_Counter(void);
 
-s16  Enc_GetCount(void);
+//s16  Enc_GetCount(void);
 
 double 	ENC_Get_Electrical_Angle(void);
 void 	ENC_Clear_Speed_Buffer(void);

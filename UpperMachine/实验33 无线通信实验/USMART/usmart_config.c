@@ -5,9 +5,9 @@
 #include "delay.h"		
 #include "mpu6050.h"
  		 
-extern void led_set(u8 sta);
-extern void test_fun(void(*ledset)(u8),u8 sta);
-
+//extern void led_set(u8 sta);
+//extern void test_fun(void(*ledset)(u8),u8 sta);
+//extern void set_PID(u16 P,u16 I,u16 D);
 
 //函数名列表初始化(用户自己添加)
 //用户直接在这里输入要执行的函数名及其查找串
@@ -23,8 +23,8 @@ struct _m_usmart_nametab usmart_nametab[]=
 	(void*)MPU_Write_Byte,"u8 MPU_Write_Byte(u8 reg,u8 data)",
  	(void*)MPU_Read_Byte,"u8 MPU_Read_Byte(u8 reg)", 
  	(void*)MPU_Get_Temperature,"short MPU_Get_Temperature(void)",
-	(void*)led_set,"void led_set(u8 sta);",
-		
+//	(void*)led_set,"void led_set(u8 sta)",
+//	(void*)set_PID,"void set_PID(u16 P,u16 I,u16 D)",	
 };						  
 ///////////////////////////////////END///////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////

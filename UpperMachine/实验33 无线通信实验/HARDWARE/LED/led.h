@@ -15,30 +15,37 @@
 //////////////////////////////////////////////////////////////////////////////// 
 
 //战舰系列
-#define   RCC_APB2Periph_LED   		RCC_APB2Periph_GPIOE
+//#define   RCC_APB2Periph_LED   		RCC_APB2Periph_GPIOE
 
-#define   LED_GPIO_E                GPIOE
-#define   LED_GPIO_B                GPIOB
+//#define   LED_GPIO_E                GPIOE
+//#define   LED_GPIO_B                GPIOE
 
-#define   LED_GPIO_PIN_A 			GPIO_Pin_5
-#define   LED_GPIO_PIN_B  			GPIO_Pin_6
+//#define   LED_GPIO_PIN_A 			GPIO_Pin_5
+//#define   LED_GPIO_PIN_B  			GPIO_Pin_6
 
 
+//#define LED0 PEout(5)// PB5
+//#define LED1 PEout(6)// PE5	
 
-#define LED0 PEout(5)// PB5
-#define LED1 PEout(6)// PE5	
+//void LED_Init(void);				//初始化
 
 
 //红龙系列
 
 
-//贝一特
 
+//贝一特单片机
+#define   RCC_APB2Periph_LED   		RCC_APB2Periph_GPIOD|RCC_APB2Periph_GPIOG
+#define   LED_GPIO_E                GPIOD
+#define   LED_GPIO_B                GPIOG
 
-//#define LED0 PDout(13)// PB5
-//#define LED1 PGout(14)// PE5	
+#define   LED_GPIO_PIN_A 			GPIO_Pin_13
+#define   LED_GPIO_PIN_B  			GPIO_Pin_14
 
-void LED_Init(void);//初始化
+#define   LED0 PDout(13)			// PB5
+#define   LED1 PGout(14)			// PE5	
+
+void LED_Init(void);				//初始化
 
 		 				    
 #endif

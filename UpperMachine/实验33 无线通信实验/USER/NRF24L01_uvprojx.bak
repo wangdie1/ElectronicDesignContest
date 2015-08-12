@@ -146,7 +146,7 @@
             <UsePdscDebugDescription>1</UsePdscDebugDescription>
           </Target>
           <RunDebugAfterBuild>0</RunDebugAfterBuild>
-          <TargetSelection>4</TargetSelection>
+          <TargetSelection>6</TargetSelection>
           <SimDlls>
             <CpuDll></CpuDll>
             <CpuDllArguments></CpuDllArguments>
@@ -364,7 +364,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_HD,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\HARDWARE\LED;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\USER;..\STM32F10x_FWLib\inc;..\CORE;..\HARDWARE\KEY;..\HARDWARE\LCD;..\HARDWARE\RTC;..\HARDWARE\RTC;..\HARDWARE\WKUP;..\HARDWARE\ADC;..\HARDWARE\DAC;..\HARDWARE\DMA;..\HARDWARE\IIC;..\HARDWARE\24CXX;..\HARDWARE\SPI;..\HARDWARE\FLASH;..\HARDWARE\TOUCH;..\HARDWARE\REMOTE;..\HARDWARE\ADXL345;..\HARDWARE\DS18B20;..\HARDWARE\NRF24L01;..\HARDWARE\TimeBase;..\HARDWARE\TimeBase;..\SYSTEM;..\HARDWARE\MyGlobals;..\HARDWARE\GLOBALS;..\SYSTEM\APP;..\HARDWARE\UltrasonicWave;..\HARDWARE\ENCODER;..\HARDWARE\ENCODER;..\HARDWARE\ENCODER;..\HARDWARE\Motor;..\HARDWARE\ENCODER;..\HARDWARE\MPU6050;..\USMART</IncludePath>
+              <IncludePath>..\HARDWARE\LED;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\STM32F10x_FWLib\inc;..\CORE;..\HARDWARE\KEY;..\HARDWARE\LCD;..\HARDWARE\RTC;..\HARDWARE\WKUP;..\HARDWARE\ADC;..\HARDWARE\DAC;..\HARDWARE\DMA;..\HARDWARE\IIC;..\HARDWARE\24CXX;..\HARDWARE\SPI;..\HARDWARE\FLASH;..\HARDWARE\TOUCH;..\HARDWARE\REMOTE;..\HARDWARE\ADXL345;..\HARDWARE\DS18B20;..\HARDWARE\NRF24L01;..\HARDWARE\TimeBase;..\SYSTEM;..\HARDWARE\MyGlobals;..\HARDWARE\GLOBALS;..\SYSTEM\APP;..\HARDWARE\UltrasonicWave;..\HARDWARE\ENCODER;..\HARDWARE\Motor;..\USMART;..\HARDWARE\init;..\HARDWARE\NIMING;..\HARDWARE\INIT;..\HARDWARE\NIMING;..\HARDWARE\TimeBase;..\SYSTEM\APP;..\HARDWARE\Motor;..\SYSTEM\APP;..\USER;..\HARDWARE\MPU6050;..\HARDWARE\MPU6050\eMPL;..\USER;..\USMART;..\CORE;..\HARDWARE\LCD;.\MENU;.\MENU</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -427,6 +427,16 @@
               <FileType>1</FileType>
               <FilePath>.\mytask.c</FilePath>
             </File>
+            <File>
+              <FileName>init.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\init\init.c</FilePath>
+            </File>
+            <File>
+              <FileName>menu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\MENU\menu.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -441,11 +451,6 @@
               <FileName>key.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\KEY\key.c</FilePath>
-            </File>
-            <File>
-              <FileName>lcd.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\HARDWARE\LCD\lcd.c</FilePath>
             </File>
             <File>
               <FileName>spi.c</FileName>
@@ -463,11 +468,6 @@
               <FilePath>..\HARDWARE\Motor\Motor.c</FilePath>
             </File>
             <File>
-              <FileName>Control.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\HARDWARE\CONTROL\Control.c</FilePath>
-            </File>
-            <File>
               <FileName>TimeBase.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\TimeBase\TimeBase.c</FilePath>
@@ -478,34 +478,9 @@
               <FilePath>..\HARDWARE\GLOBALS\globals.c</FilePath>
             </File>
             <File>
-              <FileName>tb6560.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\HARDWARE\TB6560\tb6560.c</FilePath>
-            </File>
-            <File>
-              <FileName>timer4_cap.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\HARDWARE\UltrasonicWave\timer4_cap.c</FilePath>
-            </File>
-            <File>
-              <FileName>UltrasonicWave.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\HARDWARE\UltrasonicWave\UltrasonicWave.c</FilePath>
-            </File>
-            <File>
-              <FileName>Servo.C</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\HARDWARE\Servo\Servo.C</FilePath>
-            </File>
-            <File>
               <FileName>Encoder.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\Motor\Encoder.c</FilePath>
-            </File>
-            <File>
-              <FileName>mpu6050.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\HARDWARE\MPU6050\mpu6050.c</FilePath>
             </File>
             <File>
               <FileName>rtc.c</FileName>
@@ -513,9 +488,29 @@
               <FilePath>..\HARDWARE\RTC\rtc.c</FilePath>
             </File>
             <File>
+              <FileName>niming.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\NIMING\niming.c</FilePath>
+            </File>
+            <File>
+              <FileName>Control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\Motor\Control.c</FilePath>
+            </File>
+            <File>
+              <FileName>mpu6050.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\MPU6050\mpu6050.c</FilePath>
+            </File>
+            <File>
               <FileName>mpuiic.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\MPU6050\mpuiic.c</FilePath>
+            </File>
+            <File>
+              <FileName>inv_mpu_dmp_motion_driver.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.c</FilePath>
             </File>
             <File>
               <FileName>inv_mpu.c</FileName>
@@ -523,9 +518,19 @@
               <FilePath>..\HARDWARE\MPU6050\eMPL\inv_mpu.c</FilePath>
             </File>
             <File>
-              <FileName>inv_mpu_dmp_motion_driver.c</FileName>
+              <FileName>ili9320.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.c</FilePath>
+              <FilePath>..\HARDWARE\LCD\ili9320.c</FilePath>
+            </File>
+            <File>
+              <FileName>hz16.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\LCD\hz16.c</FilePath>
+            </File>
+            <File>
+              <FileName>remote.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\REMOTE\remote.c</FilePath>
             </File>
           </Files>
         </Group>

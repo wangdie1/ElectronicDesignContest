@@ -1,5 +1,5 @@
 #include "app.h"
-double abs(double Num)
+double abs_Double(double Num)
 {
 	if (Num >= 0)
 	{

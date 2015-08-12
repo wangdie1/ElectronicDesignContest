@@ -44,23 +44,27 @@
 
 ////////////////////////////定义延时时间///////////////////////////////////////
 #define SPEED_DELAY	 				DT_10MS//10////40//100	 //单位见TIMEBASE100us
-#define CURRENT_DELAY  			DT_100US//40
-#define POSITION_DELAY 			DT_10MS 
+#define CURRENT_DELAY  				DT_100US//40
+#define POSITION_DELAY 				DT_10MS 
 
-#define POSITION_PID_DELAY		DT_10MS//DT_2MS//DT_100MS
-#define SPEED_PID_DELAY 		DT_1MS//DT_1MS//80//200
-#define CURRENT_PID_DELAY 	DT_20US//DT_500US//40//40
+#define POSITION_PID_DELAY			DT_10MS//DT_2MS//DT_100MS
+#define SPEED_PID_DELAY 			DT_1MS//DT_1MS//80//200
+#define CURRENT_PID_DELAY 			DT_20US//DT_500US//40//40
 
-#define CAN_SEND_DELAY 			DT_1S
+#define CAN_SEND_DELAY 				DT_1S
 
-#define LED_TEST_DELAY 			DT_500MS
+#define LED_TEST_DELAY 				DT_500MS
 
-#define LCD_DISPLAY_DELAY		DT_500MS
+#define LCD_DISPLAY_DELAY			DT_500MS
 
-#define ADC_DELAY						DT_10US
+#define ADC_DELAY					DT_10US
 
 //定义流水灯的采样时间为1s
-#define LED_DELAY           	 DT_1S
+#define LED_DELAY           		 DT_1S
+
+#define MAIN_DELAY               	DT_5MS
+#define Uart_DELAY               	DT_200MS
+#define Enc_DELAY					DT_200MS
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -88,39 +92,62 @@ extern  volatile u32 hSysTick_OverNum;
 void TB_Init(u16 arr,u16 psc);
 
 /************任务时钟设置*******************/
-void  TB_SetDelay_Time(u16 hDelay);
-bool TB_Delay_IsElapsed(void );
 
-void TB_SetCAN_SendDelay_Time(u16 hDelay);
-bool  TB_CAN_SendDelay_IsElapsed(void );
 
-void TB_SetPositionDelay_Time(u16 hDelay);
-bool TB_PositionDelay_IsElapsed(void);
+//void TB_SetCAN_SendDelay_Time(u16 hDelay);
+//bool  TB_CAN_SendDelay_IsElapsed(void );
 
-void TB_SetPositionPIDDelay_Time(u16 hDelay);
-bool TB_PositionPIDDelay_IsElapsed(void );
+//void TB_SetPositionDelay_Time(u16 hDelay);
+//bool TB_PositionDelay_IsElapsed(void);
 
-void TB_SetCurrentDelay_Time(u16 hDelay );
-bool TB_CurrentDelay_IsElapsed(void);
+//void TB_SetPositionPIDDelay_Time(u16 hDelay);
+//bool TB_PositionPIDDelay_IsElapsed(void );
 
-void TB_SetSpeedDelay_Time(u16 hDelay );
-bool TB_SpeedDelay_IsElapsed(void);
+//void TB_SetCurrentDelay_Time(u16 hDelay );
+//bool TB_CurrentDelay_IsElapsed(void);
+
+//void TB_SetSpeedDelay_Time(u16 hDelay );
+//bool TB_SpeedDelay_IsElapsed(void);
 
 void TB_SetSpeedPIDDelay_Time(u16 hDelay );
 bool TB_SpeedPIDDelay_IsElapsed(void);
 
-void TB_SetCurrentPIDDelay_Time(u16 hDelay);
-bool TB_CurrentPIDDelay_IsElapsed(void);
+//void TB_SetCurrentPIDDelay_Time(u16 hDelay);
+//bool TB_CurrentPIDDelay_IsElapsed(void);
 
 
-void TB_SetDisplayDelay_Time(u16 hDelay);
-bool TB_DisplayDelay_IsElapsed(void);
+//void TB_SetDisplayDelay_Time(u16 hDelay);
+//bool TB_DisplayDelay_IsElapsed(void);
 
-void TB_SetADC_Time(u16 hDelay);
-bool TB_ADC_Delay_IsElapsed(void);
+//void TB_SetADC_Time(u16 hDelay);
+//bool TB_ADC_Delay_IsElapsed(void);
 
 void TB_SetLed_Time(u32 hDelay);
 bool TB_SetLed_IsElapsed(void);
+
+void TB_SetMain_Time(u16 hDelay);
+bool TB_Main_isElapsed(void);
+
+void TB_SetDelay_Time(u16 hDelay);
+bool TB_Delay_IsElapsed(void);
+
+void TB_SetEnc_Time(u16 hDelay);
+bool TB_Enc_IsElapsed(void);
+
+//步进电机
+void TB_SetTB6560_Time(u16 hDelay);
+bool TB_TB6560_IsElapsed(void);
+
+//void TB_SetUart_Time(u16 hDelay);
+//bool TB_Uart_isElapsed(void);
+
+/*延时范例     --500ms发送一次
+	if(TB_Uart_isElapsed() == 0)
+	{
+		TB_SetUart_Time(Uart_DELAY);
+		printf("enc:%d\r\n",enc);
+	}
+*/
 //////////////////////////////////////////////////////////////////////////////////
 
 #endif

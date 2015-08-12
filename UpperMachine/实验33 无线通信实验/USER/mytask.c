@@ -1,19 +1,7 @@
-#include "led.h"
-#include "delay.h"
-#include "key.h"
-#include "sys.h"
-#include "Motor.h"
-//#include "usmart.h" 
-#include "lcd.h"
-#include "usart.h"
-#include "24l01.h" 	 
-//#include "malloc.h"
-//#include "sdio_sdcard.h"  
-//#include "w25qxx.h"    
-//#include "ff.h"  
-//#include "exfuns.h"   
-//#include "text.h"
 #include "mytask.h"
+#include "init.h"
+#include "menu.h"
+
 
 /************************************************
  ALIENTEK战舰STM32开发板实验33
@@ -127,60 +115,339 @@
 
 //int QJ_TASK(u16 pwm)
 //pwm 小车的速度
-int QJ_TASK(void)
-{
-	return 0;
-}
+//int QJ_TASK(void)
+//{
+//	return 0;
+//}
 
-int HT_TASK(void)
-{
-	return 0;
-}
+//int HT_TASK(void)
+//{
+//	return 0;
+//}
 
-int ZZ_TASK(void)
-{
-	return 0;
-}
+//int ZZ_TASK(void)
+//{
+//	return 0;
+//}
 
-int YZ_TASK(void)
-{
+//int YZ_TASK(void)
+//{
+//	
+//	return 0;
+//}
+
+
+////倒立摆任务集
+
+//void Dlb_TASK_1(void)
+//{
+//	 while(1)
+//	 {
+//		 MotorB_Backward(450);
+//		delay_ms(80);
+//		 MotorB_Brk();
+//		delay_ms(340);
+//		
+//		MotorB_Forward(450);
+//		delay_ms(80);
+//		MotorB_Brk();
+//		delay_ms(340);
+//	 }
+//}
+
+////圆周运动
+//void Dlb_TASK_2(void)
+//{
+//	 while(1)
+//	 {
+//		MotorB_Backward(800);
+//		delay_ms(80);
+//		 MotorB_Brk();
+//		delay_ms(340);
+//		
+//		MotorB_Forward(800);
+//		delay_ms(80);
+//		MotorB_Brk();
+//		delay_ms(340);
+//	 }
+//}
+
+
+////倒立摆任务3程序
+
+//void DLB_TASK_3(void)
+//{
+//	u16 enc;
+//	int pwm1;
+//	
+//	//获得编码器的值
+//	enc = Encoder_Get_Counter();
+//	
+//	//300ms的频率打印到串口
+//	if(TB_Delay_IsElapsed() == true)  
+//	{
+//		TB_SetDelay_Time(Uart_DELAY);
+//		printf("enc:%d\r\n",TIM3->CNT);	
+//	}
+//	
+//	//pwm输出
+//	if(enc > 360 && enc < 440)
+//	{
+//		pwm1= User_PidPosControl(enc,400);
+//		MotorB_PWM_Update(pwm1);
+//	}
+//	else
+//	{
+//		MotorB_Brk();
+//	}
+//}
+//	
+
+////倒立摆任务4程序  --原地起摆 
+//void DLB_TASK_4(void)
+//{
+//	int enc;
+//	int pwm1;
+//	
+//	//获得位置环
+//	enc = Encoder1_Get_Counter();
+//	if(800-enc < 400)
+//		enc = enc - 800;
+//	//300ms的频率打印到串口
+//	if(TB_Delay_IsElapsed() == true)
+//	{
+//		TB_SetDelay_Time(Uart_DELAY);
+//		printf("enc:%d\r\n",enc);	
+//	}
+//	
+//	//pwm输出
+//	if(enc>-100 && enc<100)
+//	{
+//		pwm1 = User_PidPosControl(enc,0);
+//		MotorB_PWM_Update(-pwm1);
+//	}
+//	else	
+//	{
+//		MotorB_Brk();
+//	}
+//}
+
+
+//void DLB_TASK_5(void)
+//{
+//	int enc,enc1;
+//	int pwm,mpwm1;
+//	double speed;
+//	
+//	//位置环
+//	enc = Encoder1_Get_Counter();
+//	//速度环
+//	speed = ENC1_Get_Speed();
+
+//	//300ms的频率打印到串口
+//	if(TB_Delay_IsElapsed() == true)
+//	{
+//		TB_SetDelay_Time(Uart_DELAY);
+//		printf("enc:%d    enc1:%lf\r\n",enc,speed);	
+//	}
+//	
+//	
+//	//pwm输出
+////	if(enc>-100 && enc<100)
+////	{
+////		pwm1 = User_PidPosControl(enc,0);
+////		MotorB_PWM_Update(-pwm1);
+////	}
+////	else	
+////	{
+////		MotorB_Brk();
+////	}
+//}
+
+//void DLB_TASK_6(void)
+//{
+//	int enc,enc1;
+//	int pwm,mpwm1;
+//	double speed;
+//	
+//	//位置环
+//	enc = Encoder1_Get_Counter();
+//	//速度环
+//	speed = ENC1_Get_Speed();
+
+//	//300ms的频率打印到串口
+//	if(TB_Delay_IsElapsed() == true)
+//	{
+//		TB_SetDelay_Time(Uart_DELAY);
+//		printf("enc:%d    enc1:%lf\r\n",enc,speed);	
+//	}
+//	
 	
-	return 0;
-}
+	//pwm输出
+//	if(enc>-100 && enc<100)
+//	{
+//		pwm1 = User_PidPosControl(enc,0);
+//		MotorB_PWM_Update(-pwm1);
+//	}
+//	else	
+//	{
+//		MotorB_Brk();
+//	}
+//}
+	
+//	LCD_ShowxNum(30,190,PID_I,7,16,0);
+//	LCD_ShowxNum(30,210,PID_D,7,16,0);
+////}
 
 
-//倒立摆任务集
+//void Control_fanA(void)
+//{
+//	u8 key,i=0;
+//	u16 pwm;//pwm的重转载值为1000
+//	while(1)
+//	{
+//		key=KEY_Scan(0);
+//		if(key==KEY1_PRES)
+//		{
+//			LED0 =!LED0;
+//			i++;
+//			pwm = 100*i;
+//			FanA_Forward(pwm);
+//			if(i > 10)
+//				i = 10;
+//		}
+//		if(key == KEY2_PRES)
+//		{
+//			LED1=!LED1;
+//			i--;
+//			pwm = 100 * i;
+//			FanA_Forward(i*100);
+//			if(i<1)
+//				i = 0;
+//		}
+//	}	
+//}
 
-void Dlb_TASK_1(void)
+//执行基础部分任务一
+void Perform_BaseTask1(void)
 {
-	 while(1)
-	 {
-		 MotorB_Backward(450);
-		delay_ms(80);
-		 MotorB_Brk();
-		delay_ms(340);
+	u8 key;
+	LCD_ShowNum(86,240,111,5,16);
+	while(1)
+	{
+		key =KEY_Scan(0);
+		if(key!=0)
+		{
+			delay_ms(10);
+			if(key == WKUP_PRES)     //返回上一层菜单
+			{
+				LCD_Clear(WHITE);	
+				MainMenu();
+				TASTMenu();
+				break;
+			}
+			LCD_ShowNum(86,240,key,5,16);
+		}
 		
-		MotorB_Forward(450);
-		delay_ms(80);
-		MotorB_Brk();
-		delay_ms(340);
-	 }
+	}
 }
 
-//圆周运动
-void Dlb_TASK_2(void)
+//执行基础部分任务二
+void Perform_BaseTask2(void)
 {
-	 while(1)
-	 {
-		MotorB_Backward(800);
-		delay_ms(80);
-		 MotorB_Brk();
-		delay_ms(340);
+	u8 key;
+	LCD_ShowNum(86,240,111,5,16);
+	while(1)
+	{
+		key =KEY_Scan(0);
+		if(key!=0)
+		{
+			delay_ms(10);
+			if(key == WKUP_PRES)	//返回上一层菜单
+			{
+				LCD_Clear(WHITE);	
+				MainMenu();
+				TASTMenu();
+				break;
+			}
+			LCD_ShowNum(86,240,key,5,16);
+		}
 		
-		MotorB_Forward(800);
-		delay_ms(80);
-		MotorB_Brk();
-		delay_ms(340);
-	 }
+	}
+}	
+
+//执行基础部分任务三
+void Perform_BaseTask3(void)
+{
+	u8 key;
+	LCD_ShowNum(86,240,111,5,16);
+	while(1)
+	{
+		key =KEY_Scan(0);
+		if(key!=0)
+		{
+			delay_ms(10);
+			if(key == WKUP_PRES)	//返回上一层菜单
+			{
+				LCD_Clear(WHITE);	
+				MainMenu();
+				TASTMenu();
+				break;
+			}
+			LCD_ShowNum(86,240,key,5,16);
+		}
+		
+	}
+}	
+
+//执行基础部分任务四
+void Perform_BaseTask4(void)
+{
+	//						LCD_ShowNum(86,240,5000,5,16);
+	u8 key;
+	while(1)
+	{
+		key =KEY_Scan(0);
+		if(key!=0)
+		{
+			delay_ms(10);
+			if(key == WKUP_PRES)	//返回上一层菜单
+			{
+				LCD_Clear(WHITE);	
+				MainMenu();
+				TASTMenu();
+				break;
+			}
+			LCD_ShowNum(86,240,key,5,16);
+		}
+		
+	}
+}	
+
+//执行发挥部分(一二)
+void Perform_ExertTask1(void)
+{
+	//						LCD_ShowNum(86,240,5000,5,16);
+	u8 key;
+	while(1)
+	{
+		key =KEY_Scan(0);
+		if(key!=0)
+		{
+			delay_ms(10);
+			if(key == WKUP_PRES)	//返回上一层菜单
+			{
+				LCD_Clear(WHITE);	
+				MainMenu();
+				TASTMenu();
+				break;
+			}
+			LCD_ShowNum(86,240,key,5,16);
+		}
+		
+	}
 }
+
+
+
 

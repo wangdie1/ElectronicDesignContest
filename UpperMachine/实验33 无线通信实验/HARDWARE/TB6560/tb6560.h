@@ -34,6 +34,10 @@ void Step_Run_Right(u16 dx);
 
 //void step_test(u8 stepx,u16 dt,u16 cycle); 
 
+
+
+void TIM3_Int_Init(u16 arr,u16 psc);
+void TIM3_PWM_Init(u16 arr,u16 psc);
 #endif 
 
 

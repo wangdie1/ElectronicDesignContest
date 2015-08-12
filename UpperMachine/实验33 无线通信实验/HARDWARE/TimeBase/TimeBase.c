@@ -1,10 +1,9 @@
 #include "TimeBase.h"
-#include "delay.h"
-#include "led.h"
+//#include "delay.h"
+//#include "led.h"
 #ifdef TB_TEST
 static volatile u16 hTimebase_PositionTest_Time = 0;
 static volatile u16 hTimebase_SpeedTest_Time =0;
-
 #endif
 
 #ifdef TB_CURRENT_PID
@@ -19,10 +18,17 @@ static volatile  u16 hTimebase_CAN_Send_Time=0;
 static volatile u16 hTimebase_PositionPID_Time = 0;
 static volatile u16 hTimebase_SpeedPID_Time = 0;
 
+static volatile u16 hTimebase_Enc_Time = 0;
 static volatile  u16 hTimebase_Delay_Time = 0;
 static volatile  u16 hTimebase_Display_Time =0;
 
+static volatile u16 hTimebase_TB6560_Time = 0;
+
 static volatile u16 hTimebase_ADC_Time = 0;
+
+static volatile u16 hTimebase_Main_Time = 0;
+
+static volatile u16 hTimebase_Uart_Time = 0;
 
 volatile u32 hSysTick_OverNum=0;
 
@@ -39,21 +45,6 @@ static volatile  u16 hTimebase_LED_Time = 0;
 * Output         : None
 * Return         : None
 *******************************************************************************/
-//void TB_Init(void)
-//{
-//	 //SystemFrequency /1000 1ms 中断一次  10000 100us
-//	 //SystemFrequency /100000 10us中断一次
-//	 //SystemFrequency /1000000 1us 中断一次
-////	if(SysTick_Config(SystemCoreClock/1000000))	//  TIME_BASE_FREQ ：100000  10us中断一次
-////	 {
-////	 /*capture error*/
-////	 	while(1);
-////	 }
-//	 //使能
-//	 SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;
-//	 SysTick->CTRL |= SysTick_CTRL_TICKINT_Msk;
-//}
-
 //定时器7的初始化程序
 void TB_Init(u16 arr,u16 psc)
 {
@@ -82,8 +73,8 @@ void TB_Init(u16 arr,u16 psc)
 }
 
 
-/*****通用定时****/
-void TB_SetDelay_Time(u16 hDelay)
+/*****通用延时函数****/
+void TB_SetDelay_Time(u16 hDelay)   //hDelay * 100us 
 {
 	hTimebase_Delay_Time  = hDelay ;
 }
@@ -97,23 +88,88 @@ bool TB_Delay_IsElapsed(void )
 		return  false ;
 }
 
-/***************位置环PID频率设置*******************/
-void TB_SetPositionPIDDelay_Time(u16 hDelay)//10ms
+
+/*****通用主函数频率****/
+void TB_SetMain_Time(u16 hDelay)
 {
-	hTimebase_PositionPID_Time = hDelay;
+	hTimebase_Main_Time  = hDelay ;
 }
-bool TB_PositionPIDDelay_IsElapsed(void)
+bool TB_Main_isElapsed()
 {
-	if(hTimebase_PositionPID_Time==0)
+	if(hTimebase_Main_Time ==0)
 	{
-		return (true);
+		return  (true );
 	}
 	else
-	{
-		return  (false );
-	}
+		return  false ;
 }
-/***************速度环频率***********************/
+
+/*****串口发送频率***/
+void TB_SetUart_Time(u16 hDelay)   //一般为300ms左右发送一次
+{
+	hTimebase_Uart_Time  = hDelay ;
+}
+bool TB_Uart_isElapsed(void)
+{
+	if(hTimebase_Uart_Time ==0)
+	{
+		return  (true );
+	}
+	else
+		return  false ;
+}
+
+
+//设置编码的读取频率
+void TB_SetEnc_Time(u16 hDelay)
+{
+	hTimebase_Enc_Time = hDelay;
+}
+
+bool TB_Enc_IsElapsed(void)
+{
+	if(hTimebase_Enc_Time ==0)
+	{
+		return  (true );
+	}
+	else
+		return  false ;
+}
+
+
+//pwm的步进电机
+void TB_SetTB6560_Time(u16 hDelay)      //可以精确步进电机转过的角度
+{
+	hTimebase_TB6560_Time = hDelay;
+}
+
+bool TB_TB6560_IsElapsed(void)
+{
+	if(hTimebase_TB6560_Time ==0)
+	{
+		return  (true );
+	}
+	else
+		return  false ;
+}
+
+/***************位置环PID频率设置*******************/
+//void TB_SetPositionPIDDelay_Time(u16 hDelay)//10ms
+//{
+//	hTimebase_PositionPID_Time = hDelay;
+//}
+//bool TB_PositionPIDDelay_IsElapsed(void)
+//{
+//	if(hTimebase_PositionPID_Time==0)
+//	{
+//		return (true);
+//	}
+//	else
+//	{
+//		return  (false );
+//	}
+//}
+///***************速度环频率***********************/
 void TB_SetSpeedPIDDelay_Time(u16 hDelay )
 {
 	hTimebase_SpeedPID_Time=  hDelay;
@@ -131,127 +187,127 @@ bool TB_SpeedPIDDelay_IsElapsed(void)
 }
 
 
-/*****************LCD刷新频率****×××××××*/
-void TB_SetDisplayDelay_Time(u16 hDelay)
-{
-	hTimebase_Display_Time =hDelay;
-}
-bool TB_DisplayDelay_IsElapsed(void)
-{
-	if(hTimebase_Display_Time == 0)
-	{
-		return true;
-	}
-	else return false;
-}
+///*****************LCD刷新频率****×××××××*/
+//void TB_SetDisplayDelay_Time(u16 hDelay)
+//{
+//	hTimebase_Display_Time =hDelay;
+//}
+//bool TB_DisplayDelay_IsElapsed(void)
+//{
+//	if(hTimebase_Display_Time == 0)
+//	{
+//		return true;
+//	}
+//	else return false;
+//}
 
-/******************ADC采样频率*********************/
-void TB_SetADC_Time(u16 hDelay)
-{
-	hTimebase_ADC_Time = hDelay;
-}
-bool TB_ADC_Delay_IsElapsed(void)
-{
-	if(hTimebase_ADC_Time==0)
-	{
-		return true;
-	}
-	else 
-		return false;
-}
+///******************ADC采样频率*********************/
+//void TB_SetADC_Time(u16 hDelay)
+//{
+//	hTimebase_ADC_Time = hDelay;
+//}
+//bool TB_ADC_Delay_IsElapsed(void)
+//{
+//	if(hTimebase_ADC_Time==0)
+//	{
+//		return true;
+//	}
+//	else 
+//		return false;
+//}
 
-#ifdef TB_CAN_SEND
-/**********CAN总线发送频率***********/
-void TB_SetCAN_SendDelay_Time(u16 hDelay)
-{
-	hTimebase_CAN_Send_Time  = hDelay ;	
-}
-bool  TB_CAN_SendDelay_IsElapsed(void )
-{
-	if (hTimebase_CAN_Send_Time == 0)
-	{
-		return (true);
-	}
-	else 
-	{
-		return (false);
-	}
-}
-#endif
+//#ifdef TB_CAN_SEND
+///**********CAN总线发送频率***********/
+//void TB_SetCAN_SendDelay_Time(u16 hDelay)
+//{
+//	hTimebase_CAN_Send_Time  = hDelay ;	
+//}
+//bool  TB_CAN_SendDelay_IsElapsed(void )
+//{
+//	if (hTimebase_CAN_Send_Time == 0)
+//	{
+//		return (true);
+//	}
+//	else 
+//	{
+//		return (false);
+//	}
+//}
+//#endif
 
-#ifdef TB_TEST
-// ***************位置采样****************************************************************/
-void TB_Set_PositionDelay_Time(u16 hDelay)
-{
-	hTimebase_PositionTest_Time =hDelay;
+//#ifdef TB_TEST
+//// ***************位置采样****************************************************************/
+//void TB_Set_PositionDelay_Time(u16 hDelay)
+//{
+//	hTimebase_PositionTest_Time =hDelay;
 
-}
-bool TB_PositionDelay_IsElapsed(void)
-{
- if (hTimebase_PositionTest_Time == 0)
- {
-   return (true);
- }
- else 
- {
-   return (false);
- }
-}
+//}
+//bool TB_PositionDelay_IsElapsed(void)
+//{
+// if (hTimebase_PositionTest_Time == 0)
+// {
+//   return (true);
+// }
+// else 
+// {
+//   return (false);
+// }
+//}
 
-/**********************速度采样时间设置******************************/
-void TB_SetSpeedDelay_Time(u16 hDelay )
-{
-	hTimebase_SpeedTest_Time=  hDelay;
-}
-bool TB_SpeedDelay_IsElapsed(void)
-{
-	if(hTimebase_SpeedTest_Time == 0)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-#endif
-
-
-#ifdef TB_CURRENT_PID
-
-/*****************电流环PID 调节频率****×××××××*/
-void TB_SetCurrentPIDDelay_Time(u16 hDelay)
-{
-	hTimebase_CurrentPID_Time =hDelay;
-}
-bool TB_CurrentPIDDelay_IsElapsed(void)
-{
-	if(hTimebase_CurrentPID_Time == 0)
-	{
-		return true;
-	}
-	else return false;
-}
+///**********************速度采样时间设置******************************/
+//void TB_SetSpeedDelay_Time(u16 hDelay )
+//{
+//	hTimebase_SpeedTest_Time=  hDelay;
+//}
+//bool TB_SpeedDelay_IsElapsed(void)
+//{
+//	if(hTimebase_SpeedTest_Time == 0)
+//	{
+//		return true;
+//	}
+//	else
+//	{
+//		return false;
+//	}
+//}
+//#endif
 
 
-/***************电流取样时间设置********************///100us
-void TB_SetCurrentDelay_Time(u16 hDelay )
-{
-	hTimebase_CurrentTest_Time=  hDelay;
-}
+//#ifdef TB_CURRENT_PID
 
-bool TB_CurrentDelay_IsElapsed(void)
-{
-	if(hTimebase_CurrentTest_Time == 0)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-#endif
+///*****************电流环PID 调节频率****×××××××*/
+//void TB_SetCurrentPIDDelay_Time(u16 hDelay)
+//{
+//	hTimebase_CurrentPID_Time =hDelay;
+//}
+//bool TB_CurrentPIDDelay_IsElapsed(void)
+//{
+//	if(hTimebase_CurrentPID_Time == 0)
+//	{
+//		return true;
+//	}
+//	else return false;
+//}
+
+
+///***************电流取样时间设置********************///100us
+//void TB_SetCurrentDelay_Time(u16 hDelay )
+//{
+//	hTimebase_CurrentTest_Time=  hDelay;
+//}
+
+//bool TB_CurrentDelay_IsElapsed(void)
+//{
+//	if(hTimebase_CurrentTest_Time == 0)
+//	{
+//		return true;
+//	}
+//	else
+//	{
+//		return false;
+//	}
+//}
+//#endif
 
 
 /**************************************************************/
@@ -289,62 +345,79 @@ void TIM7_IRQHandler(void)
 	{
 		TIM_ClearITPendingBit(TIM7, TIM_IT_Update  );  //清除TIM7更新中断标志 
 		
-		hSysTick_OverNum--;
-		if(hTimebase_ADC_Time!=0)
-		{
-			hTimebase_ADC_Time--;
-		}
+//		hSysTick_OverNum--;
+//		if(hTimebase_ADC_Time!=0)
+//		{
+//			hTimebase_ADC_Time--;
+//		}
 		if (hTimebase_SpeedPID_Time != 0)  //速度环周期
 		{
     	hTimebase_SpeedPID_Time --;
 		}
-		if(hTimebase_PositionPID_Time !=0)//位置环周期
+//		if(hTimebase_PositionPID_Time !=0)//位置环周期
+//		{
+//			hTimebase_PositionPID_Time --;
+//		}
+		
+//		if(hTimebase_Display_Time!=0)//LCD刷新
+//		{
+//			hTimebase_Display_Time--;
+//		}
+		if(hTimebase_Main_Time!=0)//LED采样时间
 		{
-			hTimebase_PositionPID_Time --;
+			hTimebase_Main_Time--;
 		}
 		if(hTimebase_Delay_Time !=0)//通用延时
 		{
 			hTimebase_Delay_Time --;
 		}
-		if(hTimebase_Display_Time!=0)//LCD刷新
+		if(hTimebase_Enc_Time!=0)
 		{
-			hTimebase_Display_Time--;
+			hTimebase_Enc_Time--;
 		}
-		if(hTimebase_LED_Time!=0)//LED采样时间
-		{
-			hTimebase_LED_Time--;
-		}
-	
 		
-		#ifdef TB_TEST
-			if (hTimebase_SpeedTest_Time != 0)  
+		if(hTimebase_TB6560_Time!=0) //步进电进
 		{
-			hTimebase_SpeedTest_Time --;
+			hTimebase_TB6560_Time--;
 		}
-			if (hTimebase_PositionTest_Time != 0)  
+		else                         //步进电机结束,关闭使能
 		{
-			hTimebase_PositionTest_Time --;
+			TIM_Cmd(TIM3, DISABLE);	
 		}
-		#endif
 		
 	
-		#ifdef TB_CURRENT_PID
-			if (hTimebase_CurrentTest_Time != 0)  
-		{
-			hTimebase_CurrentTest_Time --;
-		}
-		if(hTimebase_CurrentPID_Time != 0)
-		{
-			hTimebase_CurrentPID_Time--;
-		}
-		#endif
 		
-		#ifdef TB_CAN_SEND
-		if(hTimebase_CAN_Send_Time !=0)
-		{
-			hTimebase_CAN_Send_Time--;
-		}
-		#endif
+		
+		//定义功能的采样频率
+//		#ifdef TB_TEST
+//			if (hTimebase_SpeedTest_Time != 0)  
+//		{
+//			hTimebase_SpeedTest_Time --;
+//		}
+//			if (hTimebase_PositionTest_Time != 0)  
+//		{
+//			hTimebase_PositionTest_Time --;
+//		}
+//		#endif
+//		
+//	
+//		#ifdef TB_CURRENT_PID
+//			if (hTimebase_CurrentTest_Time != 0)  
+//		{
+//			hTimebase_CurrentTest_Time --;
+//		}
+//		if(hTimebase_CurrentPID_Time != 0)
+//		{
+//			hTimebase_CurrentPID_Time--;
+//		}
+//		#endif
+//		
+//		#ifdef TB_CAN_SEND
+//		if(hTimebase_CAN_Send_Time !=0)
+//		{
+//			hTimebase_CAN_Send_Time--;
+//		}
+//		#endif
 	}
 		
 }

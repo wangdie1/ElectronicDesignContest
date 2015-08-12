@@ -1,6 +1,8 @@
 #include "remote.h"
 #include "delay.h"
 #include "usart.h"
+#include "led.h"
+#include "lcd.h"
 //////////////////////////////////////////////////////////////////////////////////	 
 //本程序只供学习使用，未经作者许可，不得用于其它任何用途
 //ALIENTEK战舰STM32开发板
@@ -153,6 +155,43 @@ u8 Remote_Scan(void)
 		}
 	}  
     return sta;
+}
+
+u8 Remote_Read(u8 key)
+{
+	u8 stri;
+	if(key)
+	{	 	  
+		switch(key)
+		{
+			case 0:		stri=ERROR;		  break;			   
+			case 162:	stri=POWER;		  break;	    
+			case 98:	stri=UP;		  break;	    
+			case 2:		stri=PLAY;		  break;		 
+			case 226:	stri=ALIENTEK;	  break;		  
+			case 194:	stri=RIGHT;	      break;	   
+			case 34:	stri=LEFT;		  break;		  
+			case 224:	stri=VOLL;		  break;		  
+			case 168:	stri=DOWN;		  break;		   
+			case 144:	stri=VOLH;		  break;		    
+			case 104:	stri=REMOTE1_PRES;break;		  
+			case 152:	stri=REMOTE2_PRES;break;	   
+			case 176:	stri=REMOTE3_PRES;break;	    
+			case 48:	stri=REMOTE4_PRES;break;		    
+			case 24:	stri=REMOTE5_PRES;break;		    
+			case 122:	stri=REMOTE6_PRES;break;		  
+			case 16:	stri=REMOTE7_PRES;break;			   					
+			case 56:	stri=REMOTE8_PRES;break;	 
+			case 90:	stri=REMOTE9_PRES;break;
+			case 66:	stri=REMOTE0_PRES;break;
+			case 82:	stri=DELETE;	  break;		 
+		}
+	}
+	else
+	{
+		delay_ms(1);
+	}	
+	return stri;
 }
 
 

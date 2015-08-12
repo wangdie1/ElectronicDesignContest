@@ -30,6 +30,3 @@
 ..\obj\timebase.o: ..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h
 ..\obj\timebase.o: ..\STM32F10x_FWLib\inc\misc.h
 ..\obj\timebase.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdbool.h
-..\obj\timebase.o: ..\SYSTEM\delay\delay.h
-..\obj\timebase.o: ..\SYSTEM\sys\sys.h
-..\obj\timebase.o: ..\HARDWARE\LED\led.h

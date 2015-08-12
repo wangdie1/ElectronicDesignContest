@@ -311,14 +311,14 @@ void PID_IncrementMode(PID_IncrementType* PID)
 s32 spdTag, spdNow, control;//定义一个目标速度，采样速度，控制量
 
 PID_IncrementType PID_Control;//定义PID算法的结构体    绝对式PID算法
-
-void User_PidSpeedControl(u16 SpeedTag)
+//
+void User_PidPositionControl(u16 spdNow)
 {
 	
 	//实际速度
   // spdNow = V2;
 	//目标速度
-   spdTag = 180;
+   spdTag = 400;
 
 	//误差值
    PID_Control.errNow = spdTag - spdNow; //计算并写入速度误差
@@ -342,9 +342,9 @@ void User_PidSpeedControl(u16 SpeedTag)
 }
 
 
-s32 wzTag, wzNow, wzcontrol;//定义一个目标速度，采样速度，控制量
-float errNow;
-PID_Typedef PID_WZControl;//定义PID算法的结构体    绝对式PID算法
+//s32 wzTag, wzNow, wzcontrol;//定义一个目标速度，采样速度，控制量
+//float errNow;
+//PID_Typedef PID_WZControl;//定义PID算法的结构体    绝对式PID算法
 
 //void User_wzControl(u16 wzNow)
 //{

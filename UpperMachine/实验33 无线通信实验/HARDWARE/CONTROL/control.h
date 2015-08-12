@@ -1,13 +1,7 @@
 #ifndef __ConTrol_H
 #define __ConTrol_H
 
-#include "stm32f10x.h"
-#include "TimeBase.h"
- #include "mytype.h"
-#include "control_param.h"
-#include "globals.h"
-#include "app.h"
-#include "Motor.h"
+#include"init.h"
 
 
 
@@ -49,6 +43,7 @@
 
 
 
+
 s32  SpeedPID_Regulator(s32 SpeedError,PID_Typedef *PID);
 s32 SpeedPID1_Regulator(s32 SpeedError);
 s32 PositionPID_Regulator(s32 PositionError,PID_Typedef *PID);
@@ -62,5 +57,6 @@ double PD_Controller(float Error,PID_Typedef *PID);
 double PID_Controller(float Error,PID_Typedef *PID);
 double FF_Controller(double rin,FForward_Typedef *FF );
 
+void User_PidPositionControl(u16 spdNow);
 #endif
 

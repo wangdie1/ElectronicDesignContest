@@ -38,4 +38,6 @@ void usart1_niming_report_pid(u8 fun,u8*data,u8 len);
 //下位机修改上位机的值   未完成
 
 void Data_Receive(void);
+
+void usart_report_enc(short enc1);
 #endif

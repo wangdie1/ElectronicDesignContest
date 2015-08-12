@@ -14,7 +14,7 @@
 //All rights reserved									  
 ////////////////////////////////////////////////////////////////////////////////// 
 //蜂鸣器端口定义
-#define BEEP PBout(8)	// BEEP,蜂鸣器接口		   
+#define BEEP PBout(8)	// BEEP,蜂鸣器接口	  BEEP = 1  --响     BEEP = 0  --不响
 
 void BEEP_Init(void);	//初始化
 		 				    

@@ -160,13 +160,6 @@ Section Cross References
     lcd.o(.text) refers to stm32f10x_gpio.o(.text) for GPIO_Init
     lcd.o(.text) refers to stm32f10x_spi.o(.text) for SPI_I2S_DeInit
     lcd.o(.text) refers to lcd.o(.data) for fontaddr
-    remote.o(.text) refers to stm32f10x_rcc.o(.text) for RCC_APB2PeriphClockCmd
-    remote.o(.text) refers to stm32f10x_gpio.o(.text) for GPIO_Init
-    remote.o(.text) refers to stm32f10x_exti.o(.text) for EXTI_Init
-    remote.o(.text) refers to misc.o(.text) for NVIC_Init
-    remote.o(.text) refers to delay.o(.text) for delay_us
-    remote.o(.text) refers to motor.o(.text) for MotorA_Brk
-    remote.o(.text) refers to remote.o(.data) for Remote_Rdy
     ds18b20.o(.text) refers to delay.o(.text) for delay_us
     ds18b20.o(.text) refers to stm32f10x_rcc.o(.text) for RCC_APB2PeriphClockCmd
     ds18b20.o(.text) refers to stm32f10x_gpio.o(.text) for GPIO_Init
@@ -179,6 +172,13 @@ Section Cross References
     extikey.o(.text) refers to stm32f10x_exti.o(.text) for EXTI_Init
     extikey.o(.text) refers to misc.o(.text) for NVIC_Init
     extikey.o(.text) refers to extikey.o(.data) for KeyFlag
+    remote.o(.text) refers to stm32f10x_rcc.o(.text) for RCC_APB2PeriphClockCmd
+    remote.o(.text) refers to stm32f10x_gpio.o(.text) for GPIO_Init
+    remote.o(.text) refers to stm32f10x_exti.o(.text) for EXTI_Init
+    remote.o(.text) refers to misc.o(.text) for NVIC_Init
+    remote.o(.text) refers to delay.o(.text) for delay_us
+    remote.o(.text) refers to motor.o(.text) for MotorA_Brk
+    remote.o(.text) refers to remote.o(.data) for Remote_Rdy
     delay.o(.text) refers to misc.o(.text) for SysTick_CLKSourceConfig
     delay.o(.text) refers to timebase.o(.text) for TB_Init
     delay.o(.text) refers to delay.o(.data) for fac_us
@@ -1045,9 +1045,9 @@ Image Symbol Table
     .text                                    0x080035d4   Section        0  encoder.o(.text)
     .text                                    0x08003b90   Section        0  lcd.o(.text)
     get_data_from_ROM                        0x08004055   Thumb Code    92  lcd.o(.text)
-    .text                                    0x080042c8   Section        0  remote.o(.text)
-    .text                                    0x08004430   Section        0  ds18b20.o(.text)
-    .text                                    0x08004694   Section        0  extikey.o(.text)
+    .text                                    0x080042c8   Section        0  ds18b20.o(.text)
+    .text                                    0x0800452c   Section        0  extikey.o(.text)
+    .text                                    0x080045b0   Section        0  remote.o(.text)
     .text                                    0x08004718   Section        0  delay.o(.text)
     .text                                    0x080047dc   Section        0  usart.o(.text)
     .text                                    0x0800498c   Section        0  app.o(.text)
@@ -1217,25 +1217,25 @@ Image Symbol Table
     NowPosition                              0x20000148   Data           8  encoder.o(.data)
     SpeedNormal                              0x20000150   Data           8  encoder.o(.data)
     .data                                    0x20000158   Section     1028  lcd.o(.data)
-    .data                                    0x2000055c   Section       10  remote.o(.data)
-    .data                                    0x20000566   Section        1  extikey.o(.data)
-    .data                                    0x20000568   Section        4  delay.o(.data)
-    fac_us                                   0x20000568   Data           1  delay.o(.data)
-    fac_ms                                   0x2000056a   Data           2  delay.o(.data)
-    .data                                    0x2000056c   Section       24  usart.o(.data)
-    .data                                    0x20000584   Section       20  stm32f10x_rcc.o(.data)
-    APBAHBPrescTable                         0x20000584   Data          16  stm32f10x_rcc.o(.data)
-    ADCPrescTable                            0x20000594   Data           4  stm32f10x_rcc.o(.data)
-    .bss                                     0x20000598   Section     8514  globals.o(.bss)
-    .bss                                     0x200026e0   Section       56  encoder1.o(.bss)
-    .bss                                     0x20002718   Section       56  encoder.o(.bss)
-    .bss                                     0x20002750   Section       64  usart.o(.bss)
-    .bss                                     0x20002790   Section       96  libspace.o(.bss)
-    HEAP                                     0x200027f0   Section      512  startup_stm32f10x_md.o(HEAP)
-    Heap_Mem                                 0x200027f0   Data         512  startup_stm32f10x_md.o(HEAP)
-    STACK                                    0x200029f0   Section     1024  startup_stm32f10x_md.o(STACK)
-    Stack_Mem                                0x200029f0   Data        1024  startup_stm32f10x_md.o(STACK)
-    __initial_sp                             0x20002df0   Data           0  startup_stm32f10x_md.o(STACK)
+    .data                                    0x2000055c   Section        1  extikey.o(.data)
+    .data                                    0x20000560   Section       10  remote.o(.data)
+    .data                                    0x2000056a   Section        4  delay.o(.data)
+    fac_us                                   0x2000056a   Data           1  delay.o(.data)
+    fac_ms                                   0x2000056c   Data           2  delay.o(.data)
+    .data                                    0x20000570   Section       24  usart.o(.data)
+    .data                                    0x20000588   Section       20  stm32f10x_rcc.o(.data)
+    APBAHBPrescTable                         0x20000588   Data          16  stm32f10x_rcc.o(.data)
+    ADCPrescTable                            0x20000598   Data           4  stm32f10x_rcc.o(.data)
+    .bss                                     0x200005a0   Section     8514  globals.o(.bss)
+    .bss                                     0x200026e8   Section       56  encoder1.o(.bss)
+    .bss                                     0x20002720   Section       56  encoder.o(.bss)
+    .bss                                     0x20002758   Section       64  usart.o(.bss)
+    .bss                                     0x20002798   Section       96  libspace.o(.bss)
+    HEAP                                     0x200027f8   Section      512  startup_stm32f10x_md.o(HEAP)
+    Heap_Mem                                 0x200027f8   Data         512  startup_stm32f10x_md.o(HEAP)
+    STACK                                    0x200029f8   Section     1024  startup_stm32f10x_md.o(STACK)
+    Stack_Mem                                0x200029f8   Data        1024  startup_stm32f10x_md.o(STACK)
+    __initial_sp                             0x20002df8   Data           0  startup_stm32f10x_md.o(STACK)
 
     Global Symbols
 
@@ -1485,20 +1485,20 @@ Image Symbol Table
     get_n_bytes_data_from_ROM                0x080040b1   Thumb Code   102  lcd.o(.text)
     display_GB2312_string                    0x08004117   Thumb Code   266  lcd.o(.text)
     display_string_5x7                       0x08004221   Thumb Code   146  lcd.o(.text)
-    Remote_Init                              0x080042c9   Thumb Code   102  remote.o(.text)
-    Pulse_Width_Check                        0x0800432f   Thumb Code    36  remote.o(.text)
-    EXTI2_IRQHandler                         0x08004353   Thumb Code   138  remote.o(.text)
-    Remote_Process                           0x080043dd   Thumb Code    58  remote.o(.text)
-    DS18B20_Rst                              0x08004431   Thumb Code    54  ds18b20.o(.text)
-    DS18B20_Check                            0x08004467   Thumb Code    96  ds18b20.o(.text)
-    DS18B20_Read_Bit                         0x080044c7   Thumb Code    96  ds18b20.o(.text)
-    DS18B20_Read_Byte                        0x08004527   Thumb Code    34  ds18b20.o(.text)
-    DS18B20_Write_Byte                       0x08004549   Thumb Code   102  ds18b20.o(.text)
-    DS18B20_Start                            0x080045af   Thumb Code    24  ds18b20.o(.text)
-    DS18B20_Init                             0x080045c7   Thumb Code    54  ds18b20.o(.text)
-    DS18B20_Get_Temp                         0x080045fd   Thumb Code   136  ds18b20.o(.text)
-    EXTI_KEY_Init                            0x08004695   Thumb Code   106  extikey.o(.text)
-    EXTI4_IRQHandler                         0x080046ff   Thumb Code    16  extikey.o(.text)
+    DS18B20_Rst                              0x080042c9   Thumb Code    54  ds18b20.o(.text)
+    DS18B20_Check                            0x080042ff   Thumb Code    96  ds18b20.o(.text)
+    DS18B20_Read_Bit                         0x0800435f   Thumb Code    96  ds18b20.o(.text)
+    DS18B20_Read_Byte                        0x080043bf   Thumb Code    34  ds18b20.o(.text)
+    DS18B20_Write_Byte                       0x080043e1   Thumb Code   102  ds18b20.o(.text)
+    DS18B20_Start                            0x08004447   Thumb Code    24  ds18b20.o(.text)
+    DS18B20_Init                             0x0800445f   Thumb Code    54  ds18b20.o(.text)
+    DS18B20_Get_Temp                         0x08004495   Thumb Code   136  ds18b20.o(.text)
+    EXTI_KEY_Init                            0x0800452d   Thumb Code   106  extikey.o(.text)
+    EXTI4_IRQHandler                         0x08004597   Thumb Code    16  extikey.o(.text)
+    Remote_Init                              0x080045b1   Thumb Code   102  remote.o(.text)
+    Pulse_Width_Check                        0x08004617   Thumb Code    36  remote.o(.text)
+    EXTI2_IRQHandler                         0x0800463b   Thumb Code   138  remote.o(.text)
+    Remote_Process                           0x080046c5   Thumb Code    58  remote.o(.text)
     delay_init                               0x08004719   Thumb Code    52  delay.o(.text)
     delay_ms                                 0x0800474d   Thumb Code    68  delay.o(.text)
     delay_us                                 0x08004791   Thumb Code    68  delay.o(.text)
@@ -1931,34 +1931,34 @@ Image Symbol Table
     hRot_Speed                               0x20000128   Data           8  encoder.o(.data)
     Photo0                                   0x20000158   Data        1024  lcd.o(.data)
     fontaddr                                 0x20000558   Data           4  lcd.o(.data)
-    ir_key                                   0x2000055c   Data           1  remote.o(.data)
-    Remote_Odr                               0x20000560   Data           4  remote.o(.data)
-    Remote_Cnt                               0x20000564   Data           1  remote.o(.data)
-    Remote_Rdy                               0x20000565   Data           1  remote.o(.data)
-    KeyFlag                                  0x20000566   Data           1  extikey.o(.data)
-    IsUsartReceived                          0x2000056c   Data           1  usart.o(.data)
-    __stdout                                 0x20000570   Data           4  usart.o(.data)
-    USART_RX_STA                             0x20000574   Data           1  usart.o(.data)
-    usart_rx_buf_num                         0x20000575   Data           1  usart.o(.data)
-    x                                        0x20000578   Data           4  usart.o(.data)
-    y                                        0x2000057c   Data           4  usart.o(.data)
-    delta_x                                  0x20000580   Data           4  usart.o(.data)
-    MotorA                                   0x20000598   Data          40  globals.o(.bss)
-    MotorB                                   0x200005c0   Data          40  globals.o(.bss)
-    SpeedPID                                 0x200005e8   Data          72  globals.o(.bss)
-    SpeedPID1                                0x20000630   Data          72  globals.o(.bss)
-    PositionPID                              0x20000678   Data          72  globals.o(.bss)
-    PositionPID1                             0x200006c0   Data          72  globals.o(.bss)
-    PositionPID_WV                           0x20000708   Data          72  globals.o(.bss)
-    PositionFF                               0x20000750   Data          64  globals.o(.bss)
-    SpeedBuffer                              0x20000790   Data        4000  globals.o(.bss)
-    PositionBuffer                           0x20001730   Data        4000  globals.o(.bss)
-    str                                      0x200026d0   Data          10  globals.o(.bss)
-    h1Speed_Buffer                           0x200026e0   Data          56  encoder1.o(.bss)
-    hSpeed_Buffer                            0x20002718   Data          56  encoder.o(.bss)
-    USART_RX_BUF                             0x20002750   Data          64  usart.o(.bss)
-    __libspace_start                         0x20002790   Data          96  libspace.o(.bss)
-    __temporary_stack_top$libspace           0x200027f0   Data           0  libspace.o(.bss)
+    KeyFlag                                  0x2000055c   Data           1  extikey.o(.data)
+    ir_key                                   0x20000560   Data           1  remote.o(.data)
+    Remote_Odr                               0x20000564   Data           4  remote.o(.data)
+    Remote_Cnt                               0x20000568   Data           1  remote.o(.data)
+    Remote_Rdy                               0x20000569   Data           1  remote.o(.data)
+    IsUsartReceived                          0x20000570   Data           1  usart.o(.data)
+    __stdout                                 0x20000574   Data           4  usart.o(.data)
+    USART_RX_STA                             0x20000578   Data           1  usart.o(.data)
+    usart_rx_buf_num                         0x20000579   Data           1  usart.o(.data)
+    x                                        0x2000057c   Data           4  usart.o(.data)
+    y                                        0x20000580   Data           4  usart.o(.data)
+    delta_x                                  0x20000584   Data           4  usart.o(.data)
+    MotorA                                   0x200005a0   Data          40  globals.o(.bss)
+    MotorB                                   0x200005c8   Data          40  globals.o(.bss)
+    SpeedPID                                 0x200005f0   Data          72  globals.o(.bss)
+    SpeedPID1                                0x20000638   Data          72  globals.o(.bss)
+    PositionPID                              0x20000680   Data          72  globals.o(.bss)
+    PositionPID1                             0x200006c8   Data          72  globals.o(.bss)
+    PositionPID_WV                           0x20000710   Data          72  globals.o(.bss)
+    PositionFF                               0x20000758   Data          64  globals.o(.bss)
+    SpeedBuffer                              0x20000798   Data        4000  globals.o(.bss)
+    PositionBuffer                           0x20001738   Data        4000  globals.o(.bss)
+    str                                      0x200026d8   Data          10  globals.o(.bss)
+    h1Speed_Buffer                           0x200026e8   Data          56  encoder1.o(.bss)
+    hSpeed_Buffer                            0x20002720   Data          56  encoder.o(.bss)
+    USART_RX_BUF                             0x20002758   Data          64  usart.o(.bss)
+    __libspace_start                         0x20002798   Data          96  libspace.o(.bss)
+    __temporary_stack_top$libspace           0x200027f8   Data           0  libspace.o(.bss)
 
 
 
@@ -1968,7 +1968,7 @@ Memory Map of the image
 
   Image Entry point : 0x080000ed
 
-  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x0000a278, Max: 0x00080000, ABSOLUTE, COMPRESSED[0x00009f68])
+  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x0000a27c, Max: 0x00080000, ABSOLUTE, COMPRESSED[0x00009f68])
 
     Execution Region ER_IROM1 (Base: 0x08000000, Size: 0x00009ce0, Max: 0x00080000, ABSOLUTE)
 
@@ -2063,9 +2063,9 @@ Memory Map of the image
     0x0800347c   0x00000158   Code   RO          473    .text               zlg_key.o
     0x080035d4   0x000005bc   Code   RO          491    .text               encoder.o
     0x08003b90   0x00000738   Code   RO          522    .text               lcd.o
-    0x080042c8   0x00000168   Code   RO          543    .text               remote.o
-    0x08004430   0x00000264   Code   RO          561    .text               ds18b20.o
-    0x08004694   0x00000084   Code   RO          576    .text               extikey.o
+    0x080042c8   0x00000264   Code   RO          543    .text               ds18b20.o
+    0x0800452c   0x00000084   Code   RO          558    .text               extikey.o
+    0x080045b0   0x00000168   Code   RO          573    .text               remote.o
     0x08004718   0x000000c4   Code   RO          591    .text               delay.o
     0x080047dc   0x000001b0   Code   RO          621    .text               usart.o
     0x0800498c   0x0000001e   Code   RO          645    .text               app.o
@@ -2196,7 +2196,7 @@ Memory Map of the image
     0x08009bd0   0x00000110   Data   RO         1334    locale$$data        c_w.l(lc_ctype_c.o)
 
 
-    Execution Region RW_IRAM1 (Base: 0x20000000, Size: 0x00002df0, Max: 0x00010000, ABSOLUTE, COMPRESSED[0x00000288])
+    Execution Region RW_IRAM1 (Base: 0x20000000, Size: 0x00002df8, Max: 0x00010000, ABSOLUTE, COMPRESSED[0x00000288])
 
     Base Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -2214,20 +2214,22 @@ Memory Map of the image
     0x20000116   0x00000002   PAD
     0x20000118   0x00000040   Data   RW          493    .data               encoder.o
     0x20000158   0x00000404   Data   RW          523    .data               lcd.o
-    0x2000055c   0x0000000a   Data   RW          544    .data               remote.o
-    0x20000566   0x00000001   Data   RW          577    .data               extikey.o
-    0x20000567   0x00000001   PAD
-    0x20000568   0x00000004   Data   RW          592    .data               delay.o
-    0x2000056c   0x00000018   Data   RW          623    .data               usart.o
-    0x20000584   0x00000014   Data   RW          868    .data               stm32f10x_rcc.o
-    0x20000598   0x00002142   Zero   RW          269    .bss                globals.o
-    0x200026da   0x00000006   PAD
-    0x200026e0   0x00000038   Zero   RW          339    .bss                encoder1.o
-    0x20002718   0x00000038   Zero   RW          492    .bss                encoder.o
-    0x20002750   0x00000040   Zero   RW          622    .bss                usart.o
-    0x20002790   0x00000060   Zero   RW         1269    .bss                c_w.l(libspace.o)
-    0x200027f0   0x00000200   Zero   RW          669    HEAP                startup_stm32f10x_md.o
-    0x200029f0   0x00000400   Zero   RW          668    STACK               startup_stm32f10x_md.o
+    0x2000055c   0x00000001   Data   RW          559    .data               extikey.o
+    0x2000055d   0x00000003   PAD
+    0x20000560   0x0000000a   Data   RW          574    .data               remote.o
+    0x2000056a   0x00000004   Data   RW          592    .data               delay.o
+    0x2000056e   0x00000002   PAD
+    0x20000570   0x00000018   Data   RW          623    .data               usart.o
+    0x20000588   0x00000014   Data   RW          868    .data               stm32f10x_rcc.o
+    0x2000059c   0x00000004   PAD
+    0x200005a0   0x00002142   Zero   RW          269    .bss                globals.o
+    0x200026e2   0x00000006   PAD
+    0x200026e8   0x00000038   Zero   RW          339    .bss                encoder1.o
+    0x20002720   0x00000038   Zero   RW          492    .bss                encoder.o
+    0x20002758   0x00000040   Zero   RW          622    .bss                usart.o
+    0x20002798   0x00000060   Zero   RW         1269    .bss                c_w.l(libspace.o)
+    0x200027f8   0x00000200   Zero   RW          669    HEAP                startup_stm32f10x_md.o
+    0x200029f8   0x00000400   Zero   RW          668    STACK               startup_stm32f10x_md.o
 
 
 ==============================================================================
@@ -2270,9 +2272,9 @@ Image component sizes
        344         20          0          4          0       2031   zlg_key.o
 
     ----------------------------------------------------------------------
-     26016       1930        268       1432      10232     595211   Object Totals
+     26016       1930        268       1436      10236     595211   Object Totals
          0          0         32          0          0          0   (incl. Generated)
-         6          0          0         13          6          0   (incl. Padding)
+         6          0          0         17         10          0   (incl. Padding)
 
     ----------------------------------------------------------------------
 
@@ -2415,14 +2417,14 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-     39090       2624       1070       1432      10328     596379   Grand Totals
-     39090       2624       1070        648      10328     596379   ELF Image Totals (compressed)
+     39090       2624       1070       1436      10332     596379   Grand Totals
+     39090       2624       1070        648      10332     596379   ELF Image Totals (compressed)
      39090       2624       1070        648          0          0   ROM Totals
 
 ==============================================================================
 
     Total RO  Size (Code + RO Data)                40160 (  39.22kB)
-    Total RW  Size (RW Data + ZI Data)             11760 (  11.48kB)
+    Total RW  Size (RW Data + ZI Data)             11768 (  11.49kB)
     Total ROM Size (Code + RO Data + RW Data)      40808 (  39.85kB)
 
 ==============================================================================

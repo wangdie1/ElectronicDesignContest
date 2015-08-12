@@ -9,64 +9,58 @@ static volatile s32 h1Encoder_Revolutions_Num=0; //转数  用于测距
 static volatile double Pre1Position=0,Now1Position=0;
 static volatile double Speed1Normal=0;
 
-void ENC1_Init(void)
-{
-	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
-	TIM_ICInitTypeDef TIM_ICInitStructure;
+//编码器的初始化
+void Encoder1_Init(void)
+{	 
+	/* TIM3 clock source enable */ 
+	RCC->APB1ENR|=1<<2;       //TIM4使能
+	/* Enable GPIOA, clock */
+	RCC->APB2ENR|=1<<3;       // 使能GBIOB
 	
-	//Encoder uint connected to TIM2
-	GPIO_InitTypeDef GPIO_InitStructure;
-	NVIC_InitTypeDef NVIC_InitStructure;
+	
+	/* Configure PB.00,01 as encoder input2 */
+	ENC1_GPIO_PORT->CRL&=0XF0FFFFFF;//PB6
+	ENC1_GPIO_PORT->CRL|=0X04000000;//浮空输入
+	ENC1_GPIO_PORT->CRL&=0X0FFFFFFF;//PB7
+	ENC1_GPIO_PORT->CRL|=0X40000000;//浮空输入
+	
+	/* Enable the TIM3 Update Interrupt */
+	ENC1_TIMER->DIER|=1<<0;   //允许更新中断		
+	ENC1_TIMER->DIER|=1<<6;   //允许触发中断
+	//MY_NVIC_Init(1,3,TIM4_IRQChannel,2);
 
-	//RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2,ENABLE);
-	RCC_APB1PeriphClockCmd(ENC1_TIMER_CLK,ENABLE);
-	RCC_APB2PeriphClockCmd(ENC1_GPIO_CLK ,ENABLE);
+	/* Timer configuration in Encoder mode */ 
+	ENC1_TIMER->PSC = 0x0;//预分频器
+	ENC1_TIMER->ARR = 4*ENCODER1_PPR-1; //设定计数器计数重转值
+	ENC1_TIMER->CR1 &=~(3<<8);// 选着时钟分频:不分频
+	ENC1_TIMER->CR1 &=~(3<<5);//选着计数模式:边沿对齐模式
+		
+	ENC1_TIMER->CCMR1 |= 1<<0; //CC1s = "01"
+	ENC1_TIMER->CCMR1 |= 1<<8; //cc2s = "01"
+	ENC1_TIMER->CCER &= ~(1<<1);	 //cc1p = "0"
+	ENC1_TIMER->CCER &= ~(1<<5);	 //cc2p = "0"
+	ENC1_TIMER->CCMR1 |= 3<<4; //	IC1F='1000' 
+	ENC1_TIMER->SMCR |= 1<<0;	 //Ic1f = "100"
+	
+  	ENC1_TIMER->CNT = COUNTER_RESET;
 
-	GPIO_StructInit(&GPIO_InitStructure);
-	//GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1;
-	GPIO_InitStructure.GPIO_Pin = ENC1_GPIO_PIN_A  | ENC1_GPIO_PIN_B ;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-	GPIO_Init(ENC1_GPIO_PORT ,&GPIO_InitStructure);
-
-	NVIC_InitStructure.NVIC_IRQChannel = ENC1_TIMER_IRQn ;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = TIMx_PRE_EMPTION_PRIORITY;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = TIMx_SUB_PRIORITY;
-	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_Init(&NVIC_InitStructure);
-
-	TIM_DeInit(ENC1_TIMER);
-	//TIM_TimeBaseInit(&TIM_TimeBaseStructure);
-
-	TIM_TimeBaseStructure.TIM_Prescaler = 0x0;
-	TIM_TimeBaseStructure.TIM_Period = (4*ENCODER1_PPR)-1;
-	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
-	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
-	TIM_TimeBaseInit(ENC1_TIMER,&TIM_TimeBaseStructure);
-
-	TIM_EncoderInterfaceConfig(ENC1_TIMER,TIM_EncoderMode_TI12,
-	TIM_ICPolarity_Rising,TIM_ICPolarity_Rising);
-	TIM_ICStructInit(&TIM_ICInitStructure);
-	TIM_ICInitStructure.TIM_ICFilter = ICx_FILTER;
-	TIM_ICInit(ENC1_TIMER,&TIM_ICInitStructure);
- 
-	TIM_ICInitStructure.TIM_Channel = TIM_Channel_2;//注意通道
-	TIM_ICInit(ENC1_TIMER, &TIM_ICInitStructure);
-
-	TIM_ClearFlag(ENC1_TIMER,TIM_FLAG_Update);
-	TIM_ITConfig(ENC1_TIMER,TIM_IT_Update,ENABLE);
-
-	TIM2->CNT = COUNTER_RESET;//!!此处注意修改
-
-	//局部初始化
+	
 	ENC1_Clear_Speed_Buffer();
 	h1Previous_angle=0;
-  h1Rot_Speed=0;;
-  b1Speed_Buffer_Index = 0;
-  h1Encoder_Timer_Overflow=0;
-  b1Is_First_Measurement = true;
-  h1Encoder_Revolutions_Num=0; 
-   
-  TIM_Cmd(ENC1_TIMER,ENABLE);
+	h1Rot_Speed=0;;
+	b1Speed_Buffer_Index = 0;
+	h1Encoder_Timer_Overflow=0;
+	b1Is_First_Measurement = true;
+	h1Encoder_Revolutions_Num=0; 
+	
+	ENC1_TIMER->CR1 |= 0x01;    //
+}
+
+
+//返回编码器的计数值
+u16 Encoder1_Get_Counter(void)
+{
+	return ENC1_TIMER->CNT;
 }
 
 /*******************************************************************************
@@ -78,13 +72,48 @@ void ENC1_Init(void)
 *                                          S16_MAX-> 180 degrees, 
 *                                          S16_MIN-> -180 degrees                  
 // *******************************************************************************/
-// double ENC1_Get_Electrical_Angle(void)
-// {
-//   double temp;
-//   
-//   temp = (double)(TIM_GetCounter(ENC1_TIMER)) * (double)(U32_MAX / (4*ENCODER1_PPR)); 
-//   return((double)(temp/65536)); // double result
-// }
+//直接放回编码器转过的角度
+ double ENC1_Get_Electrical_Angle(void)
+ {
+	double temp;
+	temp = (TIM_GetCounter(ENC1_TIMER)) * (U32_MAX / (4*ENCODER1_PPR)); 
+	return((double)(temp/U32_MAX)*360); // double r 
+ }
+
+ double ENC1_Get_Speed(void)
+{
+	double temp;
+	double sum;
+	double speed;
+	int i;
+	Now1Position=Encoder1_Get_Counter(); 	//
+	temp=Now1Position-Pre1Position;  		//
+	
+	//速度有正负
+//	if( Now1Position - Pre1Position > 400 )
+//		temp = Now1Position - 800 + Pre1Position;
+//	else if( Now1Position - Pre1Position  <  -400)
+//		temp = Now1Position + 800 - Pre1Position;
+	
+	
+	if( Now1Position - Pre1Position > 400 )
+		temp = 800  - Now1Position + Pre1Position;
+	else if( Now1Position - Pre1Position  <  -400)
+		temp = Now1Position + 800 - Pre1Position;
+	
+	for(i = 0;i<21;i++)
+	{
+		h1Speed_Buffer[i] = h1Speed_Buffer[i+1];
+		sum+=h1Speed_Buffer[i];
+	}
+	
+	h1Speed_Buffer[i] = temp;
+	sum+=h1Speed_Buffer[i];
+	speed = sum/21;
+	return speed;
+}
+
+
 
 
 /*******************************************************************************
@@ -161,20 +190,12 @@ double ENC1_Calc_Rot_Speed(void)
     // occured it resets overflow counter and wPWM_Counter_Angular_Velocity
     if (h1Encoder_Timer_Overflow != 0) 
     {
-      haux = ENC_TIMER->CNT; 
+      haux = ENC1_TIMER->CNT; 
       h1Encoder_Timer_Overflow = 0;            
     }
   }
   
   h1Previous_angle = haux;  
-//  if(temp>=SPEED_MAX)
-//  {
-// 	 temp=Speed1Normal;
-// 	}
-// 	if(temp<=SPEED_MIN)
-// 	{
-// 		 temp=Speed1Normal;
-// 	}
   return((double) temp);
 }
 /*******************************************************************************
@@ -190,7 +211,6 @@ double ENC1_Calc_Average_Speed(void)
 {   
   double wtemp;
   u32 i;
-  
   wtemp = ENC1_Calc_Rot_Speed();
         
 /* Compute the average of the read speeds */  
@@ -217,9 +237,9 @@ double ENC1_Calc_Average_Speed(void)
 /******************角位移******/
 double ENC1_Get_AnglularPosition(void)
 {
-		double temp;
-		temp = h1Encoder_Revolutions_Num*4*ENCODER1_PPR+TIM_GetCounter(ENC1_TIMER);
-		return (temp*ENC1_ANFULAR_UNIT/(REDUCTION1_RATIO*ENCODER1_PPR));//单位0.01度
+	double temp;
+	temp = h1Encoder_Revolutions_Num*4*ENCODER1_PPR+TIM_GetCounter(ENC1_TIMER); //圈数+
+	return (temp*ENC1_ANFULAR_UNIT/(REDUCTION1_RATIO*ENCODER1_PPR));//单位0.01度
 }
 
 /*******************************************************************************
@@ -242,28 +262,26 @@ void ENC1_Clear_Speed_Buffer(void)
 
 
 
-void TIM2_IRQHandler(void)
+void TIM4_IRQHandler(void)
 {  
   /* Clear the interrupt pending flag */
-  TIM_ClearFlag(ENC1_TIMER, TIM_FLAG_Update);
+  TIM_ClearFlag(ENC1_TIMER, TIM_FLAG_Update);  //清除中断标志位
 // 	bIs_First_Measurement = true;
   
-  if (h1Encoder_Timer_Overflow != U16_MAX)  
-  {
-			h1Encoder_Timer_Overflow++;
-	//		GPIOC->ODR ^= GPIO_Pin_9;
-			//LEDToggle(0);
-  }
+	if (h1Encoder_Timer_Overflow != U16_MAX)  
+	{
+		h1Encoder_Timer_Overflow++;
+	}
 	if(!((h1Encoder_Revolutions_Num == INT32_MAX)|(h1Encoder_Revolutions_Num ==S32_MIN )))
 	{
 		if ( (ENC1_TIMER->CR1 & TIM_CounterMode_Down) == TIM_CounterMode_Down)  
-    {// encoder timer down-counting
-				h1Encoder_Revolutions_Num --;
-    }
-		else h1Encoder_Revolutions_Num ++;
+		{
+			h1Encoder_Revolutions_Num --;
+		}
+		else
+			h1Encoder_Revolutions_Num ++;
 	}
-	else h1Encoder_Revolutions_Num = 0;
-		
-//  LEDToggle(LED4);
+	else
+		h1Encoder_Revolutions_Num = 0;
 }
 

@@ -18,6 +18,7 @@
 //按键初始化函数
 void KEY_Init(void) //IO初始化
 { 
+	//战舰
 // 	GPIO_InitTypeDef GPIO_InitStructure;
 // 
 // 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA|RCC_APB2Periph_GPIOE,ENABLE);//使能PORTA,PORTE时钟
@@ -31,18 +32,35 @@ void KEY_Init(void) //IO初始化
 //	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD; //PA0设置成输入，默认下拉	  
 //	GPIO_Init(GPIOA, &GPIO_InitStructure);//初始化GPIOA.0
 	
+	
+	//贝一特
 	GPIO_InitTypeDef GPIO_InitStructure;
  
- 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC|RCC_APB2Periph_GPIOE,ENABLE);//使能PORTA,PORTE时钟
+ 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOG|RCC_APB2Periph_GPIOC|RCC_APB2Periph_GPIOD|RCC_APB2Periph_GPIOE,ENABLE);//使能PORTA,PORTE时钟
 
+	//初始化C13     --E
 	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_13;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; //PC13设置成输入，默认下拉
  	GPIO_Init(GPIOC, &GPIO_InitStructure);//初始化GPIOE2,3,4
+	
+	//初始化C2-C5   --A,B,C,D
+	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_2|GPIO_Pin_3|GPIO_Pin_4|GPIO_Pin_5;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; //PC13设置成输入，默认下拉
+ 	GPIO_Init(GPIOG, &GPIO_InitStructure);//初始化GPIOE2,3,4
+	
+	//初始化D12-D15  --上下 + -
+	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_8|GPIO_Pin_9|GPIO_Pin_10|GPIO_Pin_11;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; //PC13设置成输入，默认下拉
+ 	GPIO_Init(GPIOA, &GPIO_InitStructure);//初始化GPIOE2,3,4
+	
 
 	//初始化 WK_UP-->GPIOA.0	  下拉输入
 	GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_0;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; //PE0设置成输入，默认下拉	  
 	GPIO_Init(GPIOE, &GPIO_InitStructure);//初始化GPIOA.0
+	
+	
+	
 
 }
 //按键处理函数
@@ -75,15 +93,36 @@ u8 KEY_Scan(u8 mode)
 {	 
 	static u8 key_up=1;//按键按松开标志
 	if(mode)key_up=1;  //支持连按		  
-	if(key_up&&(KEY1==0||KEY2==0))
+	if(key_up&&(KEYA==0||KEYB==0||KEYC==0||KEYD==0|| KEYE==0  ||KEYADD==0||KEYDCS==0||KEYCF==0||KEYCC==0||WK_UP == 0))
 	{
 		delay_ms(10);//去抖动 
 		key_up=0;
-		if(KEY1==0)
-			return KEY1_PRES;
-		else if(KEY2==0)
-			return KEY2_PRES;
-	}else if(KEY1==1&&KEY2==1)
+		//功能按键
+		if(KEYA==0)
+			return KEYA_PRES;
+		else if(KEYB==0)
+			return KEYB_PRES;
+		else if(KEYC==0)
+			return KEYC_PRES;
+		else if(KEYD==0)
+			return KEYD_PRES;
+		else if(KEYE==0)
+			return KEYE_PRES;
+		//添加减少
+		else if(KEYADD==0)
+			return KEYADD_PRES;
+		else if(KEYDCS==0)
+			return KEYDCS_PRES;
+		//确定取消
+		else if(KEYCF==0)
+			return KEYCF_PRES;
+		else if(KEYCC==0)
+			return KEYCC_PRES;
+		else if(WK_UP == 0)
+			return WKUP_PRES;
+			
+		
+	}else if(KEYA==1&&KEYB==1&&KEYC==1&&KEYD==1&&KEYE==1&&KEYADD==1&&KEYDCS==1&&KEYCF==1&&KEYCC==1&&WK_UP ==1)
        key_up=1; 	    
  	return 0;// 无按键按下
 }

@@ -1,5 +1,5 @@
-..\obj\control.o: ..\HARDWARE\CONTROL\Control.c
-..\obj\control.o: ..\HARDWARE\CONTROL\Control.h
+..\obj\control.o: ..\HARDWARE\Motor\Control.c
+..\obj\control.o: ..\HARDWARE\Motor\Control.h
 ..\obj\control.o: ..\USER\stm32f10x.h
 ..\obj\control.o: ..\CORE\core_cm3.h
 ..\obj\control.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdint.h
@@ -34,6 +34,8 @@
 ..\obj\control.o: ..\SYSTEM\mytype.h
 ..\obj\control.o: ..\HARDWARE\Motor\control_param.h
 ..\obj\control.o: ..\HARDWARE\GLOBALS\globals.h
-..\obj\control.o: ..\SYSTEM\APP\app.h
 ..\obj\control.o: ..\HARDWARE\Motor\Motor.h
 ..\obj\control.o: ..\SYSTEM\sys\sys.h
+..\obj\control.o: ..\SYSTEM\APP\app.h
+..\obj\control.o: ..\HARDWARE\LCD\lcd.h
+..\obj\control.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdlib.h
