@@ -41,17 +41,12 @@
 
 
 int main(void)
- {	 
-//	u8 t=0,report=1;			//默认开启上报
-//	u8 key;
-	 
+ {	 	 
 	u8 key;
-	u8 t=0;	
-	u8 stri=0;
-	float pitch,roll,yaw; 		//欧拉角
-	short aacx,aacy,aacz;		//加速度传感器原始数据
-	short gyrox,gyroy,gyroz;	//陀螺仪原始数据
-	short temp;					//温度	
+//	float pitch,roll,yaw; 		//欧拉角
+//	short aacx,aacy,aacz;		//加速度传感器原始数据
+//	short gyrox,gyroy,gyroz;	//陀螺仪原始数据
+//	short temp;					//温度	
 	ili9320_Initializtion();//液晶屏初始化
 	Init();                    //部分函数初始化
 	
@@ -65,14 +60,6 @@ int main(void)
 	}  
 	POINT_COLOR=RED;
 	LCD_ShowString(20,180,200,16,16,"MPU6050    OK");
-//	BEEP = 1;
-//	LCD_ShowString(30,200,200,16,16,"KEY0:UPLOAD ON/OFF");
-//	POINT_COLOR=BLUE;//设置字体为蓝色 
-// 	LCD_ShowString(30,170,200,16,16,"UPLOAD ON ");	 
-// 	LCD_ShowString(30,200,200,16,16," Temp:    . C");	
-// 	LCD_ShowString(30,220,200,16,16,"Pitch:    . C");	
-// 	LCD_ShowString(30,240,200,16,16," Roll:    . C");	 
-// 	LCD_ShowString(30,260,200,16,16," Yaw :    . C");
 
 //MainMenu();
  	while(1)
@@ -91,35 +78,35 @@ int main(void)
 				key = KEY_Scan(0);
 				if(key != 0)
 				{
-					if(key == KEYA_PRES)
+					if(key == KEYA_PRES)   //基础任务1
 					{
 						LCD_Clear(WHITE);	
 						MainMenu();
 						TAST1_Menu();
 						Perform_BaseTask1();
 					}
-					else if(key == KEYB_PRES)
+					else if(key == KEYB_PRES) //基础任务2
 					{
 						LCD_Clear(WHITE);	
 						MainMenu();
 						TAST2_Menu();
 						Perform_BaseTask2();
 					}
-					else if(key == KEYC_PRES)
+					else if(key == KEYC_PRES) //基础任务3
 					{
 						LCD_Clear(WHITE);	
 						MainMenu();
 						TAST3_Menu();
 						Perform_BaseTask3();
 					}
-					else if(key == KEYD_PRES)
+					else if(key == KEYD_PRES) //基础任务4
 					{
 						LCD_Clear(WHITE);	
 						MainMenu();
 						TAST4_Menu();
 						Perform_BaseTask4();
 					}
-					else if(key == KEYE_PRES)
+					else if(key == KEYE_PRES) //发挥任务1
 					{
 						LCD_Clear(WHITE);	
 						MainMenu();
@@ -127,17 +114,19 @@ int main(void)
 						Perform_ExertTask1();
 					}
 					
-					else if(key == WKUP_PRES)  //退出该层界面
+					else if(key == WKUP_PRES)  //演示结束
 					{
-						delay_ms(10);
-						key = 0;
+						LCD_Clear(WHITE);	
+						MainMenu();
+						END_Menu();
 						break;
 					}
 				}
 			}
 
 		}
-//		delay_ms(100);
+	}
+}
 		
 		
 
@@ -190,122 +179,6 @@ int main(void)
 //		{
 //			delay_ms(1);
 //		}
-	}
-}
-		
-
-
-//int main(void)
-// {	 
-//	u8 t=0,report=1;			//默认开启上报
-//	u8 key;
-//	float pitch,roll,yaw; 		//欧拉角
-//	short aacx,aacy,aacz;		//加速度传感器原始数据
-//	short gyrox,gyroy,gyroz;	//陀螺仪原始数据
-//	short temp;					//温度	
-//	 
-//	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);	 //设置NVIC中断分组2:2位抢占优先级，2位响应优先级
-//	uart_init(500000);	 	//串口初始化为500000
-//	delay_init();	//延时初始化 
-//	usmart_dev.init(72);		//初始化USMART
-//	LED_Init();		  			//初始化与LED连接的硬件接口
-//	KEY_Init();					//初始化按键
-////	LCD_Init();			   		//初始化LCD
-//	ili9320_Initializtion();	 
-//	MPU_Init();					//初始化MPU6050
-// 	POINT_COLOR=RED;			//设置字体为红色 
-//	LCD_ShowString(30,50,200,16,16,"WarShip STM32");	
-//	LCD_ShowString(30,70,200,16,16,"MPU6050 TEST");	
-//	LCD_ShowString(30,90,200,16,16,"ATOM@ALIENTEK");
-//	LCD_ShowString(30,110,200,16,16,"2015/1/17"); 
-//	while(mpu_dmp_init())
-// 	{
-//		LCD_ShowString(30,130,200,16,16,"MPU6050 Error");
-//		delay_ms(200);
-////		LCD_Fill(30,130,239,130+16,WHITE);
-// 		delay_ms(200);
-//	}  
-//	LCD_ShowString(30,130,200,16,16,"MPU6050 OK");
-//	LCD_ShowString(30,150,200,16,16,"KEY0:UPLOAD ON/OFF");
-//	POINT_COLOR=BLUE;//设置字体为蓝色 
-// 	LCD_ShowString(30,170,200,16,16,"UPLOAD ON ");	 
-// 	LCD_ShowString(30,200,200,16,16," Temp:    . C");	
-// 	LCD_ShowString(30,220,200,16,16,"Pitch:    . C");	
-// 	LCD_ShowString(30,240,200,16,16," Roll:    . C");	 
-// 	LCD_ShowString(30,260,200,16,16," Yaw :    . C");	 
-// 	while(1)
-//	{
-//		key=KEY_Scan(0);
-
-//		if(key==KEYA_PRES)
-//		{
-//			report=!report;
-//			if(report)LCD_ShowString(30,170,200,16,16,"UPLOAD ON ");
-//			else LCD_ShowString(30,170,200,16,16,"UPLOAD OFF");
-//		}
-//		if(mpu_dmp_get_data(&pitch,&roll,&yaw)==0) //处理dma处理后的数据
-//		{
-//			//mpu6050的采样频率
-//			temp=MPU_Get_Temperature();	//得到温度值
-//			MPU_Get_Accelerometer(&aacx,&aacy,&aacz);	//得到加速度传感器数据
-//			MPU_Get_Gyroscope(&gyrox,&gyroy,&gyroz);	//得到陀螺仪数据
-//			
-//			//把处理后的值发送给匿名上位机
-//			if(report)
-//				mpu6050_send_data(aacx,aacy,aacz,gyrox,gyroy,gyroz);//用自定义帧发送加速度和陀螺仪原始数据
-//			if(report)
-//				usart1_report_imu(aacx,aacy,aacz,gyrox,gyroy,gyroz,(int)(roll*100),(int)(pitch*100),(int)(yaw*10));
-//			
-//			
-//			           if((t%10)==0)
-//			{ 
-//				//温度值
-//				if(temp<0)
-//				{
-//					LCD_ShowChar(30+48,200,'-',16,0);		//显示负号
-//					temp=-temp;		//转为正数
-//				}
-//				else LCD_ShowChar(30+48,200,' ',16,0);		//去掉负号 
-//				LCD_ShowNum(30+48+8,200,temp/100,3,16);		//显示整数部分	    
-//				LCD_ShowNum(30+48+40,200,temp%10,1,16);		//显示小数部分 
-//				printf("%d\r\n",temp);
-//				//欧拉角 pitch
-//				temp=pitch*10;
-//				if(temp<0)
-//				{
-//					LCD_ShowChar(30+48,220,'-',16,0);		//显示负号
-//					temp=-temp;		//转为正数
-//				}
-//				else LCD_ShowChar(30+48,220,' ',16,0);		//去掉负号 
-//				LCD_ShowNum(30+48+8,220,temp/10,3,16);		//显示整数部分	    
-//				LCD_ShowNum(30+48+40,220,temp%10,1,16);		//显示小数部分 
-//				printf("%d\r\n",temp);
-//				//欧拉角 roll
-//				temp=roll*10;
-//				if(temp<0)
-//				{
-//					LCD_ShowChar(30+48,240,'-',16,0);		//显示负号
-//					temp=-temp;		//转为正数
-//				}
-//				else LCD_ShowChar(30+48,240,' ',16,0);		//去掉负号 
-//				LCD_ShowNum(30+48+8,240,temp/10,3,16);		//显示整数部分	    
-//				LCD_ShowNum(30+48+40,240,temp%10,1,16);		//显示小数部分 
-//				printf("%d\r\n",temp);
-//				//欧拉角 yaw
-//				temp=yaw*10;
-//				if(temp<0)
-//				{
-//					LCD_ShowChar(30+48,260,'-',16,0);		//显示负号
-//					temp=-temp;		//转为正数
-//				}else LCD_ShowChar(30+48,260,' ',16,0);		//去掉负号 
-//				LCD_ShowNum(30+48+8,260,temp/10,3,16);		//显示整数部分	    
-//				LCD_ShowNum(30+48+40,260,temp%10,1,16);		//显示小数部分  
-//				printf("%d\r\n",temp);
-//				t=0;
-//				LED0=!LED0;//LED闪烁
-//			}
-//		}
-//		t++; 
-//	} 	
+//	}
 //}
-// 
+		

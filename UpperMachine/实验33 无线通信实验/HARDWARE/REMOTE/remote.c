@@ -52,7 +52,7 @@ void Remote_Init(void)
 
   TIM_Cmd(TIM4,ENABLE ); 	//使能定时器4
  
-	NVIC_InitStructure.NVIC_IRQChannel = TIM4_IRQn;  //TIM3中断
+	NVIC_InitStructure.NVIC_IRQChannel = TIM4_IRQn;  //中断
 	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;  //先占优先级0级
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;  //从优先级3级
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; //IRQ通道被使能

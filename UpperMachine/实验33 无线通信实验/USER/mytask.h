@@ -33,4 +33,6 @@ void Perform_BaseTask3(void);
 void Perform_BaseTask4(void);
 void Perform_ExertTask1(void);
 
+void function_A(void);
+
 #endif

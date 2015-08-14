@@ -290,7 +290,7 @@ PID_Pos_Typedef PID_Pos;//定义PID算法的结构体
 //int User_PidPosControl(u16 spdNow,u16 spdTag)
 //{
 //	double output;
-//  // spdNow = V2;
+//  // spdNow = 180;
 //	PID_Pos.spdTag = spdTag;
 
 //	PID_Pos.errNow =  PID_Pos.spdTag - spdNow; //计算并写入速度误差

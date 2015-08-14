@@ -478,11 +478,6 @@
               <FilePath>..\HARDWARE\GLOBALS\globals.c</FilePath>
             </File>
             <File>
-              <FileName>Encoder.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\HARDWARE\Motor\Encoder.c</FilePath>
-            </File>
-            <File>
               <FileName>rtc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\RTC\rtc.c</FilePath>

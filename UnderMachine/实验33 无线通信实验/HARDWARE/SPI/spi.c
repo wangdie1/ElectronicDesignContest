@@ -88,33 +88,3 @@ u8 SPI2_ReadWriteByte(u8 TxData)
 	return SPI_I2S_ReceiveData(SPI2); //返回通过SPIx最近接收的数据					    
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

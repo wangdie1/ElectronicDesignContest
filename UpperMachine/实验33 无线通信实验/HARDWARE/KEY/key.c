@@ -119,10 +119,9 @@ u8 KEY_Scan(u8 mode)
 		else if(KEYCC==0)
 			return KEYCC_PRES;
 		else if(WK_UP == 0)
-			return WKUP_PRES;
-			
-		
-	}else if(KEYA==1&&KEYB==1&&KEYC==1&&KEYD==1&&KEYE==1&&KEYADD==1&&KEYDCS==1&&KEYCF==1&&KEYCC==1&&WK_UP ==1)
+			return WKUP_PRES;	
+	}
+	else if(KEYA==1&&KEYB==1&&KEYC==1&&KEYD==1&&KEYE==1&&KEYADD==1&&KEYDCS==1&&KEYCF==1&&KEYCC==1&&WK_UP ==1)
        key_up=1; 	    
  	return 0;// 无按键按下
 }

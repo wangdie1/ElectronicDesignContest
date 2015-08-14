@@ -65,6 +65,7 @@
 #define MAIN_DELAY               	DT_5MS
 #define Uart_DELAY               	DT_200MS
 #define Enc_DELAY					DT_200MS
+#define Key_DELAY                   DT_1MS
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -137,6 +138,14 @@ bool TB_Enc_IsElapsed(void);
 //步进电机
 void TB_SetTB6560_Time(u16 hDelay);
 bool TB_TB6560_IsElapsed(void);
+
+//按键的读取频率
+void TB_SetSpeedPIDDelay_Time(u16 hDelay );
+bool TB_SpeedPIDDelay_IsElapsed(void);
+
+//MPU6050的采样频率
+void TB_SetMPU6050_Time(u32 hDelay);
+bool TB_SetMPU6050_IsElapsed(void);
 
 //void TB_SetUart_Time(u16 hDelay);
 //bool TB_Uart_isElapsed(void);

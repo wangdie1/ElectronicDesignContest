@@ -43,10 +43,10 @@ void Init(void)
 
 	
 	//2.电机模块初始化
-//	MotorInit();
+	MotorInit();
 //	 Encoder_Init();
 //	 Encoder1_Init();
-//	 TIM_PWM_Init();
+	 TIM_PWM_Init();
 	
 	//3.超声波模块初始化
 //	UltrasonicWave_Configuration();

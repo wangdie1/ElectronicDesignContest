@@ -32,11 +32,13 @@ static volatile u16 hTimebase_Uart_Time = 0;
 
 volatile u32 hSysTick_OverNum=0;
 
+static volatile u16 hTimebase_Key_Time = 0;
+
 
 //定义LED
 static volatile  u16 hTimebase_LED_Time = 0;
 
-
+static volatile  u16 hTimebase_MPU6050_Time = 0;
 /*******************************************************************************
 * Function Name  : TB_Init
 * Description    : TimeBase peripheral initialization. The base time is set to 
@@ -120,38 +122,38 @@ bool TB_Uart_isElapsed(void)
 }
 
 
-//设置编码的读取频率
-void TB_SetEnc_Time(u16 hDelay)
-{
-	hTimebase_Enc_Time = hDelay;
-}
+////设置编码的读取频率
+//void TB_SetEnc_Time(u16 hDelay)
+//{
+//	hTimebase_Enc_Time = hDelay;
+//}
 
-bool TB_Enc_IsElapsed(void)
-{
-	if(hTimebase_Enc_Time ==0)
-	{
-		return  (true );
-	}
-	else
-		return  false ;
-}
+//bool TB_Enc_IsElapsed(void)
+//{
+//	if(hTimebase_Enc_Time ==0)
+//	{
+//		return  (true );
+//	}
+//	else
+//		return  false ;
+//}
 
 
-//pwm的步进电机
-void TB_SetTB6560_Time(u16 hDelay)      //可以精确步进电机转过的角度
-{
-	hTimebase_TB6560_Time = hDelay;
-}
+////pwm的步进电机
+//void TB_SetTB6560_Time(u16 hDelay)      //可以精确步进电机转过的角度
+//{
+//	hTimebase_TB6560_Time = hDelay;
+//}
 
-bool TB_TB6560_IsElapsed(void)
-{
-	if(hTimebase_TB6560_Time ==0)
-	{
-		return  (true );
-	}
-	else
-		return  false ;
-}
+//bool TB_TB6560_IsElapsed(void)
+//{
+//	if(hTimebase_TB6560_Time ==0)
+//	{
+//		return  (true );
+//	}
+//	else
+//		return  false ;
+//}
 
 /***************位置环PID频率设置*******************/
 //void TB_SetPositionPIDDelay_Time(u16 hDelay)//10ms
@@ -170,13 +172,31 @@ bool TB_TB6560_IsElapsed(void)
 //	}
 //}
 ///***************速度环频率***********************/
-void TB_SetSpeedPIDDelay_Time(u16 hDelay )
+//void TB_SetSpeedPIDDelay_Time(u16 hDelay )
+//{
+//	hTimebase_SpeedPID_Time=  hDelay;
+//}
+//bool TB_SpeedPIDDelay_IsElapsed(void)
+//{
+//	if(hTimebase_SpeedPID_Time == 0)
+//	{
+//		return true;
+//	}
+//	else
+//	{
+//		return false;
+//	}
+//}
+
+
+//按键的读取频率
+void TB_SetKey_Time(u16 hDelay )
 {
-	hTimebase_SpeedPID_Time=  hDelay;
+	hTimebase_Key_Time=  hDelay;
 }
-bool TB_SpeedPIDDelay_IsElapsed(void)
+bool TB_Key_IsElapsed(void)
 {
-	if(hTimebase_SpeedPID_Time == 0)
+	if(hTimebase_Key_Time == 0)
 	{
 		return true;
 	}
@@ -187,19 +207,21 @@ bool TB_SpeedPIDDelay_IsElapsed(void)
 }
 
 
+
+
 ///*****************LCD刷新频率****×××××××*/
-//void TB_SetDisplayDelay_Time(u16 hDelay)
-//{
-//	hTimebase_Display_Time =hDelay;
-//}
-//bool TB_DisplayDelay_IsElapsed(void)
-//{
-//	if(hTimebase_Display_Time == 0)
-//	{
-//		return true;
-//	}
-//	else return false;
-//}
+void TB_SetDisplayDelay_Time(u16 hDelay)
+{
+	hTimebase_Display_Time =hDelay;
+}
+bool TB_DisplayDelay_IsElapsed(void)
+{
+	if(hTimebase_Display_Time == 0)
+	{
+		return true;
+	}
+	else return false;
+}
 
 ///******************ADC采样频率*********************/
 //void TB_SetADC_Time(u16 hDelay)
@@ -331,6 +353,27 @@ bool TB_SetLed_IsElapsed(void)
 /**************************************************************/
 
 
+/**************************************************************/
+/*------------------------------------------------------------*/
+//定义MPU6050的采样时间
+
+void TB_SetMPU6050_Time(u32 hDelay)
+{
+	hTimebase_MPU6050_Time =hDelay;
+}
+bool TB_SetMPU6050_IsElapsed(void)
+{
+	if(hTimebase_MPU6050_Time == 0)
+	{
+		return true;
+	}
+	else
+		return false;
+}
+/*------------------------------------------------------------*/
+/**************************************************************/
+
+
 /*******************************************************************************
 * Function Name  : SysTickHandler
 * Description    : This function handles SysTick Handler.
@@ -344,49 +387,58 @@ void TIM7_IRQHandler(void)
 	if (TIM_GetITStatus(TIM7, TIM_IT_Update) != RESET)  //检查TIM7更新中断发生与否
 	{
 		TIM_ClearITPendingBit(TIM7, TIM_IT_Update  );  //清除TIM7更新中断标志 
+
+		
+		//按键的读取频率
+		if(hTimebase_Key_Time!=0)
+		{
+			hTimebase_Key_Time--;
+		}
+		
+		if(hTimebase_Delay_Time !=0)//通用延时
+		{
+			hTimebase_Delay_Time --;
+		}
 		
 //		hSysTick_OverNum--;
 //		if(hTimebase_ADC_Time!=0)
 //		{
 //			hTimebase_ADC_Time--;
 //		}
-		if (hTimebase_SpeedPID_Time != 0)  //速度环周期
-		{
-    	hTimebase_SpeedPID_Time --;
-		}
+//		if (hTimebase_SpeedPID_Time != 0)  //速度环周期
+//		{
+//    	hTimebase_SpeedPID_Time --;
+//		}
 //		if(hTimebase_PositionPID_Time !=0)//位置环周期
 //		{
 //			hTimebase_PositionPID_Time --;
 //		}
 		
-//		if(hTimebase_Display_Time!=0)//LCD刷新
-//		{
-//			hTimebase_Display_Time--;
-//		}
+		if(hTimebase_Display_Time!=0)//LCD刷新
+		{
+			hTimebase_Display_Time--;
+		}
 		if(hTimebase_Main_Time!=0)//LED采样时间
 		{
 			hTimebase_Main_Time--;
 		}
-		if(hTimebase_Delay_Time !=0)//通用延时
-		{
-			hTimebase_Delay_Time --;
-		}
-		if(hTimebase_Enc_Time!=0)
-		{
-			hTimebase_Enc_Time--;
-		}
+
+//		if(hTimebase_Enc_Time!=0)
+//		{
+//			hTimebase_Enc_Time--;
+//		}
 		
-		if(hTimebase_TB6560_Time!=0) //步进电进
-		{
-			hTimebase_TB6560_Time--;
-		}
-		else                         //步进电机结束,关闭使能
-		{
-			TIM_Cmd(TIM3, DISABLE);	
-		}
+//		if(hTimebase_TB6560_Time!=0) //步进电进
+//		{
+//			hTimebase_TB6560_Time--;
+//		}
+//		else                         //步进电机结束,关闭使能
+//		{
+//			TIM_Cmd(TIM3, DISABLE);	
+//		}
 		
 	
-		
+	
 		
 		//定义功能的采样频率
 //		#ifdef TB_TEST

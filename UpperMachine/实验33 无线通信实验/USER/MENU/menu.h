@@ -10,6 +10,7 @@ void TAST2_Menu(void);
 void TAST3_Menu(void);
 void TAST4_Menu(void);
 void TAST5_Menu(void);
+void END_Menu(void);
 
 
 #endif

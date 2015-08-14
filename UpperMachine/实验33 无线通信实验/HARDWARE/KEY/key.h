@@ -23,11 +23,11 @@
 #define KEYD GPIO_ReadInputDataBit(GPIOG,GPIO_Pin_4)// 按键D
 #define KEYE GPIO_ReadInputDataBit(GPIOC,GPIO_Pin_13)// 按键E
 
-#define KEYADD GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_8)// 添加按键
-#define KEYDCS GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_10)// 减少按键
+#define KEYADD GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_9)// 添加按键
+#define KEYDCS GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_11)// 减少按键
 
-#define KEYCF GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_9)// 确认按键
-#define KEYCC GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_11)// 取消按键
+#define KEYCF GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_8)// 确认按键
+#define KEYCC GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_10)// 取消按键
 
 #define WK_UP  GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_0)//wk
 

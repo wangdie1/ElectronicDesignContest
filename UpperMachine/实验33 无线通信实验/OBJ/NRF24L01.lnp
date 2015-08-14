@@ -12,7 +12,6 @@
 "..\obj\motor.o"
 "..\obj\timebase.o"
 "..\obj\globals.o"
-"..\obj\encoder.o"
 "..\obj\rtc.o"
 "..\obj\niming.o"
 "..\obj\control.o"

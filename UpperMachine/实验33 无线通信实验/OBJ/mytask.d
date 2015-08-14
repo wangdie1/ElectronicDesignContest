@@ -54,3 +54,4 @@
 ..\obj\mytask.o: ..\HARDWARE\MPU6050\eMPL\inv_mpu.h
 ..\obj\mytask.o: ..\HARDWARE\MPU6050\eMPL\inv_mpu_dmp_motion_driver.h
 ..\obj\mytask.o: .\MENU\menu.h
+..\obj\mytask.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\math.h
